@@ -1,0 +1,28 @@
+# Create session
+curl -v -u `cat ~/.toggl`:api_token -X POST https://www.toggl.com/api/v8/sessions -c toggl_api_session.cookie
+
+# Destroy session
+curl -v -b toggl_api_session.cookie -X DELETE https://www.toggl.com/api/v8/sessions
+
+# Projects, Tags, Time Entries, Workspaces, etc.
+curl -u `cat ~/.toggl`:api_token -H "Content-type: application/json" -X GET https://www.toggl.com/api/v8/me?with_related_data=true
+
+# Get workspaces
+curl -u `cat ~/.toggl`:api_token -X GET https://www.toggl.com/api/v8/workspaces
+
+curl -b toggl_api_session -X GET https://www.toggl.com/api/v8/workspaces
+
+# Get projects in workspace
+curl -u `cat ~/.toggl`:api_token -X GET https://www.toggl.com/api/v8/workspaces/282224/projects
+
+# Create project
+curl -v -u `cat ~/.toggl`:api_token \
+    -H "Content-type: application/json" \
+    -d '{"project":{"name":"TogglV8 API 2013-05-26 00:42:00","wid":282224,"is_private":true}}' \
+    -X POST https://www.toggl.com/api/v8/projects
+
+# Get project data
+curl -u `cat ~/.toggl`:api_token -H "Content-type: application/json" -X GET https://www.toggl.com/api/v8/projects/2882160
+
+# Get time entries - start_date & end_date in ISO 8601 format, e.g. 2013-03-10T15:42:46+02:00
+curl -u `cat ~/.toggl`:api_token -X GET https://www.toggl.com/api/v8/time_entries?start_date=2013-05-22T15%3A42%3A46%2B02%3A00
