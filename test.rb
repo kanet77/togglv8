@@ -23,8 +23,8 @@ def print_projects(tog)
 
     ps = tog.projects(wid)
     ps.each do |p|
-      @pname = p['name']
-      @tname = tp[p['id']] ? ' (' + tp[p['id']] + ")" : ''
+      @pname = p['name'] + " [" + p['id'].to_s + "] "
+      @tname = tp[p['id']] ? ' (' + tp[p['id']] + ')' : ''
       puts "#@wname - #@pname#@tname"
     end
 
@@ -41,4 +41,6 @@ if __FILE__ == $0
   # ap tog.me(:all)
   print_projects(tog)
   # tog.create_project({:name => "HUGE project", :wid => "282224"})
+  # tog.create_task({:name => "HUGE task", :pid => "2883126"})
+  tog.create_task()
 end
