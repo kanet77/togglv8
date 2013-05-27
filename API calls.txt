@@ -1,5 +1,18 @@
-# Create session
-curl -v -u `cat ~/.toggl`:api_token -X POST https://www.toggl.com/api/v8/sessions -c toggl_api_session.cookie
+#--------------------------------------#
+#--- Authenticate and get user data ---#
+#--------------------------------------#
+
+# HTTP Basic Auth with e-mail and password
+curl -u 4p2hx5sfvb@snkmail.com:kto77regalJ* -X GET https://www.toggl.com/api/v8/me
+
+# HTTP Basic Auth with API token
+curl -u e9ece382bf1d98403fe4ec38a99320e9:api_token -X GET https://www.toggl.com/api/v8/me
+
+# Authentication with a session cookie
+curl -v -u e9ece382bf1d98403fe4ec38a99320e9:api_token -X POST https://www.toggl.com/api/v8/sessions -c toggl_api_session.cookie
+
+# Use session cookie
+curl -b toggl_api_session.cookie -X GET https://www.toggl.com/api/v8/me
 
 # Destroy session
 curl -v -b toggl_api_session.cookie -X DELETE https://www.toggl.com/api/v8/sessions
@@ -7,13 +20,25 @@ curl -v -b toggl_api_session.cookie -X DELETE https://www.toggl.com/api/v8/sessi
 # Projects, Tags, Time Entries, Workspaces, etc.
 curl -u `cat ~/.toggl`:api_token -H "Content-type: application/json" -X GET https://www.toggl.com/api/v8/me?with_related_data=true
 
-# Get workspaces
-curl -u `cat ~/.toggl`:api_token -X GET https://www.toggl.com/api/v8/workspaces
+#---------------#
+#--- Clients ---#
+#---------------#
 
-curl -b toggl_api_session -X GET https://www.toggl.com/api/v8/workspaces
+# Create client
+curl -v -u e9ece382bf1d98403fe4ec38a99320e9:api_token \
+    -H "Content-type: application/json" \
+    -d '{"client":{"name":"Very Big Company","wid":282224}}' \
+    -X POST https://www.toggl.com/api/v8/clients
 
-# Get projects in workspace
-curl -u `cat ~/.toggl`:api_token -X GET https://www.toggl.com/api/v8/workspaces/282224/projects
+# Update client
+curl -v -u 1971800d4d82861d8f2c1651fea4d212:api_token \
+    -H "Content-type: application/json" \
+    -d '{"client":{"name":"Very Big Company","notes":"something about the client"}}' \
+    -X PUT https://www.toggl.com/api/v8/clients/1239455
+
+#----------------#
+#--- Projects ---#
+#----------------#
 
 # Create project
 curl -v -u `cat ~/.toggl`:api_token \
@@ -24,5 +49,40 @@ curl -v -u `cat ~/.toggl`:api_token \
 # Get project data
 curl -u `cat ~/.toggl`:api_token -H "Content-type: application/json" -X GET https://www.toggl.com/api/v8/projects/2882160
 
+#---------------------#
+#--- Project users ---#
+#---------------------#
+
+
 # Get time entries - start_date & end_date in ISO 8601 format, e.g. 2013-03-10T15:42:46+02:00
-curl -u `cat ~/.toggl`:api_token -X GET https://www.toggl.com/api/v8/time_entries?start_date=2013-05-22T15%3A42%3A46%2B02%3A00
+curl -u e9ece382bf1d98403fe4ec38a99320e9:api_token -X GET https://www.toggl.com/api/v8/time_entries?start_date=2013-05-22T15%3A42%3A46%2B02%3A00
+
+# Create task
+curl -v -u e9ece382bf1d98403fe4ec38a99320e9:api_token \
+    -H "Content-type: application/json" \
+    -d '{"task":{"name":"A new task","pid":2882160}}' \
+    -X POST https://www.toggl.com/api/v8/tasks
+
+#------------------#
+#--- Workspaces ---#
+#------------------#
+
+# tk : 282224
+# HomeAway : 344974
+
+# Get user workspaces
+curl -u e9ece382bf1d98403fe4ec38a99320e9:api_token -X GET https://www.toggl.com/api/v8/workspaces
+  or
+curl -b toggl_api_session -X GET https://www.toggl.com/api/v8/workspaces
+
+# Get workspace users
+curl -u e9ece382bf1d98403fe4ec38a99320e9:api_token -X GET https://www.toggl.com/api/v8/workspaces/282224/users
+
+# Get workspace clients
+curl -u e9ece382bf1d98403fe4ec38a99320e9:api_token -X GET https://www.toggl.com/api/v8/workspaces/282224/clients
+
+# Get workspace projects
+curl -u e9ece382bf1d98403fe4ec38a99320e9:api_token -X GET https://www.toggl.com/api/v8/workspaces/282224/projects
+
+# Get workspace tasks
+curl -u e9ece382bf1d98403fe4ec38a99320e9:api_token -X GET https://www.toggl.com/api/v8/workspaces/282224/tasks
