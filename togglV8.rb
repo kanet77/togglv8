@@ -1,17 +1,18 @@
 #! /usr/bin/env rvm ruby-1.9.3-head do ruby
 
 require 'rubygems'
-require 'httparty'
+require 'faraday'
 require 'awesome_print'
+require 'json'
 
 class Toggl
-  include HTTParty
-  base_uri 'www.toggl.com/api/v8'
-  format :json
-  headers "Content-Type" => "application/json"
+  attr_accessor :conn
 
   def initialize(username=nil, password='api_token')
-    # self.class.default_params output: 'json'
+    self.conn = Faraday.new(url: 'https://www.toggl.com/api/v8')
+    self.conn.headers = {"Content-Type" => "application/json"}
+    # self.conn.response :json, :content_type => /\bjson$/
+    # self.conn.response :logger
     if (password.to_s == 'api_token' && username.to_s == '')
       toggl_api_file = ENV['HOME']+'/.toggl'
       if FileTest.exist?(toggl_api_file) then
@@ -20,11 +21,7 @@ class Toggl
         raise "Expecting api_token in file ~/.toggl or parameters (api_token) or (username, password)"
       end
     end
-    self.class.basic_auth username, password
-  end
-
-  def debug(debug=true)
-    self.class.debug_output if debug
+    self.conn.basic_auth username, password
   end
 
 #----------#
@@ -32,7 +29,8 @@ class Toggl
 #----------#
 
   def me(all=false)
-    res = self.class.get '/me%s' %  [all ? '?with_related_data=true'  : '']
+    res = get "me%s" %  [all ? '?with_related_data=true'  : '']
+    # puts res.code
   end
 
 #------------------#
@@ -40,7 +38,8 @@ class Toggl
 #------------------#
 
   def workspaces
-    self.class.get "/workspaces"
+    res = get "workspaces"
+    # puts res.code
   end
 
 #----------------#
@@ -48,7 +47,7 @@ class Toggl
 #----------------#
 
   def projects(workspace)
-    self.class.get "/workspaces/#{workspace}/projects"
+    get "workspaces/#{workspace}/projects"
   end
 
   # def create_project(params={})
@@ -60,7 +59,7 @@ class Toggl
 #-------------#
 
   def tasks(workspace)
-    self.class.get "/workspaces/#{workspace}/tasks"
+    get "workspaces/#{workspace}/tasks"
   end
 
 #-------------#
@@ -68,7 +67,7 @@ class Toggl
 #-------------#
 
   def users(workspace)
-    self.class.get "/workspaces/#{workspace}/users"
+    get "workspaces/#{workspace}/users"
   end
 
 #---------------#
@@ -76,12 +75,12 @@ class Toggl
 #---------------#
 
   def workspace_clients(workspace)
-    self.class.get "/workspaces/#{workspace}/clients"
+    get "workspaces/#{workspace}/clients"
   end
 
   # def create_client(params={})
   #   my_post
-  #   response = self.class.post '/clients', body: MultiJson.encode(client: params)
+  #   response = post '/clients', body: MultiJson.encode(client: params)
   #   puts response
   #   response['data'].nil? ? response : response['data']
   # end
@@ -91,9 +90,13 @@ class Toggl
   # end
 
 # private
+def get(path)
+  res = self.conn.get(path)
+  JSON.parse(res.env[:body])
+end
 
 #   def my_post(resource_name, data)
-#     response = self.class.post("/#{resource_name}", :body => data)
+#     response = post("/#{resource_name}", :body => data)
 #     # puts response.code
 #     puts response.body, response.code, response.message, response.headers.inspect
 
