@@ -4,9 +4,15 @@ GEM
     awesome_print (1.1.0)
     faraday (0.8.7)
       multipart-post (~> 1.1)
+    jazor (0.1.8)
+      json
+      term-ansicolor
     json (1.8.0)
     logger (1.2.8)
     multipart-post (1.2.0)
+    term-ansicolor (1.2.1)
+      tins (~> 0.8)
+    tins (0.8.0)
 
 PLATFORMS
   ruby
@@ -14,5 +20,6 @@ PLATFORMS
 DEPENDENCIES
   awesome_print (~> 1.1.0)
   faraday (~> 0.8.7)
+  jazor
   json (~> 1.8.0)
   logger (~> 1.2.8)
