@@ -9,9 +9,10 @@ require 'faraday_middleware'
 require 'json'
 
 class Toggl
-  attr_accessor :conn
+  attr_accessor :conn, :debug
 
-  def initialize(username=nil, password='api_token')
+  def initialize(username=nil, password='api_token', debug=nil)
+    self.debug(debug) if !debug.nil?
     if (password.to_s == 'api_token' && username.to_s == '')
       toggl_api_file = ENV['HOME']+'/.toggl'
       if FileTest.exist?(toggl_api_file) then
@@ -21,7 +22,7 @@ class Toggl
       end
     end
 
-    self.conn = connection(username, password)
+    @conn = connection(username, password)
   end
 
   def connection(username, password)
@@ -32,12 +33,17 @@ class Toggl
     conn
   end
 
+  def debug(debug=true)
+    puts "debugging is %s" % [debug ? "ON" : "OFF"]
+    @debug = debug
+  end
+
 #----------#
 #--- Me ---#
 #----------#
 
-  def me(all=false)
-    res = get "me%s" %  [all ? '?with_related_data=true'  : '']
+  def me(all=nil)
+    res = get "me%s" % [all.nil? ? "" : "?with_related_data=#{all}"]
   end
 
 #---------------#
@@ -112,8 +118,9 @@ class Toggl
 # done_seconds      : duration (in seconds) of all the time entries registered for this task
 # uname             : full name of the person to whom the task is assigned to
 
-  def tasks(workspace)
-    get "workspaces/#{workspace}/tasks"     # TODO: support active={true,false,both}
+  def tasks(workspace, params={})
+    active = params[:active].nil? ? "" : "?active=#{params[:active]}"
+    get "workspaces/#{workspace}/tasks#{active}"
   end
 
   def create_task(params={})
@@ -124,13 +131,14 @@ class Toggl
     get "tasks/#{task_id}"
   end
 
-  # ex: update_task({id: 1894675, active: true, estimated_seconds: 4500, fields: "done_seconds,uname"})
-  def update_task(task_id, params={})
-    put "tasks/#{task_id}", {task: params}
+  # ex: update_task(1894675, {active: true, estimated_seconds: 4500, fields: "done_seconds,uname"})
+  def update_task(*task_id, params)
+    raise ArgumentError, 'params is not a Hash' unless params.is_a? Hash
+    put "tasks/#{task_id.join(',')}", {task: params}
   end
 
-  def delete_task(task_id)
-    delete "tasks/#{task_id}"
+  def delete_task(*task_id)
+    delete "tasks/#{task_id.join(',')}"
   end
 
 #--------------------#
@@ -192,12 +200,14 @@ class Toggl
   private
 
   def get(resource)
+    puts "GET #{resource}" if @debug
     full_res = self.conn.get(resource)
     res = JSON.parse(full_res.env[:body])
     res.is_a?(Array) || res['data'].nil? ? res : res['data']
   end
 
   def post(resource, data)
+    puts "POST #{resource} / #{data}" if @debug
     full_res = self.conn.post(resource, JSON.generate(data))
     ap full_res
     res = JSON.parse(full_res.env[:body])
@@ -206,12 +216,14 @@ class Toggl
   end
 
   def put(resource, data)
+    puts "PUT #{resource} / #{data}" if @debug
     full_res = self.conn.put(resource, JSON.generate(data))
     res = JSON.parse(full_res.env[:body])
     res['data'].nil? ? res : res['data']
   end
 
   def delete(resource)
+    puts "DELETE #{resource}" if @debug
     full_res = self.conn.delete(resource)
   end
 

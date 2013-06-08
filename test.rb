@@ -43,17 +43,22 @@ end
 #--------------------#
 
 if __FILE__ == $0
+  tog.debug
   # ap tog.me
-  # ap tog.me(:all)
+  # ap tog.me(true)
+  # ap tog.me('false')
   # print_projects(tog)
   # ap tog.create_project({:name => "HUGE project", :wid => "282224"})
-  # ap tog.create_task({name: "HUGESTESTESTEST task", pid: 2883126})
-  # ap tog.create_task()
-  # ap tog.update_task({id: 1894758, active: true, estimated_seconds: 45000, fields: "done_seconds,uname"})
+  # ap tog.create_task() # ERROR
+  # ap tog.create_task({name: "TASK 1", pid: 2883126})
+  # ap tog.create_task({name: "TASK 2", pid: 2883126})
+  # ap tog.create_task({name: "TASK 3", pid: 2883126})
+  # ap tog.update_task(1894758, {active: true, estimated_seconds: 45000, fields: "done_seconds,uname"})
+  # ap tog.update_task(1894758, 1894732, {active: false})
   ap tog.tasks(282224)
-  # ap tog.tasks(282224, {active: true})
+  # ap tog.tasks(282224, {active: :true})
   # ap tog.tasks(282224, {active: false})
-  # ap tog.tasks(282224, {active: "both"})
+  # ap tog.tasks(282224, {active: 'both'})
   # ap tog.get_task(1894738)
   # ap tog.update_task(1894738, {active: false, estimated_seconds: 240, fields: "done_seconds,uname"})
   # ap tog.delete_task(1894728)

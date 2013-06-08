@@ -115,6 +115,9 @@ curl -u `toggl_api`:api_token -X GET https://www.toggl.com/api/v8/workspaces/282
 
 # Get workspace tasks
 curl -u `toggl_api`:api_token -X GET https://www.toggl.com/api/v8/workspaces/282224/tasks
+curl -u `toggl_api`:api_token -X GET https://www.toggl.com/api/v8/workspaces/282224/tasks?active=true
+curl -u `toggl_api`:api_token -X GET https://www.toggl.com/api/v8/workspaces/282224/tasks?active=false
+curl -u `toggl_api`:api_token -X GET https://www.toggl.com/api/v8/workspaces/282224/tasks?active=both
 
 #-----------------------#
 #--- Workspace Users ---#
