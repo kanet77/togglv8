@@ -12,7 +12,7 @@ class Toggl
   attr_accessor :conn, :debug
 
   def initialize(username=nil, password='api_token', debug=nil)
-    self.debug(debug) if !debug.nil?
+    self.debugOn(debug) if !debug.nil?
     if (password.to_s == 'api_token' && username.to_s == '')
       toggl_api_file = ENV['HOME']+'/.toggl'
       if FileTest.exist?(toggl_api_file) then
@@ -26,14 +26,16 @@ class Toggl
   end
 
   def connection(username, password)
-    conn = Faraday.new(url: 'https://www.toggl.com/api/v8')
-    conn.headers = {"Content-Type" => "application/json"}
-    conn.basic_auth username, password
-    conn.use Faraday::Response::Logger, Logger.new('faraday.log')
-    conn
+    Faraday.new(url: 'https://www.toggl.com/api/v8') do |faraday|
+      faraday.request :url_encoded
+      faraday.response :logger, Logger.new('faraday.log')
+      faraday.adapter Faraday.default_adapter
+      faraday.headers = {"Content-Type" => "application/json"}
+      faraday.basic_auth username, password
+    end
   end
 
-  def debug(debug=true)
+  def debugOn(debug=true)
     puts "debugging is %s" % [debug ? "ON" : "OFF"]
     @debug = debug
   end
@@ -202,6 +204,7 @@ class Toggl
   def get(resource)
     puts "GET #{resource}" if @debug
     full_res = self.conn.get(resource)
+    # ap full_res.env if @debug
     res = JSON.parse(full_res.env[:body])
     res.is_a?(Array) || res['data'].nil? ? res : res['data']
   end
@@ -209,7 +212,7 @@ class Toggl
   def post(resource, data)
     puts "POST #{resource} / #{data}" if @debug
     full_res = self.conn.post(resource, JSON.generate(data))
-    ap full_res
+    # ap full_res.env if @debug
     res = JSON.parse(full_res.env[:body])
     ap res
     res['data'].nil? ? res : res['data']
@@ -218,6 +221,7 @@ class Toggl
   def put(resource, data)
     puts "PUT #{resource} / #{data}" if @debug
     full_res = self.conn.put(resource, JSON.generate(data))
+    # ap full_res.env if @debug
     res = JSON.parse(full_res.env[:body])
     res['data'].nil? ? res : res['data']
   end
@@ -225,6 +229,7 @@ class Toggl
   def delete(resource)
     puts "DELETE #{resource}" if @debug
     full_res = self.conn.delete(resource)
+    # ap full_res.env if @debug
   end
 
 end

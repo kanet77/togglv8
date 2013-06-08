@@ -92,6 +92,10 @@ curl -u `toggl_api`:api_token \
     -d '{"task":{"active":false,"fields":"done_seconds,uname"}}' \
     -X PUT https://www.toggl.com/api/v8/tasks/1894758,1894751
 
+# Delete multiple tasks
+curl -u `toggl_api`:api_token \
+    -X DELETE https://www.toggl.com/api/v8/tasks/1922656,1922683,1922684
+
 #------------------#
 #--- Workspaces ---#
 #------------------#
