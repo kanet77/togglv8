@@ -3,7 +3,6 @@
 require_relative 'togglV8'
 
 tog = Toggl.new
-# tog.debug
 
 # tog = Toggl.new(toggl_api_key)
 # tog = Toggl.new(username, password)
@@ -36,11 +35,26 @@ def print_projects(tog)
   end
 end
 
+#---- Workspaces ----#
+# tk       : 282224  #
+# HomeAway : 344974  #
+#------- User -------#
+# uid      : 360643  #
+#--------------------#
+
 if __FILE__ == $0
-  ap tog.me
+  # ap tog.me
   # ap tog.me(:all)
-  print_projects(tog)
-  # tog.create_project({:name => "HUGE project", :wid => "282224"})
-  # tog.create_task({:name => "HUGE task", :pid => "2883126"})
-  tog.create_task()
+  # print_projects(tog)
+  # ap tog.create_project({:name => "HUGE project", :wid => "282224"})
+  # ap tog.create_task({name: "HUGESTESTESTEST task", pid: 2883126})
+  # ap tog.create_task()
+  # ap tog.update_task({id: 1894758, active: true, estimated_seconds: 45000, fields: "done_seconds,uname"})
+  ap tog.tasks(282224)
+  # ap tog.tasks(282224, {active: true})
+  # ap tog.tasks(282224, {active: false})
+  # ap tog.tasks(282224, {active: "both"})
+  # ap tog.get_task(1894738)
+  # ap tog.update_task(1894738, {active: false, estimated_seconds: 240, fields: "done_seconds,uname"})
+  # ap tog.delete_task(1894728)
 end
