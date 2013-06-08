@@ -1,11 +1,11 @@
 #! /usr/bin/env rvm ruby-1.9.3-head do ruby
+# encoding: utf-8
 
 require 'rubygems'
 require 'awesome_print'
 require 'logger'
 
 require 'faraday'
-require 'faraday_middleware'
 require 'json'
 
 class Toggl
@@ -40,6 +40,16 @@ class Toggl
     @debug = debug
   end
 
+  def checkParams(params, fields=[])
+    raise ArgumentError, 'params is not a Hash' unless params.is_a? Hash
+    return if fields.empty?
+    errors = []
+    for f in fields
+      errors.push("params[#{f}] is required") unless params.has_key?(f)
+    end
+    raise ArgumentError, errors.join(', ') if !errors.empty?
+  end
+
 #----------#
 #--- Me ---#
 #----------#
@@ -59,9 +69,29 @@ class Toggl
 # cur   : The name of the client's currency (string, not required, available only for pro workspaces)
 # at    : timestamp that is sent in the response, indicates the time client was last updated
 
-  def workspace_clients(workspace)
-    get "workspaces/#{workspace}/clients"
+  def create_client(params)
+    checkParams(params, [:name, :wid])
+    post "clients", {client: params}
   end
+
+  def get_client(client_id)
+    get "clients/#{client_id}"
+  end
+
+  def update_client(client_id, params)
+    checkParams(params)
+    put "clients/#{client_id}", {client: params}
+  end
+
+  def delete_client(client_id)
+    delete "clients/#{client_id}"
+  end
+
+  def get_client_projects(client_id, params={})
+    active = params.has_key?(:active) ? "?active=#{params[:active]}" : ""
+    get "clients/#{client_id}/projects#{active}"
+  end
+
 
 #----------------#
 #--- Projects ---#
@@ -77,12 +107,22 @@ class Toggl
 # billable    : whether the project is billable or not (boolean, default true, available only for pro workspaces)
 # at          : timestamp that is sent in the response for PUT, indicates the time task was last updated
 
-  def projects(workspace)
-    get "workspaces/#{workspace}/projects"
+  def create_project(params)
+    checkParams(params, [:name, :wid])
+    post "projects", {project: params}
   end
 
-  def create_project(params={})
-    post "projects", {project: params}
+  def get_project(project_id)
+    get "projects/#{project_id}"
+  end
+
+  def update_project(project_id, params)
+    checkParams(params)
+    put "projects/#{project_id}", {project: params}
+  end
+
+  def get_project_users(project_id)
+    get "projects/#{project_id}/project_users"
   end
 
 #---------------------#
@@ -97,6 +137,12 @@ class Toggl
 # at       : timestamp that is sent in the response, indicates when the project user was last updated
 # --Additional fields--
 # fullname : full name of the user, who is added to the project
+
+  def create_project_user(params)
+    checkParams(params, [:pid, :uid])
+    params[:fields] = "fullname"  # for simplicity, always request fullname field
+    post "project_users", {project_user: params}
+  end
 
 #------------#
 #--- Tags ---#
@@ -120,12 +166,8 @@ class Toggl
 # done_seconds      : duration (in seconds) of all the time entries registered for this task
 # uname             : full name of the person to whom the task is assigned to
 
-  def tasks(workspace, params={})
-    active = params[:active].nil? ? "" : "?active=#{params[:active]}"
-    get "workspaces/#{workspace}/tasks#{active}"
-  end
-
-  def create_task(params={})
+  def create_task(params)
+    checkParams(params, [:name, :pid])
     post "tasks", {task: params}
   end
 
@@ -135,7 +177,7 @@ class Toggl
 
   # ex: update_task(1894675, {active: true, estimated_seconds: 4500, fields: "done_seconds,uname"})
   def update_task(*task_id, params)
-    raise ArgumentError, 'params is not a Hash' unless params.is_a? Hash
+    checkParams(params)
     put "tasks/#{task_id.join(',')}", {task: params}
   end
 
@@ -179,10 +221,6 @@ class Toggl
 # at                        : timestamp of last changes
 # new_blog_post             : an object with toggl blog post title and link
 
-  def users(workspace)
-    get "workspaces/#{workspace}/users"
-  end
-
 #------------------#
 #--- Workspaces ---#
 #------------------#
@@ -193,6 +231,28 @@ class Toggl
 
   def workspaces
     get "workspaces"
+  end
+
+  def clients(workspace=nil)
+    if workspace.nil?
+      get "clients"
+    else
+      get "workspaces/#{workspace}/clients"
+    end
+  end
+
+  def projects(workspace, params={})
+    active = params.has_key?(:active) ? "?active=#{params[:active]}" : ""
+    get "workspaces/#{workspace}/projects#{active}"
+  end
+
+  def users(workspace)
+    get "workspaces/#{workspace}/users"
+  end
+
+  def tasks(workspace, params={})
+    active = params.has_key?(:active) ? "?active=#{params[:active]}" : ""
+    get "workspaces/#{workspace}/tasks#{active}"
   end
 
 #---------------#
@@ -214,7 +274,6 @@ class Toggl
     full_res = self.conn.post(resource, JSON.generate(data))
     # ap full_res.env if @debug
     res = JSON.parse(full_res.env[:body])
-    ap res
     res['data'].nil? ? res : res['data']
   end
 
@@ -229,7 +288,9 @@ class Toggl
   def delete(resource)
     puts "DELETE #{resource}" if @debug
     full_res = self.conn.delete(resource)
-    # ap full_res.env if @debug
+    ap full_res.env if @debug
+    status = full_res.env[:status]
+    (200 == status) ? "" : eval(full_res.env[:body])
   end
 
 end
