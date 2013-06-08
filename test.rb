@@ -78,7 +78,23 @@ if __FILE__ == $0
 
   # ap tog.create_project_user({pid: 2931296, uid: 509726})
   # ap tog.update_project_user(8310837, {manager: false, rate: 7})
-  ap tog.delete_project_user(8310837)
+  # ap tog.delete_project_user(8310837)
+
+  # ap tog.create_time_entry({description: "Workspace time entry", duration:1200, start: "2013-03-05T07:55:55.000Z", wid:282224})
+  # ap tog.create_time_entry({description: "Project time entry", duration:600, start: "2013-03-06T08:44:44.000Z", pid:2931296})
+  # ap tog.create_time_entry({description: "Task time entry", duration:300, start: "2013-03-07T09:33:33.000Z", tid:1922686})
+
+  ap tog.get_time_entry(77633704)
+  ap tog.get_time_entry(77633705)
+  ap tog.get_time_entry(77633706)
+
+  # ap tog.update_time_entry(77633704, {description: "Workspace time entry - updated", duration:1300})
+  # ap tog.update_time_entry(77633705, {description: "Project time entry - updated", duration:700})
+  # ap tog.update_time_entry(77633706, {description: "Task time entry - updated", duration:400})
+
+  # ap tog.delete_time_entry(77633704)
+  # ap tog.delete_time_entry(77633705)
+  # ap tog.delete_time_entry(77633706)
 
   # ap tog.create_task({}) # ERRORS
   # ap tog.create_task({name: "TASK 4", pid: 2883126})

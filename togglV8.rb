@@ -212,6 +212,28 @@ class Toggl
 # duronly      : should Toggl show the start and stop time of this time entry? (boolean, not required)
 # at           : timestamp that is sent in the response, indicates the time item was last updated
 
+  def create_time_entry(params)
+    params[:created_with] = "test (pr5zwux59w@snkmail.com)"
+    checkParams(params, [:description, :start, :created_with])
+    if !params.has_key?(:wid) and !params.has_key?(:pid) and !params.has_key?(:tid) then
+      raise ArgumentError, "one of params['wid'], params['pid'], params['tid'] is required"
+    end
+    post "time_entries", {time_entry: params}
+  end
+
+  def get_time_entry(time_entry_id)
+    get "time_entries/#{time_entry_id}"
+  end
+
+  def update_time_entry(time_entry_id, params)
+    checkParams(params)
+    put "time_entries/#{time_entry_id}", {time_entry: params}
+  end
+
+  def delete_time_entry(time_entry_id)
+    delete "time_entries/#{time_entry_id}"
+  end
+
 #-------------#
 #--- Users ---#
 #-------------#

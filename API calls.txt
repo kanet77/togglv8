@@ -8,6 +8,9 @@ curl -u `toggl_up` -X GET https://www.toggl.com/api/v8/me
 # HTTP Basic Auth with API token
 curl -u `toggl_api`:api_token -X GET https://www.toggl.com/api/v8/me
 
+# Projects, Tags, Time Entries, Workspaces, etc.
+curl -v -u `toggl_api`:api_token -H "Content-type: application/json" -X GET https://www.toggl.com/api/v8/me?with_related_data=true
+
 # Authentication with a session cookie
 curl -v -u `toggl_api`:api_token -X POST https://www.toggl.com/api/v8/sessions -c toggl_api_session.cookie
 
@@ -16,9 +19,6 @@ curl -b toggl_api_session.cookie -X GET https://www.toggl.com/api/v8/me
 
 # Destroy session
 curl -b toggl_api_session.cookie -X DELETE https://www.toggl.com/api/v8/sessions
-
-# Projects, Tags, Time Entries, Workspaces, etc.
-curl -v -u `toggl_api`:api_token -H "Content-type: application/json" -X GET https://www.toggl.com/api/v8/me?with_related_data=true
 
 #-------------------------------#
 #----------- Clients -----------#
@@ -143,8 +143,28 @@ curl -u `toggl_api`:api_token \
 #--- Time entries ---#
 #--------------------#
 
-# Get time entries - start_date & end_date in ISO 8601 format, e.g. 2013-03-10T15:42:46+02:00
-curl -u `toggl_api`:api_token -X GET https://www.toggl.com/api/v8/time_entries?start_date=2013-05-22T15%3A42%3A46%2B02%3A00
+# Create time entry
+curl -v -u `toggl_api`:api_token \
+    -H "Content-type: application/json" \
+    -d '{"time_entry":{"description":"Meeting with possible clients","tags":["billed"],"duration":1200,"start":"2013-03-05T07:58:58.000Z","pid":2931296}}' \
+    -X POST https://www.toggl.com/api/v8/time_entries
+
+# Get time entry details
+curl -u `toggl_api`:api_token -X GET https://www.toggl.com/api/v8/time_entries/77628973
+
+# Update time entry
+curl -u `toggl_api`:api_token \
+    -H "Content-type: application/json" \
+    -d '{"time_entry":{"description":"Meeting ALL THE clients","tags":[""],"duration":1240,"start":"2013-06-08T07:58:58.000Z","stop":"2013-06-08T08:58:58.000Z","duronly":true,"billable":false}}' \
+    -X PUT https://www.toggl.com/api/v8/time_entries/77633781
+
+# Get time entries started in a specific time range
+# - start_date & end_date in ISO 8601 format, e.g. 2013-03-10T15:42:46+02:00
+curl -u `toggl_api`:api_token \
+    -X GET "https://www.toggl.com/api/v8/time_entries?start_date=2013-05-22T15%3A42%3A46%2B02%3A00&end_date=2013-05-22T16%3A42%3A46%2B02%3A00"
+
+# Delete time entry
+curl -u `toggl_api`:api_token -X DELETE https://www.toggl.com/api/v8/time_entries/77628973
 
 #-------------#
 #--- Users ---#
