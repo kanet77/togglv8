@@ -161,6 +161,21 @@ class Toggl
 # name : The name of the tag (string, required, unique in workspace)
 # wid  : workspace ID, where the tag will be used (integer, required)
 
+  def create_tag(params)
+    checkParams(params, [:name, :wid])
+    post "tags", {tag: params}
+  end
+
+  # ex: update_tag(12345, {name: "same tame game"})
+  def update_tag(tag_id, params)
+    checkParams(params)
+    put "tags/#{tag_id}", {tag: params}
+  end
+
+  def delete_tag(tag_id)
+    delete "tags/#{tag_id}"
+  end
+
 #-------------#
 #--- Tasks ---#
 #-------------#
@@ -232,6 +247,25 @@ class Toggl
 
   def delete_time_entry(time_entry_id)
     delete "time_entries/#{time_entry_id}"
+  end
+
+  def iso8601(date)
+    return nil if date.nil?
+    if date.is_a?(Time) or date.is_a?(Date)
+      iso = date.iso8601
+    elsif date.is_a?(String)
+      iso =  DateTime.parse(date).iso8601
+    else
+      raise ArgumentError, "Can't convert #{date.class} to ISO-8601 Date/Time"
+    end
+    return Faraday::Utils.escape(iso)
+  end
+
+  def get_time_entries(start_date=nil, end_date=nil)
+    params = []
+    params.push("start_date=#{iso8601(start_date)}") if !start_date.nil?
+    params.push("end_date=#{iso8601(end_date)}") if !end_date.nil?
+    get "time_entries%s" % [params.empty? ? "" : "?#{params.join('&')}"]
   end
 
 #-------------#

@@ -69,7 +69,8 @@ curl -u `toggl_api`:api_token \
     -X POST https://www.toggl.com/api/v8/projects
 
 # Read project
-curl -u `toggl_api`:api_token -H "Content-type: application/json" -X GET https://www.toggl.com/api/v8/projects/2882160
+curl -u `toggl_api`:api_token -H "Content-type: application/json" \
+    -X GET https://www.toggl.com/api/v8/projects/2882160
 
 # Update project
 curl -u `toggl_api`:api_token \
@@ -104,6 +105,22 @@ curl -u `toggl_api`:api_token \
 #------------#
 #--- Tags ---#
 #------------#
+
+# Create tag
+curl -u `toggl_api`:api_token \
+    -H "Content-type: application/json" \
+    -d '{"tag": }' \
+    -X POST https://www.toggl.com/api/v8/tags
+
+# Update tag
+curl -v -u `toggl_api`:api_token \
+    -H "Content-type: application/json" \
+    -d '{"tag":{"name":"taggggg"}}' \
+    -X PUT https://www.toggl.com/api/v8/tags/294414
+
+# Delete tag
+curl -v -u `toggl_api`:api_token \
+    -X DELETE https://www.toggl.com/api/v8/tags/294414
 
 #-------------#
 #--- Tasks ---#
@@ -162,6 +179,9 @@ curl -u `toggl_api`:api_token \
 # - start_date & end_date in ISO 8601 format, e.g. 2013-03-10T15:42:46+02:00
 curl -u `toggl_api`:api_token \
     -X GET "https://www.toggl.com/api/v8/time_entries?start_date=2013-05-22T15%3A42%3A46%2B02%3A00&end_date=2013-05-22T16%3A42%3A46%2B02%3A00"
+
+curl -u `toggl_api`:api_token \
+    -X GET "https://www.toggl.com/api/v8/time_entries?start_date=2013-06-04T18:32:12%2B00:00"
 
 # Delete time entry
 curl -u `toggl_api`:api_token -X DELETE https://www.toggl.com/api/v8/time_entries/77628973

@@ -83,18 +83,24 @@ if __FILE__ == $0
   # ap tog.create_time_entry({description: "Workspace time entry", duration:1200, start: "2013-03-05T07:55:55.000Z", wid:282224})
   # ap tog.create_time_entry({description: "Project time entry", duration:600, start: "2013-03-06T08:44:44.000Z", pid:2931296})
   # ap tog.create_time_entry({description: "Task time entry", duration:300, start: "2013-03-07T09:33:33.000Z", tid:1922686})
-
-  ap tog.get_time_entry(77633704)
-  ap tog.get_time_entry(77633705)
-  ap tog.get_time_entry(77633706)
-
+  # ap tog.get_time_entry(77633704)
+  # ap tog.get_time_entry(77633705)
+  # ap tog.get_time_entry(77633706)
   # ap tog.update_time_entry(77633704, {description: "Workspace time entry - updated", duration:1300})
   # ap tog.update_time_entry(77633705, {description: "Project time entry - updated", duration:700})
   # ap tog.update_time_entry(77633706, {description: "Task time entry - updated", duration:400})
-
   # ap tog.delete_time_entry(77633704)
   # ap tog.delete_time_entry(77633705)
   # ap tog.delete_time_entry(77633706)
+
+  # ap tog.get_time_entries
+  # ap tog.get_time_entries("2013-06-04T18:32:12+00:00")
+  # ap tog.get_time_entries("2013-06-04T18:32:12+00:00", Time.new(2013, 6, 5, 2, 2, 2, "+02:00"))
+
+  # tag = tog.create_tag({name: "tigger tag",wid: 282224})
+  # ap tag
+  # ap tog.update_tag(tag["id"], {name: tag["name"].upcase})
+  # ap tog.delete_tag(tag["id"])
 
   # ap tog.create_task({}) # ERRORS
   # ap tog.create_task({name: "TASK 4", pid: 2883126})
