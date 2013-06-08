@@ -18,7 +18,7 @@ class Toggl
       if FileTest.exist?(toggl_api_file) then
         username = IO.read(toggl_api_file)
       else
-        raise "Expecting api_token in file ~/.toggl or parameters (api_token) or (username, password)"
+        raise SystemCallError, "Expecting api_token in file ~/.toggl or parameters (api_token) or (username, password)"
       end
     end
 
@@ -142,6 +142,16 @@ class Toggl
     checkParams(params, [:pid, :uid])
     params[:fields] = "fullname"  # for simplicity, always request fullname field
     post "project_users", {project_user: params}
+  end
+
+  def update_project_user(project_user_id, params)
+    checkParams(params)
+    params[:fields] = "fullname"  # for simplicity, always request fullname field
+    put "project_users/#{project_user_id}", {project_user: params}
+  end
+
+  def delete_project_user(project_user_id)
+    delete "project_users/#{project_user_id}"
   end
 
 #------------#
@@ -273,8 +283,12 @@ class Toggl
     puts "POST #{resource} / #{data}" if @debug
     full_res = self.conn.post(resource, JSON.generate(data))
     # ap full_res.env if @debug
-    res = JSON.parse(full_res.env[:body])
-    res['data'].nil? ? res : res['data']
+    if (200 == full_res.env[:status]) then
+      res = JSON.parse(full_res.env[:body])
+      res['data'].nil? ? res : res['data']
+    else
+      eval(full_res.env[:body])
+    end
   end
 
   def put(resource, data)
@@ -288,9 +302,8 @@ class Toggl
   def delete(resource)
     puts "DELETE #{resource}" if @debug
     full_res = self.conn.delete(resource)
-    ap full_res.env if @debug
-    status = full_res.env[:status]
-    (200 == status) ? "" : eval(full_res.env[:body])
+    # ap full_res.env if @debug
+    (200 == full_res.env[:status]) ? "" : eval(full_res.env[:body])
   end
 
 end

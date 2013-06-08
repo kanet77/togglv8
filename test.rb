@@ -45,13 +45,15 @@ end
 #--------------------#
 
 if __FILE__ == $0
-  # tog.debugOn
+  tog.debugOn
 
   # ap tog.me
   # ap tog.me(true)
   # ap tog.me('false')
 
   # print_projects(tog)
+
+  # ap tog.get_project(2882160)
 
   # ap tog.clients
   # ap tog.clients(282224)
@@ -68,14 +70,18 @@ if __FILE__ == $0
   # ap tog.get_client_projects(1101650, {active: ''})
 
   # ap tog.create_project({:name => "HUGE project", :wid => "282224"})
-  ap tog.projects(282224, {active: 'both'})
+  # ap tog.projects(282224, {active: true})
   # ap tog.projects(344974, {active: 'both'})
   # ap tog.get_project(2931253)
   # ap tog.update_project(2931253, {name: "Project %s" % Time.now.utc.iso8601 , active: false})
   # ap tog.get_project_users(2931296)
 
+  # ap tog.create_project_user({pid: 2931296, uid: 509726})
+  # ap tog.update_project_user(8310837, {manager: false, rate: 7})
+  ap tog.delete_project_user(8310837)
+
   # ap tog.create_task({}) # ERRORS
-  # ap tog.create_task({name: "TASK 1", pid: 2883126})
+  # ap tog.create_task({name: "TASK 4", pid: 2883126})
   # ap tog.create_task({name: "TASK 2", pid: 2883126})
   # ap tog.create_task({name: "TASK 3", pid: 2883126})
   # ap tog.update_task(1894758, {active: true, estimated_seconds: 45000, fields: "done_seconds,uname"})
@@ -90,5 +96,6 @@ if __FILE__ == $0
   # ap tog.delete_task(1922691)
   # ap tog.delete_task(1922690, 1922688)
 
+  # ap tog.users(282224)
 
 end
