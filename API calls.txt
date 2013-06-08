@@ -53,7 +53,6 @@ curl -u `toggl_api`:api_token -H "Content-type: application/json" -X GET https:/
 #--- Project users ---#
 #---------------------#
 
-
 # Get time entries - start_date & end_date in ISO 8601 format, e.g. 2013-03-10T15:42:46+02:00
 curl -u `toggl_api`:api_token -X GET https://www.toggl.com/api/v8/time_entries?start_date=2013-05-22T15%3A42%3A46%2B02%3A00
 
@@ -62,6 +61,36 @@ curl -v -u `toggl_api`:api_token \
     -H "Content-type: application/json" \
     -d '{"task":{"name":"A new task","pid":2882160}}' \
     -X POST https://www.toggl.com/api/v8/tasks
+
+#-------------#
+#--- Tasks ---#
+#-------------#
+
+# Create task
+curl -v -u `toggl_api`:api_token \
+    -H "Content-type: application/json" \
+    -d '{"task":{"name":"A new task","pid":2883129}}' \
+    -X POST https://www.toggl.com/api/v8/tasks
+
+# Get task details
+curl -v -u `toggl_api`:api_token \
+    -X GET https://www.toggl.com/api/v8/tasks/1894675
+
+# Update task
+curl -v -u `toggl_api`:api_token \
+    -H "Content-type: application/json" \
+    -d '{"task":{"id": 1894675, "active": true, "estimated_seconds": 7200, "fields": "done_seconds,uname"}}' \
+    -X PUT https://www.toggl.com/api/v8/tasks/1894675
+
+# Delete task
+curl -v -u `toggl_api`:api_token \
+    -X DELETE https://www.toggl.com/api/v8/tasks/1893464
+
+# Update multiple tasks
+curl -v -u `toggl_api`:api_token \
+    -H "Content-type: application/json" \
+    -d '{"task":{"active":false,"fields":"done_seconds,uname"}}' \
+    -X PUT https://www.toggl.com/api/v8/tasks/1335076912,1335076911
 
 #------------------#
 #--- Workspaces ---#
