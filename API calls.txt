@@ -109,7 +109,7 @@ curl -u `toggl_api`:api_token \
 # Create tag
 curl -u `toggl_api`:api_token \
     -H "Content-type: application/json" \
-    -d '{"tag": }' \
+    -d '{"tag":{"name":"tag"}}' \
     -X POST https://www.toggl.com/api/v8/tags
 
 # Update tag
