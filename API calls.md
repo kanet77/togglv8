@@ -1,253 +1,331 @@
-#-----------------------------------------#
-#---------- Toggl V8 API calls -----------#
-#-----------------------------------------#
-# https://github.com/toggl/toggl_api_docs #
-#-----------------------------------------#
+# Toggl V8 API calls
+See [Toggl API v8 Documentation](https://github.com/toggl/toggl_api_docs).
 
-Note: These commands use the following aliases:
-- alias toggl_api='cat ~/.toggl'
-- alias toggl_up='cat ~/.toggl_up'
+Rather than type in credentials for every request, these curl commands utilize the following aliases:
 
-Where these files are one-liners with the following contents:
-- .toggl    : <api_token>
-- .toggl_up : <email_address>:<password>
+ - `alias toggl_api='cat ~/.toggl'`
+ - `alias toggl_up='cat ~/.toggl_up'`
 
-#--------------------------------------#
-#--- Authenticate and get user data ---#
-#--------------------------------------#
+The aliases depend on the following one-liner files with the following contents:
 
-# HTTP Basic Auth with e-mail and password
-curl -u `toggl_up` -X GET https://www.toggl.com/api/v8/me
+ - `~/.toggl    : <api_token>`
+ - `~/.toggl_up : <email_address>:<password>`
 
-# HTTP Basic Auth with API token
+A user API Token is available under [My Profile](https://www.toggl.com/user/edit) on [Toggl.com](https://www.toggl.com).
+
+### Displaying JSON
+It is helpful to use a JSON parsing tool such as [Jazor](https://github.com/mconigliaro/jazor).
+
+e.g. ```curl -u `toggl_api`:api_token -X GET https://www.toggl.com/api/v8/me | jazor -c```
+
+---
+
+# Authenticate and get user data
+
+Toggl API uses Basic Auth via `curl -u <user:password>`.
+When using an API Token, the user is your API Token and the password is "api_token".
+It is also possible to use your email address and Toggl password.
+
+### HTTP Basic Auth with API token
+```
 curl -u `toggl_api`:api_token -X GET https://www.toggl.com/api/v8/me
+```
 
-# Projects, Tags, Time Entries, Workspaces, etc.
-curl -v -u `toggl_api`:api_token -H "Content-type: application/json" -X GET https://www.toggl.com/api/v8/me?with_related_data=true
-
-# Authentication with a session cookie
+### (Alternative method) HTTP Basic Auth with e-mail and password
+```
+curl -u `toggl_up` -X GET https://www.toggl.com/api/v8/me
+```
+### Authentication with a session cookie
+```
 curl -v -u `toggl_api`:api_token -X POST https://www.toggl.com/api/v8/sessions -c toggl_api_session.cookie
+```
 
-# Use session cookie
+#### Use session cookie
+```
 curl -b toggl_api_session.cookie -X GET https://www.toggl.com/api/v8/me
+```
 
-# Destroy session
+#### Destroy session
+```
 curl -b toggl_api_session.cookie -X DELETE https://www.toggl.com/api/v8/sessions
+```
 
-#-------------------------------#
-#----------- Clients -----------#
-#-------------------------------#
-# Client 1            : 1101632 #
-# Client 2            : 1101640 #
-# DELETE THIS CLIENT! : 1150638 #
-# Small client        : 1150488 #
-# Very Big Company    : 1101650 #
-#-------------------------------#
+# User data
 
-# Create client
+### Basic user data
+```
+curl -u `toggl_api`:api_token -X GET https://www.toggl.com/api/v8/me
+```
+### Additional user data: Clients, Projects, Tags, Time Entries, Workspaces, etc.
+```
+curl -u `toggl_api`:api_token -H "Content-type: application/json" -X GET https://www.toggl.com/api/v8/me?with_related_data=true
+```
+
+# Clients
+
+### Create client
+```
 curl -u `toggl_api`:api_token \
     -H "Content-type: application/json" \
     -d '{"client":{"name":"Very Big Company","wid":282224}}' \
     -X POST https://www.toggl.com/api/v8/clients
+```
 
-# Read client
+### Read client
+```
 curl -u `toggl_api`:api_token \
     -X GET https://www.toggl.com/api/v8/clients/1101632
+```
 
-# Update client
+### Update client
+```
 curl -u `toggl_api`:api_token \
     -H "Content-type: application/json" \
     -d '{"client":{"notes":"this client must go!"}}' \
     -X PUT https://www.toggl.com/api/v8/clients/1150638
+```
 
-# Delete client
+### Delete client
+```
 curl -v -u `toggl_api`:api_token \
     -X DELETE https://www.toggl.com/api/v8/clients/1150758
+```
 
-# Get clients visible to user
+### Get clients visible to user
+```
 curl -u `toggl_api`:api_token \
     -X GET https://www.toggl.com/api/v8/clients
+```
 
-# Get client projects
+### Get client projects
+```
 curl -u `toggl_api`:api_token \
     -X GET https://www.toggl.com/api/v8/clients/1150488/projects
+```
 
-#----------------#
-#--- Projects ---#
-#----------------#
+# Projects
 
-# Create project
+### Create project
+```
 curl -u `toggl_api`:api_token \
     -H "Content-type: application/json" \
     -d '{"project":{"name":"TEST project","wid":282224,"is_private":true}}' \
     -X POST https://www.toggl.com/api/v8/projects
+```
 
-# Read project
+### Read project
+```
 curl -u `toggl_api`:api_token -H "Content-type: application/json" \
     -X GET https://www.toggl.com/api/v8/projects/2882160
+```
 
-# Update project
+### Update project
+```
 curl -u `toggl_api`:api_token \
     -H "Content-type: application/json" \
     -d '{"project":{"name":"Changed the name","is_private":false,"template":true}}' \
     -X PUT https://www.toggl.com/api/v8/projects/2931253
+```
 
-# Get project users
+### Get project users
+```
 curl -u `toggl_api`:api_token \
     -X GET https://www.toggl.com/api/v8/projects/2883126/project_users
+```
 
-#---------------------#
-#--- Project users ---#
-#---------------------#
+# Project users
 
-# Create project user
+### Create project user
+```
 curl -u `toggl_api`:api_token \
     -H "Content-type: application/json" \
     -d '{"project_user":{"pid":2931296,"uid":509726,"rate":30.0,"manager":true}}' \
     -X POST https://www.toggl.com/api/v8/project_users
+```
 
-# Update project user
+### Update project user
+```
 curl -u `toggl_api`:api_token \
     -H "Content-type: application/json" \
     -d '{"project_user":{"manager":false,"rate":15,"fields":"fullname"}}' \
     -X PUT https://www.toggl.com/api/v8/project_users/8310314
+```
 
-# Delete project user
+### Delete project user
+```
 curl -u `toggl_api`:api_token \
     -X DELETE https://www.toggl.com/api/v8/project_users/8310314
+```
 
-#------------#
-#--- Tags ---#
-#------------#
+# Tags
 
-# Create tag
+### Create tag
+```
 curl -u `toggl_api`:api_token \
     -H "Content-type: application/json" \
     -d '{"tag":{"name":"tag"}}' \
     -X POST https://www.toggl.com/api/v8/tags
+```
 
-# Update tag
+### Update tag
+```
 curl -v -u `toggl_api`:api_token \
     -H "Content-type: application/json" \
     -d '{"tag":{"name":"taggggg"}}' \
     -X PUT https://www.toggl.com/api/v8/tags/294414
+```
 
-# Delete tag
+### Delete tag
+```
 curl -v -u `toggl_api`:api_token \
     -X DELETE https://www.toggl.com/api/v8/tags/294414
+```
 
-#-------------#
-#--- Tasks ---#
-#-------------#
+# Tasks
 
-# Create task
+### Create task
+```
 curl -u `toggl_api`:api_token \
     -H "Content-type: application/json" \
     -d '{"task":{"name":"A new task","pid":2883129}}' \
     -X POST https://www.toggl.com/api/v8/tasks
+```
 
-# Get task details
+### Get task details
+```
 curl -u `toggl_api`:api_token \
     -X GET https://www.toggl.com/api/v8/tasks/1894675
+```
 
-# Update task
+### Update task
+```
 curl -u `toggl_api`:api_token \
     -H "Content-type: application/json" \
     -d '{"task":{"id": 1894675, "active": true, "estimated_seconds": 7200, "fields": "done_seconds,uname"}}' \
     -X PUT https://www.toggl.com/api/v8/tasks/1894675
+```
 
-# Delete task
+### Delete task
+```
 curl -u `toggl_api`:api_token \
     -X DELETE https://www.toggl.com/api/v8/tasks/1893464
+```
 
-# Update multiple tasks
+### Update multiple tasks
+```
 curl -u `toggl_api`:api_token \
     -H "Content-type: application/json" \
     -d '{"task":{"active":false,"fields":"done_seconds,uname"}}' \
     -X PUT https://www.toggl.com/api/v8/tasks/1894758,1894751
+```
 
-# Delete multiple Tasks
+### Delete multiple Tasks
+```
 curl -u `toggl_api`:api_token \
     -X DELETE https://www.toggl.com/api/v8/tasks/1922656,1922683,1922684
+```
 
-#--------------------#
-#--- Time entries ---#
-#--------------------#
+# Time entries
 
-# Create time entry
+### Create time entry
+```
 curl -v -u `toggl_api`:api_token \
     -H "Content-type: application/json" \
     -d '{"time_entry":{"description":"Meeting with possible clients","tags":["billed"],"duration":1200,"start":"2013-03-05T07:58:58.000Z","pid":2931296}}' \
     -X POST https://www.toggl.com/api/v8/time_entries
+```
 
-# Get time entry details
+### Get time entry details
+```
 curl -u `toggl_api`:api_token -X GET https://www.toggl.com/api/v8/time_entries/77628973
+```
 
-# Update time entry
+### Update time entry
+```
 curl -u `toggl_api`:api_token \
     -H "Content-type: application/json" \
     -d '{"time_entry":{"description":"Meeting ALL THE clients","tags":[""],"duration":1240,"start":"2013-06-08T07:58:58.000Z","stop":"2013-06-08T08:58:58.000Z","duronly":true,"billable":false}}' \
     -X PUT https://www.toggl.com/api/v8/time_entries/77633781
+```
 
-# Get time entries started in a specific time range
-# - start_date & end_date in ISO 8601 format, e.g. 2013-03-10T15:42:46+02:00
+### Get time entries started in a specific time range
+**Notes:**
+
+- `start_date` & `end_date` in ISO 8601 format, e.g. 2013-03-10T15:42:46+02:00
+- use encoded value %2B for '+' to avoid JSON parsing error (%3A for ':' is not strictly necessary)
+
+```
 curl -u `toggl_api`:api_token \
     -X GET "https://www.toggl.com/api/v8/time_entries?start_date=2013-05-22T15%3A42%3A46%2B02%3A00&end_date=2013-05-22T16%3A42%3A46%2B02%3A00"
+```
 
+```
 curl -u `toggl_api`:api_token \
     -X GET "https://www.toggl.com/api/v8/time_entries?start_date=2013-06-04T18:32:12%2B00:00"
+```
 
-# Delete time entry
+### Delete time entry
+```
 curl -u `toggl_api`:api_token -X DELETE https://www.toggl.com/api/v8/time_entries/77628973
+```
 
-#-------------#
-#--- Users ---#
-#-------------#
+# Users
 
-# Sign up new user
+### Sign up new user
+**Notes:** This is not implemented in [togglv8](/) wrapper because it  will increase the cost of your Toggl account. See [Toggl Pricing and Payments](http://support.toggl.com/pricing-and-payments/) for details.
+```
 curl -H "Content-type: application/json" \
-    -d '{"user":{"email":"77-toggl_test@sneakemail.com","password":"77bananagement"}}' \
+    -d '{"user":{"email":"<email_address>","password":"<password>"}}' \
     -X POST https://www.toggl.com/api/v8/signups
+```
 
-#---------------------------#
-#-------- Workspaces -------#
-#---------------------------#
-# tk              : 282224  #
-# HomeAway        : 344974  #
-# 77-toggl        : 388567  #
-# Free workspace? : 388576  #
-#---------------------------#
+# Workspaces
 
-# Get user workspaces
+### Get user workspaces
+```
 curl -u `toggl_api`:api_token -X GET https://www.toggl.com/api/v8/workspaces
+```
   or
+```
 curl -b toggl_api_session -X GET https://www.toggl.com/api/v8/workspaces
+```
 
-# Get workspace users
+### Get workspace users
+```
 curl -u `toggl_api`:api_token -X GET https://www.toggl.com/api/v8/workspaces/282224/users
+```
 
-# Get workspace clients
+### Get workspace clients
+```
 curl -u `toggl_api`:api_token -X GET https://www.toggl.com/api/v8/workspaces/282224/clients
+```
 
-# Get workspace projects
+### Get workspace projects
+```
 curl -u `toggl_api`:api_token -X GET https://www.toggl.com/api/v8/workspaces/282224/projects
+```
 
-# Get workspace tasks
+### Get workspace tasks
+```
 curl -u `toggl_api`:api_token -X GET https://www.toggl.com/api/v8/workspaces/282224/tasks
+```
+```
 curl -u `toggl_api`:api_token -X GET https://www.toggl.com/api/v8/workspaces/282224/tasks?active=true
+```
+```
 curl -u `toggl_api`:api_token -X GET https://www.toggl.com/api/v8/workspaces/282224/tasks?active=false
+```
+```
 curl -u `toggl_api`:api_token -X GET https://www.toggl.com/api/v8/workspaces/282224/tasks?active=both
+```
 
-#---------------------#
-#-- Workspace Users --#
-#---------------------#
-# tk       : 360643   #
-# 77-toggl : 509726   #
-#---------------------#
+# Workspace Users
 
-# Update workspace user (can only update admin flag)
-# -- FAILS : "Cannot access workspace users"
+### Update workspace user (can only update admin flag)
+**Note:** Call fails with error message "Cannot access workspace users"
+```
 curl -u `toggl_api`:api_token \
     -H "Content-type: application/json" \
     -d '{"workspace_user":{"admin":true}}' \
     -X PUT https://www.toggl.com/api/v8/workspace_users/360643
+```
