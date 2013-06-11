@@ -12,7 +12,7 @@ class Toggl
   attr_accessor :conn, :debug
 
   def initialize(username=nil, password='api_token', debug=nil)
-    self.debugOn(debug) if !debug.nil?
+    self.debug_on(debug) if !debug.nil?
     if (password.to_s == 'api_token' && username.to_s == '')
       toggl_api_file = ENV['HOME']+'/.toggl'
       if FileTest.exist?(toggl_api_file) then
@@ -35,7 +35,7 @@ class Toggl
     end
   end
 
-  def debugOn(debug=true)
+  def debug_on(debug=true)
     puts "debugging is %s" % [debug ? "ON" : "OFF"]
     @debug = debug
   end
@@ -55,6 +55,7 @@ class Toggl
 #----------#
 
   def me(all=nil)
+    # TODO: Reconcile this with get_client_projects
     res = get "me%s" % [all.nil? ? "" : "?with_related_data=#{all}"]
   end
 

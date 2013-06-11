@@ -16,24 +16,35 @@ def print_projects(tog)
     wid = w['id']
     @wname=w['name']
 
-    tp = Hash.new
+    tp = Hash.new {|h,k| h[k]=[]}
+
     ts = tog.tasks(wid)
     ts.each do |t|
-      tp[t['pid']] = t['name']  # TODO: handle collisions (>1 task / project)
+      tp[t['pid']] << t['name']
+      # puts t
     end
 
     ps = tog.projects(wid)
     ps.each do |p|
       @pname = p['name'] + " [" + p['id'].to_s + "] "
-      @tname = tp[p['id']] ? ' (' + tp[p['id']] + ')' : ''
-      puts "#@wname - #@pname#@tname"
+      @tname = tp[p['id']] ? ' (' + tp[p['id']].to_s + ')' : ''
+      puts "|Project| #@wname - #@pname#@tname"
+      # puts p
     end
 
-    us = tog.users(wid)
-    us.each do |u|
-      @uname = u['fullname'] + "/" + u['email']
-      puts "#@wname : #@uname"
+    cs = tog.clients(wid)
+    cs.each do |c|
+      @cname = c['name'] + " [" + c['id'].to_s + "] "
+      puts "|Client| #@wname - #@cname"
+      # puts c
     end
+
+    # us = tog.users(wid)
+    # us.each do |u|
+    #   @uname = u['fullname'] + "/" + u['email']
+    #   puts "|User| #@wname : #@uname"
+    #   # puts u
+    # end
   end
 end
 
@@ -45,14 +56,13 @@ end
 #--------------------#
 
 if __FILE__ == $0
-  tog.debugOn
+  # tog.debug_on
+
+  # print_projects(tog)
 
   # ap tog.me
   # ap tog.me(true)
   # ap tog.me('false')
-
-  # print_projects(tog)
-
   # ap tog.get_project(2882160)
 
   # ap tog.clients
