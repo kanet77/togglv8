@@ -4,6 +4,13 @@
 # https://github.com/toggl/toggl_api_docs #
 #-----------------------------------------#
 
+Note: These commands use the following aliases:
+- alias toggl_api='cat ~/.toggl'
+- alias toggl_up='cat ~/.toggl_up'
+
+Where these files are one-liners with the following contents:
+- .toggl    : <api_token>
+- .toggl_up : <email_address>:<password>
 
 #--------------------------------------#
 #--- Authenticate and get user data ---#
