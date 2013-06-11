@@ -16,8 +16,47 @@ A user API Token is available under [My Profile](https://www.toggl.com/user/edit
 ### Displaying JSON
 It is helpful to use a JSON parsing tool such as [Jazor](https://github.com/mconigliaro/jazor).
 
-e.g. ```curl -u `toggl_api`:api_token -X GET https://www.toggl.com/api/v8/me | jazor -c```
+For example, ```curl -u `toggl_api`:api_token -X GET https://www.toggl.com/api/v8/me | jazor -c``` outputs
 
+```json
+{
+  since: 1370938972,
+  data: {
+    id: {<user_id>},
+    api_token: "<api_token>",
+    default_wid: <wid>,
+    email: "<email_address>",
+    fullname: "<fullname>",
+    jquery_timeofday_format: H:i,
+    jquery_date_format: "m/d/Y",
+    timeofday_format: H:mm,
+    date_format: "MM/DD/YYYY",
+    store_start_and_stop_time: true,
+    beginning_of_week: 1,
+    language: "en_US",
+    image_url: https://www.toggl.com/system/avatars/<image.jpg>,
+    sidebar_piechart: false,
+    at: "2013-06-11T07:00:44+00:00",
+    created_at: "2012-08-01T12:41:56+00:00",
+    retention: 9,
+    record_timeline: true,
+    render_timeline: true,
+    timeline_enabled: true,
+    timeline_experiment: true,
+    manual_mode: true,
+    new_blog_post: {
+    },
+    invitation: {
+    }
+  }
+}
+```
+
+rather than
+
+```
+{"since":1370938972,"data":{"id":<user_id>},"api_token":"<api_token>","default_wid":<wid>,"email":"<email_address>","fullname":"<fullname>","jquery_timeofday_format":"H:i","jquery_date_format":"m/d/Y","timeofday_format":"H:mm","date_format":"MM/DD/YYYY","store_start_and_stop_time":true,"beginning_of_week":1,"language":"en_US","image_url":"https://www.toggl.com/system/avatars/<image.jpg>","sidebar_piechart":false,"at":"2013-06-11T07:00:44+00:00","created_at":"2012-08-01T12:41:56+00:00","retention":9,"record_timeline":true,"render_timeline":true,"timeline_enabled":true,"timeline_experiment":true,"manual_mode":true,"new_blog_post":{},"invitation":{}}}
+```
 ---
 
 # Authenticate and get user data
@@ -36,6 +75,7 @@ curl -u `toggl_api`:api_token -X GET https://www.toggl.com/api/v8/me
 curl -u `toggl_up` -X GET https://www.toggl.com/api/v8/me
 ```
 ### Authentication with a session cookie
+#### Create and save session cookie
 ```
 curl -v -u `toggl_api`:api_token -X POST https://www.toggl.com/api/v8/sessions -c toggl_api_session.cookie
 ```
@@ -251,8 +291,8 @@ curl -u `toggl_api`:api_token \
 ### Get time entries started in a specific time range
 **Notes:**
 
-- `start_date` & `end_date` in ISO 8601 format, e.g. 2013-03-10T15:42:46+02:00
-- use encoded value %2B for '+' to avoid JSON parsing error (%3A for ':' is not strictly necessary)
+- `start_date` and `end_date` are in ISO 8601 format, (e.g. "2013-03-10T15:42:46+02:00")
+- It is necessary to use the encoded value %2B for '+' in order to avoid JSON parsing error. (Using %3A for ':' is not strictly necessary.)
 
 ```
 curl -u `toggl_api`:api_token \
