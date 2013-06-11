@@ -65,6 +65,13 @@ if __FILE__ == $0
   # ap tog.me('false')
   # ap tog.get_project(2882160)
 
+  user = tog.me
+  ap tog.my_clients(user)
+  ap tog.my_projects(user)
+  ap tog.my_tags(user)
+  ap tog.my_time_entries(user)
+  ap tog.my_workspaces(user)
+
   # ap tog.clients
   # ap tog.clients(282224)
   # ap tog.clients(344974)

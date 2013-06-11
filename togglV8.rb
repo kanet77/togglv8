@@ -2,11 +2,11 @@
 # encoding: utf-8
 
 require 'rubygems'
-require 'awesome_print'
 require 'logger'
-
 require 'faraday'
 require 'json'
+
+# require 'awesome_print' # for debug output
 
 class Toggl
   attr_accessor :conn, :debug
@@ -59,6 +59,26 @@ class Toggl
     res = get "me%s" % [all.nil? ? "" : "?with_related_data=#{all}"]
   end
 
+  def my_clients(user)
+    user['projects']
+  end
+
+  def my_projects(user)
+    user['projects']
+  end
+
+  def my_tags(user)
+    user['tags']
+  end
+
+  def my_time_entries(user)
+    user['time_entries']
+  end
+
+  def my_workspaces(user)
+    user['workspaces']
+  end
+
 #---------------#
 #--- Clients ---#
 #---------------#
@@ -107,6 +127,8 @@ class Toggl
 # template_id : id of the template project used on current project's creation
 # billable    : whether the project is billable or not (boolean, default true, available only for pro workspaces)
 # at          : timestamp that is sent in the response for PUT, indicates the time task was last updated
+# -- Undocumented --
+# color       : number (in the range 0-23?)
 
   def create_project(params)
     checkParams(params, [:name, :wid])
@@ -136,7 +158,7 @@ class Toggl
 # manager  : admin rights for this project (boolean, default false)
 # rate     : hourly rate for the project user (float, not-required, only for pro workspaces) in the currency of the project's client or in workspace default currency.
 # at       : timestamp that is sent in the response, indicates when the project user was last updated
-# --Additional fields--
+# -- Additional fields --
 # fullname : full name of the user, who is added to the project
 
   def create_project_user(params)
@@ -188,7 +210,7 @@ class Toggl
 # estimated_seconds : estimated duration of task in seconds (integer, not required)
 # active            : whether the task is done or not (boolean, by default true)
 # at                : timestamp that is sent in the response for PUT, indicates the time task was last updated
-# --Additional fields--
+# -- Additional fields --
 # done_seconds      : duration (in seconds) of all the time entries registered for this task
 # uname             : full name of the person to whom the task is assigned to
 
