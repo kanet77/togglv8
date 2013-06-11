@@ -9,6 +9,5 @@
 - Thanks to [Koen Van der Auwera](https://github.com/atog) for the [Ruby Wrapper for Toggl API v6](https://github.com/atog/toggl)
 - Thanks to the Toggl team for exposing the API.
 
-## Copyright
-Copyright © 2013 Tom Kane. See LICENSE for details.
-
+## License
+Copyright (c) 2013 Tom Kane. Released under the [MIT License](http://opensource.org/licenses/mit-license.php). See [LICENSE](/LICENSE) for details.
