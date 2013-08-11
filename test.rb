@@ -2,6 +2,7 @@
 # encoding: utf-8
 
 require_relative 'togglV8'
+require 'awesome_print'
 require 'time'
 
 tog = Toggl.new
@@ -64,7 +65,7 @@ if __FILE__ == $0
   # ap tog.me('false')
   # ap tog.get_project(2882160)
 
-  user = tog.me
+  user = tog.me(true)
   ap tog.my_clients(user)
   ap tog.my_projects(user)
   ap tog.my_tags(user)
@@ -96,9 +97,9 @@ if __FILE__ == $0
   # ap tog.update_project_user(8310837, {manager: false, rate: 7})
   # ap tog.delete_project_user(8310837)
 
-  # ap tog.create_time_entry({description: "Workspace time entry", duration:1200, start: "2013-03-05T07:55:55.000Z", wid:282224})
-  # ap tog.create_time_entry({description: "Project time entry", duration:600, start: "2013-03-06T08:44:44.000Z", pid:2931296})
-  # ap tog.create_time_entry({description: "Task time entry", duration:300, start: "2013-03-07T09:33:33.000Z", tid:1922686})
+  # ap tog.create_time_entry({description: "Workspace time entry", duration:1200, start: "2013-03-05T07:55:55.000Z", wid:282224, created_with:"testing https://github.com/kanet77/togglv8"})
+  # ap tog.create_time_entry({description: "Project time entry", duration:600, start: "2013-03-06T08:44:44.000Z", pid:2931296, created_with:"testing https://github.com/kanet77/togglv8"})
+  # ap tog.create_time_entry({description: "Task time entry", duration:300, start: "2013-03-07T09:33:33.000Z", tid:1922686, created_with:"testing https://github.com/kanet77/togglv8"})
   # ap tog.get_time_entry(77633704)
   # ap tog.get_time_entry(77633705)
   # ap tog.get_time_entry(77633706)

@@ -20,6 +20,6 @@ PLATFORMS
 DEPENDENCIES
   awesome_print (~> 1.1.0)
   faraday (~> 0.8.7)
-  jazor
+  jazor (~> 0.1.8)
   json (~> 1.8.0)
   logger (~> 1.2.8)
