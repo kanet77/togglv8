@@ -96,17 +96,6 @@ curl -b toggl_api_session.cookie -X GET https://www.toggl.com/api/v8/me
 curl -b toggl_api_session.cookie -X DELETE https://www.toggl.com/api/v8/sessions
 ```
 
-# User data
-
-### Basic user data
-```
-curl -u $(toggl_api):api_token -X GET https://www.toggl.com/api/v8/me
-```
-### Additional user data: Clients, Projects, Tags, Time Entries, Workspaces, etc.
-```
-curl -u $(toggl_api):api_token -H "Content-type: application/json" -X GET https://www.toggl.com/api/v8/me?with_related_data=true
-```
-
 # Clients
 
 ### Create client
@@ -202,6 +191,14 @@ curl -u $(toggl_api):api_token \
 curl -u $(toggl_api):api_token \
     -X DELETE https://www.toggl.com/api/v8/project_users/8310314
 ```
+### Add multiple users to a project
+Not Supported
+
+### Update multiple project users
+Not Supported
+
+### Delete multiple project users
+Not Supported
 
 # Tags
 
@@ -286,12 +283,23 @@ curl -v -u $(toggl_api):api_token \
 curl -u $(toggl_api):api_token -X GET https://www.toggl.com/api/v8/time_entries/77628973
 ```
 
+### Start a time entry
+Not Supported
+
+### Stop a time entry
+Not Supported
+
 ### Update time entry
 ```
 curl -u $(toggl_api):api_token \
     -H "Content-type: application/json" \
     -d '{"time_entry":{"description":"Meeting ALL THE clients","tags":[""],"duration":1240,"start":"2013-06-08T07:58:58.000Z","stop":"2013-06-08T08:58:58.000Z","duronly":true,"billable":false}}' \
     -X PUT https://www.toggl.com/api/v8/time_entries/77633781
+```
+
+### Delete time entry
+```
+curl -u $(toggl_api):api_token -X DELETE https://www.toggl.com/api/v8/time_entries/77628973
 ```
 
 ### Get time entries started in a specific time range
@@ -310,12 +318,17 @@ curl -u $(toggl_api):api_token \
     -X GET "https://www.toggl.com/api/v8/time_entries?start_date=2013-06-04T18:32:12%2B00:00"
 ```
 
-### Delete time entry
+# Users
+
+### Get current user data
 ```
-curl -u $(toggl_api):api_token -X DELETE https://www.toggl.com/api/v8/time_entries/77628973
+curl -u $(toggl_api):api_token -X GET https://www.toggl.com/api/v8/me
 ```
 
-# Users
+### Get current user with related data
+```
+curl -u $(toggl_api):api_token -H "Content-type: application/json" -X GET https://www.toggl.com/api/v8/me?with_related_data=true
+```
 
 ### Sign up new user
 **Notes:** This is not implemented in [togglv8](/) wrapper because it  will increase the cost of your Toggl account. See [Toggl Pricing and Payments](http://support.toggl.com/pricing-and-payments/) for details.
@@ -367,6 +380,9 @@ curl -u $(toggl_api):api_token -X GET https://www.toggl.com/api/v8/workspaces/28
 
 # Workspace Users
 
+### Invite users to workspace
+Not Supported
+
 ### Update workspace user (can only update admin flag)
 **Note:** Call fails with error message "Cannot access workspace users"
 ```
@@ -375,3 +391,9 @@ curl -u $(toggl_api):api_token \
     -d '{"workspace_user":{"admin":true}}' \
     -X PUT https://www.toggl.com/api/v8/workspace_users/282224
 ```
+
+### Delete workspace user
+Not Supported
+
+### Get workspace users for a workspace
+Not Supported
