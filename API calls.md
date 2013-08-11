@@ -10,7 +10,7 @@ As of 2013-06-14, the calls listed here cover almost the entire [Toggl API](http
 
 Access to Toggl API requires an API token. The user API Token for an account is available under [My Profile](https://www.toggl.com/user/edit) after logging into [Toggl.com](https://www.toggl.com).
 
-In the curl commands listed below, `$(toggl_api)` must be replaced with the Toggl API token. One way to do this (rather than copying and pasting the API token every time) is to store the API token in a file and define an alias that prints out the contents of that file. (`$(toggl_api)` calls the )
+In the curl commands listed below, `$(toggl_api)` must be replaced with the Toggl API token. One way to do this (rather than copying and pasting the API token every time) is to store the API token in a file and define an alias that prints out the contents of that file. (`$(toggl_api)` calls the alias)
 
  - file `~/.toggl` contains `<api_token>`
  - `alias toggl_api='cat ~/.toggl'`

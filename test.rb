@@ -8,7 +8,6 @@ tog = Toggl.new
 
 # tog = Toggl.new(toggl_api_key)
 # tog = Toggl.new(username, password)
-# tog = Toggl.new('4p2hx5sfvb@snkmail.com') # ERROR
 
 def print_projects(tog)
   ws = tog.workspaces
