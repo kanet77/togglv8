@@ -25,7 +25,7 @@ It is helpful to use a JSON parsing tool such as [Jazor](https://github.com/mcon
 
 For example, ```curl -u $(toggl_api):api_token -X GET https://www.toggl.com/api/v8/me | jazor -c``` outputs
 
-```json
+```
 {
   since: 1370938972,
   data: {
