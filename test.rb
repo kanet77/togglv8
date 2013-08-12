@@ -56,7 +56,7 @@ end
 #--------------------#
 
 if __FILE__ == $0
-  # tog.debug_on
+  tog.debug_on
 
   # print_projects(tog)
 
@@ -100,6 +100,10 @@ if __FILE__ == $0
   # ap tog.create_time_entry({description: "Workspace time entry", duration:1200, start: "2013-03-05T07:55:55.000Z", wid:282224, created_with:"testing https://github.com/kanet77/togglv8"})
   # ap tog.create_time_entry({description: "Project time entry", duration:600, start: "2013-03-06T08:44:44.000Z", pid:2931296, created_with:"testing https://github.com/kanet77/togglv8"})
   # ap tog.create_time_entry({description: "Task time entry", duration:300, start: "2013-03-07T09:33:33.000Z", tid:1922686, created_with:"testing https://github.com/kanet77/togglv8"})
+
+  # ap tog.start_time_entry({wid:282224})
+  # ap tog.stop_time_entry(86238653)
+
   # ap tog.get_time_entry(77633704)
   # ap tog.get_time_entry(77633705)
   # ap tog.get_time_entry(77633706)
@@ -109,6 +113,7 @@ if __FILE__ == $0
   # ap tog.delete_time_entry(77633704)
   # ap tog.delete_time_entry(77633705)
   # ap tog.delete_time_entry(77633706)
+  # ap tog.delete_time_entry(86238653)
 
   # ap tog.get_time_entries
   # ap tog.get_time_entries("2013-06-04T18:32:12+00:00")
@@ -130,8 +135,8 @@ if __FILE__ == $0
   # ap tog.tasks(282224, {active: false})
   # ap tog.tasks(282224, {active: 'both'})
   # ap tog.tasks(344974, {active: 'both'})
-  # ap tog.get_task(1894738)
-  # ap tog.delete_task(1894728)
+  # ap tog.get_task(2882160)
+  ap tog.delete_task(1893146)
   # ap tog.delete_task(1922691)
   # ap tog.delete_task(1922690, 1922688)
 

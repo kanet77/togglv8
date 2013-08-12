@@ -12,14 +12,11 @@ if __FILE__ == $0
     puts "#{t['wid']} #{t['description']} #{t['id']}"
   end
 
-  # tasks = []
-  # ts = tog.tasks(282224)
-  # ts.each do |t|
-  #   # tp[t['pid']] << t['name']
-  #   # tasks.push(t["id"])
-  #   puts t
-  # end
-  # # ap tasks
-  # # tog.delete_task(1893146)
-  # ap tog.get_task(1893146)
+  tp = {}
+  ts = tog.tasks(282224)
+  ts.each do |t|
+    tp[t['id']] = t['name']
+    # puts t
+  end
+  ap tp
 end

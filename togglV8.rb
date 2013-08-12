@@ -6,7 +6,7 @@ require 'logger'
 require 'faraday'
 require 'json'
 
-# require 'awesome_print' # for debug output
+require 'awesome_print' # for debug output
 
 class Toggl
   attr_accessor :conn, :debug
@@ -100,7 +100,6 @@ class Toggl
   end
 
   def update_client(client_id, params)
-    checkParams(params)
     put "clients/#{client_id}", {client: params}
   end
 
@@ -140,7 +139,6 @@ class Toggl
   end
 
   def update_project(project_id, params)
-    checkParams(params)
     put "projects/#{project_id}", {project: params}
   end
 
@@ -168,7 +166,6 @@ class Toggl
   end
 
   def update_project_user(project_user_id, params)
-    checkParams(params)
     params[:fields] = "fullname"  # for simplicity, always request fullname field
     put "project_users/#{project_user_id}", {project_user: params}
   end
@@ -191,7 +188,6 @@ class Toggl
 
   # ex: update_tag(12345, {name: "same tame game"})
   def update_tag(tag_id, params)
-    checkParams(params)
     put "tags/#{tag_id}", {tag: params}
   end
 
@@ -225,7 +221,6 @@ class Toggl
 
   # ex: update_task(1894675, {active: true, estimated_seconds: 4500, fields: "done_seconds,uname"})
   def update_task(*task_id, params)
-    checkParams(params)
     put "tasks/#{task_id.join(',')}", {task: params}
   end
 
@@ -258,12 +253,22 @@ class Toggl
     post "time_entries", {time_entry: params}
   end
 
+  def start_time_entry(params)
+    if !params.has_key?(:wid) and !params.has_key?(:pid) and !params.has_key?(:tid) then
+      raise ArgumentError, "one of params['wid'], params['pid'], params['tid'] is required"
+    end
+    post "time_entries/start", {time_entry: params}
+  end
+
+  def stop_time_entry(time_entry_id)
+    put "time_entries/#{time_entry_id}/stop", {}
+  end
+
   def get_time_entry(time_entry_id)
     get "time_entries/#{time_entry_id}"
   end
 
   def update_time_entry(time_entry_id, params)
-    checkParams(params)
     put "time_entries/#{time_entry_id}", {time_entry: params}
   end
 
@@ -360,7 +365,7 @@ class Toggl
   def post(resource, data)
     puts "POST #{resource} / #{data}" if @debug
     full_res = self.conn.post(resource, JSON.generate(data))
-    # ap full_res.env if @debug
+    ap full_res.env if @debug
     if (200 == full_res.env[:status]) then
       res = JSON.parse(full_res.env[:body])
       res['data'].nil? ? res : res['data']
