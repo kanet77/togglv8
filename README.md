@@ -7,7 +7,7 @@
 
 # Usage
 - See [test.rb](test.rb) and [atest.rb](atest.rb) for examples of calling the Toggl API with Ruby.
-- See [API calls.md](API calls.md) for examples of calling the Toggl API with curl on the command line.
+- See [API calls.md](API calls.md) for examples of calling the Toggl API with resty (like curl) on the command line.
 
 # Acknowledgements
 - Thanks to [Koen Van der Auwera](https://github.com/atog) for the [Ruby Wrapper for Toggl API v6](https://github.com/atog/toggl)
