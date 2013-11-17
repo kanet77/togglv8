@@ -1,3 +1,7 @@
 faraday.log
 toggl_entities.txt
+.toggl
 me.json
+Vagrantfile
+.vagrant
+testrep.rb
