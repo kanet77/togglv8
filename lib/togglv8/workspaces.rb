@@ -6,7 +6,8 @@ module Toggl
     #------------------#
 
     # name    : (string, required)
-    # premium : If it's a pro workspace or not. Shows if someone is paying for the workspace or not (boolean, not required)
+    # premium : If it's a pro workspace or not.
+    #           Shows if someone is paying for the workspace or not (boolean, not required)
     # at      : timestamp that is sent in the response, indicates the time item was last updated
 
     def workspaces
