@@ -97,3 +97,6 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 end
+
+TEST_API_TOKEN = '4880adbe1bee9a241fa08070d33bd49f'
+PRO_ACCOUNT    = false

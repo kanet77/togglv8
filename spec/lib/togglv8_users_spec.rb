@@ -1,13 +1,13 @@
 require_relative '../../lib/togglv8'
 require 'oj'
 
-describe Toggl do
+describe "Users" do
   before :all do
-    @toggl = Toggl::V8.new('4880adbe1bee9a241fa08070d33bd49f')
+    @toggl = Toggl::V8.new(TEST_API_TOKEN)
     @user = @toggl.me(all=true)
   end
 
-  it 'can return /me' do
+  it 'returns /me' do
     expect(@user).to_not be_nil
     expect(@user['id']).to eq 1820939
     expect(@user['fullname']).to eq 'togglv8'
@@ -18,27 +18,27 @@ describe Toggl do
     expect(@user['workspaces'].first['name']).to eq "togglv8's workspace"
   end
 
-  it 'can return /my_clients' do
+  it 'returns /my_clients' do
     my_clients = @toggl.my_clients(@user)
     expect(my_clients).to be nil
   end
 
-  it 'can return /my_projects' do
+  it 'returns /my_projects' do
     my_projects = @toggl.my_projects(@user)
     expect(my_projects).to be nil
   end
 
-  it 'can return /my_tags' do
+  it 'returns /my_tags' do
     my_tags = @toggl.my_tags(@user)
     expect(my_tags).to be nil
   end
 
-  it 'can return /my_time_entries' do
+  it 'returns /my_time_entries' do
     my_time_entries = @toggl.my_time_entries(@user)
     expect(my_time_entries).to be nil
   end
 
-  it 'can return /my_workspaces' do
+  it 'returns /my_workspaces' do
     my_workspaces = @toggl.my_workspaces(@user)
     expect(my_workspaces.length).to eq 1
   end
