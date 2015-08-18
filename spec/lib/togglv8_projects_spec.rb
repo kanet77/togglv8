@@ -8,7 +8,7 @@ describe "Projects" do
     @workspace_id = @workspaces.first['id']
   end
 
-  it 'receives {} if there is no workspace project' do
+  it 'receives {} if there are no workspace projects' do
     project = @toggl.projects(@workspace_id)
     expect(project).to be {}
   end
@@ -70,5 +70,37 @@ describe "Projects" do
     end
   end
 
+  context 'project users' do
+    xit 'gets {} if there are no project users' do
+    end
 
+    xit 'gets project users' do
+    end
+  end
+
+  context 'project tasks' do
+    xit 'gets {} if there are no project tasks' do
+    end
+
+    xit 'gets project tasks' do
+    end
+  end
+
+  it 'deletes multiple projects' do
+    # start with no projects
+    expect(@toggl.projects(@workspace_id)).to be {}
+
+    p1 = @toggl.create_project({ name: 'p1', wid: @workspace_id })
+    p2 = @toggl.create_project({ name: 'p2', wid: @workspace_id })
+    p3 = @toggl.create_project({ name: 'p3', wid: @workspace_id })
+
+    # see 3 new projects
+    expect(@toggl.projects(@workspace_id).length).to eq 3
+
+    p_ids = [p1, p2, p3].map { |p| p['id']}
+    @toggl.delete_projects(p_ids)
+
+    # end with no projects
+    expect(@toggl.projects(@workspace_id)).to be {}
+  end
 end
