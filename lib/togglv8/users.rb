@@ -18,13 +18,13 @@ module Toggl
 
     def me(all=nil)
       # TODO: Reconcile this with get_client_projects
-      @user = get "me%s" % [all.nil? ? "" : "?with_related_data=#{all}"]
-      return @user
+      # NOTE: response['since'] is discarded
+      get "me%s" % [all.nil? ? "" : "?with_related_data=#{all}"]
     end
 
     def my_clients(user=nil)
       user = me(all=true) if user.nil?
-      user['projects']
+      user['clients']
     end
 
     def my_projects(user=nil)
