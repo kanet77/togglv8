@@ -87,6 +87,9 @@ module Toggl
     end
 
     # [Delete a project](https://github.com/toggl/toggl_api_docs/blob/master/chapters/projects.md#delete-a-project)
+    def delete_project(project_id)
+      delete "projects/#{project_id}"
+    end
 
     # [Get project users](https://github.com/toggl/toggl_api_docs/blob/master/chapters/projects.md#get-project-users)
     def get_project_users(project_id)
