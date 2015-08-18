@@ -1,10 +1,6 @@
 module Toggl
   class V8
 
-    #------------#
-    #--- Tags ---#
-    #------------#
-
     # name : The name of the tag (string, required, unique in workspace)
     # wid  : workspace ID, where the tag will be used (integer, required)
 

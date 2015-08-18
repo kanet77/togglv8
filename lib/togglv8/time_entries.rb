@@ -1,10 +1,6 @@
 module Toggl
   class V8
 
-    #--------------------#
-    #--- Time entries ---#
-    #--------------------#
-    #
     # https://github.com/toggl/toggl_api_docs/blob/master/chapters/time_entries.md
     #
     # description  : (string, strongly suggested to be used)

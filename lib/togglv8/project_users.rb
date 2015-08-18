@@ -1,10 +1,6 @@
 module Toggl
   class V8
 
-    #---------------------#
-    #--- Project users ---#
-    #---------------------#
-
     # pid      : project ID (integer, required)
     # uid      : user ID, who is added to the project (integer, required)
     # wid      : workspace ID, where the project belongs to (integer, not-required, project's workspace id is used)
