@@ -17,7 +17,7 @@ module Toggl
     # uname             : full name of the person to whom the task is assigned to
 
     def create_task(params)
-      checkParams(params, [:name, :pid])
+      requireParams(params, [:name, :pid])
       post "tasks", {task: params}
     end
 

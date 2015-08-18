@@ -13,7 +13,7 @@ module Toggl
     # at    : timestamp that is sent in the response, indicates the time client was last updated
 
     def create_client(params)
-      checkParams(params, [:name, :wid])
+      requireParams(params, [:name, :wid])
       post "clients", {client: params}
     end
 

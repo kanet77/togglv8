@@ -9,7 +9,7 @@ module Toggl
     # wid  : workspace ID, where the tag will be used (integer, required)
 
     def create_tag(params)
-      checkParams(params, [:name, :wid])
+      requireParams(params, [:name, :wid])
       post "tags", {tag: params}
     end
 

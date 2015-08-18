@@ -18,7 +18,7 @@ module Toggl
     # color       : number (in the range 0-23?)
 
     def create_project(params)
-      checkParams(params, [:name, :wid])
+      requireParams(params, [:name, :wid])
       post "projects", {project: params}
     end
 

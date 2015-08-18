@@ -50,7 +50,7 @@ module Toggl
       @debug = debug
     end
 
-    def checkParams(params, fields=[])
+    def requireParams(params, fields=[])
       raise ArgumentError, 'params is not a Hash' unless params.is_a? Hash
       return if fields.empty?
       errors = []

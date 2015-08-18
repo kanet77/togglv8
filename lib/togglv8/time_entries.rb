@@ -25,7 +25,7 @@ module Toggl
     # at           : timestamp that is sent in the response, indicates the time item was last updated
 
     def create_time_entry(params)
-      checkParams(params, [:description, :start, :duration, :created_with])
+      requireParams(params, [:description, :start, :duration, :created_with])
       if !params.has_key?(:wid) and !params.has_key?(:pid) and !params.has_key?(:tid) then
         raise ArgumentError, "one of params['wid'], params['pid'], params['tid'] is required"
       end
