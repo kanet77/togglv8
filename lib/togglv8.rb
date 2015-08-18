@@ -1,6 +1,8 @@
 require 'faraday'
 require 'logger'
 require 'oj'
+
+require 'logger'
 require 'awesome_print' # for debug output
 
 require_relative 'togglv8/clients'
@@ -26,6 +28,9 @@ module Toggl
     attr_reader :conn
 
     def initialize(username=nil, password=API_TOKEN, opts={})
+      @logger = Logger.new(STDOUT)
+      @logger.level = Logger::WARN
+
       if username.nil? && password == API_TOKEN
         toggl_api_file = ENV['HOME']+'/.toggl'
         if FileTest.exist?(toggl_api_file) then
@@ -38,10 +43,6 @@ module Toggl
       end
 
       @conn = Toggl::V8.connection(username, password, opts)
-    end
-
-    def debug_on(debug=true)
-      @debug = debug
     end
 
 
@@ -76,20 +77,26 @@ module Toggl
 
 
     def get(resource)
-      puts " ----------- " if @debug
-      puts "GET #{resource}" if @debug
-      full_res = self.conn.get(resource)
-      ap full_res.env if @debug
-      res = Oj.load(full_res.env[:body])
-      res.is_a?(Array) || res['data'].nil? ? res : res['data']
+      @logger.debug(" -----------")
+      @logger.debug("GET #{resource}")
+      full_resp = self.conn.get(resource)
+      @logger.ap(full_resp.env, :debug)
+
+      raise Oj.dump(full_resp.env) unless full_resp.success?
+      return {} if full_resp.body.nil? || full_resp.body == 'null'
+
+      resp = Oj.load(full_resp.body)
+
+      return resp['data'] if resp.respond_to?(:has_key?) && resp.has_key?('data')
+      resp
     end
 
     def post(resource, data='')
-      puts " ----------- " if @debug
-      puts "POST #{resource} / #{data}" if @debug
+      @logger.debug(" ----------- ")
+      @logger.debug("POST #{resource} / #{data}")
       full_res = self.conn.post(resource, Oj.dump(data))
-      ap full_res if @debug
-      ap full_res.env if @debug
+
+      @logger.ap(full_res.env, :debug)
       if (200 == full_res.env[:status]) then
         res = Oj.load(full_res.env[:body])
         return res['data'].nil? ? res : res['data']
@@ -101,19 +108,23 @@ module Toggl
     end
 
     def put(resource, data='')
-      puts " ----------- " if @debug
-      puts "PUT #{resource} / #{Oj.dump(data)}" if @debug
+      @logger.debug(" ----------- ")
+      @logger.debug("PUT #{resource} / #{data}")
+
       full_res = self.conn.put(resource, Oj.dump(data))
-      ap full_res.env if @debug
+      @logger.ap(full_res.env, :debug)
+
       res = Oj.load(full_res.env[:body])
       res['data'].nil? ? res : res['data']
     end
 
     def delete(resource)
-      puts " ----------- " if @debug
-      puts "DELETE #{resource}" if @debug
+      @logger.debug(" -----------")
+      @logger.debug("DELETE #{resource}")
+
       full_res = self.conn.delete(resource)
-      ap full_res.env if @debug
+      @logger.ap(full_res.env, :debug)
+
       (200 == full_res.env[:status]) ? "" : eval(full_res.env[:body])
     end
 
