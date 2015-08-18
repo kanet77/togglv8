@@ -3,7 +3,7 @@ require 'oj'
 
 describe "Users" do
   before :all do
-    @toggl = Toggl::V8.new(TEST_API_TOKEN)
+    @toggl = Toggl::V8.new(Testing::TEST_API_TOKEN)
     @user = @toggl.me(all=true)
   end
 

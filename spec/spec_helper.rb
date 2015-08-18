@@ -98,5 +98,7 @@ RSpec.configure do |config|
 =end
 end
 
-TEST_API_TOKEN = '4880adbe1bee9a241fa08070d33bd49f'
-PRO_ACCOUNT    = false
+class Testing
+  TEST_API_TOKEN = '4880adbe1bee9a241fa08070d33bd49f'
+  PRO_ACCOUNT    = false
+end
