@@ -4,6 +4,10 @@ require 'oj'
 require 'awesome_print' # for debug output
 
 require_relative 'togglv8/clients'
+require_relative 'togglv8/project_users'
+require_relative 'togglv8/projects'
+require_relative 'togglv8/tags'
+require_relative 'togglv8/tasks'
 require_relative 'togglv8/time_entries'
 require_relative 'togglv8/users'
 require_relative 'togglv8/version'
@@ -19,7 +23,7 @@ module Toggl
     TOGGL_API_V8_URL = TOGGL_API_URL + 'v8/'
     API_TOKEN = 'api_token'
 
-    attr_accessor :conn
+    attr_reader :conn
 
     def initialize(username=nil, password=API_TOKEN, opts={})
       if username.nil? && password == API_TOKEN
@@ -36,6 +40,19 @@ module Toggl
       @conn = Toggl::V8.connection(username, password, opts)
     end
 
+    def debug_on(debug=true)
+      @debug = debug
+    end
+
+
+  #---------------#
+  #--- Private ---#
+  #---------------#
+
+  private
+
+    attr_writer :conn
+
     def self.connection(username, password, opts={})
       Faraday.new(url: TOGGL_API_V8_URL, ssl: {verify: true}) do |faraday|
         faraday.request :url_encoded
@@ -46,9 +63,6 @@ module Toggl
       end
     end
 
-    def debug_on(debug=true)
-      @debug = debug
-    end
 
     def requireParams(params, fields=[])
       raise ArgumentError, 'params is not a Hash' unless params.is_a? Hash
@@ -60,12 +74,6 @@ module Toggl
       raise ArgumentError, errors.join(', ') if !errors.empty?
     end
 
-
-  #---------------#
-  #--- Private ---#
-  #---------------#
-
-  private
 
     def get(resource)
       puts " ----------- " if @debug
@@ -84,8 +92,7 @@ module Toggl
       ap full_res.env if @debug
       if (200 == full_res.env[:status]) then
         res = Oj.load(full_res.env[:body])
-        res['data'].nil? ? res : res['data']
-        return res
+        return res['data'].nil? ? res : res['data']
       else
         msg = "POST #{full_res.env[:url]} (status: #{full_res.env[:status]})"
         msg += "\n\tERROR: #{full_res.env[:body]}"
