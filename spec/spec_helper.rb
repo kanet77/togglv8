@@ -29,6 +29,13 @@ require_relative 'togglv8_spec_helper'
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
+  config.filter_run :focus
+  config.filter_run_excluding :pro_account unless ENV['TOGGL_PRO_ACCOUNT']
+  config.run_all_when_everything_filtered = true
+
+  config.order = :random
+  Kernel.srand config.seed
+
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.
@@ -108,6 +115,5 @@ RSpec.configure do |config|
 end
 
 class Testing
-  TEST_API_TOKEN = '4880adbe1bee9a241fa08070d33bd49f'
-  PRO_ACCOUNT    = false
+  API_TOKEN = '4880adbe1bee9a241fa08070d33bd49f'
 end

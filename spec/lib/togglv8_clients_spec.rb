@@ -3,7 +3,7 @@ require 'oj'
 
 describe "Clients" do
   before :all do
-    @toggl = Toggl::V8.new(Testing::TEST_API_TOKEN)
+    @toggl = Toggl::V8.new(Testing::API_TOKEN)
     @workspaces = @toggl.workspaces
     @workspace_id = @workspaces.first['id']
   end
@@ -48,9 +48,7 @@ describe "Clients" do
       expect(client).to include(new_values)
     end
 
-    it 'updates Pro project data' do
-      pending('Pro features') unless Testing::PRO_ACCOUNT
-
+    it 'updates Pro project data', :pro_account do
       new_values = {
         hrate: '7.77',
         cur: 'USD',

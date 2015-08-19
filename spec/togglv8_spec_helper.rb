@@ -5,7 +5,7 @@ class TogglV8SpecHelper
   @logger = Logger.new(STDOUT)
 
   def self.setUp()
-    toggl = Toggl::V8.new(Testing::TEST_API_TOKEN)
+    toggl = Toggl::V8.new(Testing::API_TOKEN)
     user = toggl.me(all=true)
     default_workspace_id = user['default_wid']
 
