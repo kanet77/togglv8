@@ -1,0 +1,50 @@
+require_relative '../../lib/togglv8'
+require 'oj'
+
+describe "Tags" do
+  before :all do
+    @toggl = Toggl::V8.new(Testing::API_TOKEN)
+    @workspaces = @toggl.workspaces
+    @workspace_id = @workspaces.first['id']
+  end
+
+  context 'new tag' do
+    before :all do
+      @tag = @toggl.create_tag({ name: 'new tag', wid: @workspace_id })
+      tag_ids = @toggl.my_tags.map { |t| t['id']}
+      expect(tag_ids).to include @tag['id']
+    end
+
+    after :all do
+      TogglV8SpecHelper.delete_all_tags(@toggl)
+      tags = @toggl.my_tags
+      expect(tags).to be_empty
+    end
+
+    it 'creates a tag' do
+      expect(@tag).to_not be nil
+      expect(@tag['name']).to eq 'new tag'
+      expect(@tag['notes']).to eq nil
+      expect(@tag['wid']).to eq @workspace_id
+    end
+  end
+
+  context 'updated tag' do
+    before :each do
+      @tag = @toggl.create_tag({ name: 'tag to update', wid: @workspace_id })
+    end
+
+    after :each do
+      @toggl.delete_tag(@tag['id'])
+    end
+
+    it 'updates tag data' do
+      new_values = {
+        'name' => 'TAG-NEW',
+      }
+
+      tag = @toggl.update_tag(@tag['id'], new_values)
+      expect(tag).to include(new_values)
+    end
+  end
+end
