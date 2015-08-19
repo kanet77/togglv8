@@ -8,7 +8,7 @@ describe "Projects" do
     @workspace_id = @workspaces.first['id']
   end
 
-  it 'receives {} if there are no workspace projects' do
+  it 'gets {} if there are no workspace projects' do
     projects = @toggl.projects(@workspace_id)
     expect(projects).to be_empty
   end
@@ -17,7 +17,7 @@ describe "Projects" do
     before :all do
       @project = @toggl.create_project({ name: 'new project', wid: @workspace_id })
       project_ids = @toggl.my_projects.map { |p| p['id']}
-      expect(project_ids).to include @project['id']
+      expect(project_ids).to eq [ @project['id'] ]
     end
 
     after :all do

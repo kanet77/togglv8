@@ -8,7 +8,12 @@ describe "Clients" do
     @workspace_id = @workspaces.first['id']
   end
 
-  it 'receives {} if there are no workspace clients' do
+  it 'gets {} if there are no clients' do
+    client = @toggl.clients
+    expect(client).to be_empty
+  end
+
+  it 'gets {} if there are no workspace clients' do
     client = @toggl.clients(@workspace_id)
     expect(client).to be_empty
   end
@@ -17,13 +22,43 @@ describe "Clients" do
     before :all do
       @client = @toggl.create_client({ name: 'new client', wid: @workspace_id })
       client_ids = @toggl.my_clients.map { |c| c['id']}
-      expect(client_ids).to include @client['id']
+      expect(client_ids).to eq [ @client['id'] ]
     end
 
     after :all do
       TogglV8SpecHelper.delete_all_clients(@toggl)
       clients = @toggl.my_clients
       expect(clients).to be_empty
+    end
+
+    it 'gets a client' do
+      client_ids = @toggl.clients.map { |c| c['id']}
+      expect(client_ids).to eq [ @client['id'] ]
+    end
+
+    it 'gets a workspace client' do
+      client_ids = @toggl.clients(@workspace_id).map { |c| c['id']}
+      expect(client_ids).to eq [ @client['id'] ]
+    end
+
+    context 'multiple clients' do
+      before :all do
+        @client2 = @toggl.create_client({ name: 'new client 2', wid: @workspace_id })
+      end
+
+      after :all do
+        @toggl.delete_client(@client2['id'])
+      end
+
+      it 'gets clients' do
+        client_ids = @toggl.clients.map { |c| c['id']}
+        expect(client_ids).to match_array [ @client['id'], @client2['id'] ]
+      end
+
+      it 'gets workspace clients' do
+        client_ids = @toggl.clients(@workspace_id).map { |c| c['id']}
+        expect(client_ids).to match_array [ @client['id'], @client2['id'] ]
+      end
     end
 
     it 'creates a client' do
@@ -43,7 +78,7 @@ describe "Clients" do
     end
 
     context 'client projects' do
-      it 'receives {} if there are no client projects' do
+      it 'gets {} if there are no client projects' do
         projects = @toggl.get_client_projects(@client['id'])
         expect(projects).to be_empty
       end
