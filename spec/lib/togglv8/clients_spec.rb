@@ -1,4 +1,4 @@
-describe "Clients" do
+describe 'Clients' do
   before :all do
     @toggl = Toggl::V8.new(Testing::API_TOKEN)
     @workspaces = @toggl.workspaces

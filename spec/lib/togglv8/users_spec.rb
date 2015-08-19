@@ -1,4 +1,4 @@
-describe "Users" do
+describe 'Users' do
   before :all do
     @toggl = Toggl::V8.new(Testing::API_TOKEN)
     @user = @toggl.me(all=true)
