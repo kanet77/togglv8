@@ -11,7 +11,6 @@ describe "Users" do
     expect(@user).to_not be_nil
     expect(@user['id']).to eq 1820939
     expect(@user['fullname']).to eq 'togglv8'
-    expect(@user['default_wid']).to eq 1060392
     expect(@user['image_url']).to eq 'https://assets.toggl.com/avatars/a5d106126b6bed8df283e708af0828ee.png'
     expect(@user['timezone']).to eq 'Etc/UTC'
     expect(@user['workspaces'].length).to eq 1
