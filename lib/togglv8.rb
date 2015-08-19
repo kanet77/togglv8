@@ -80,6 +80,7 @@ module Toggl
       full_resp = self.conn.get(resource)
       @logger.ap(full_resp.env, :debug)
 
+      raise 'Too many requests in a given amount of time.' if full_resp.status == 429
       raise Oj.dump(full_resp.env) unless full_resp.success?
       return {} if full_resp.body.nil? || full_resp.body == 'null'
 
