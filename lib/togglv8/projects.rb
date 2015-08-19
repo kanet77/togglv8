@@ -98,7 +98,7 @@ module Toggl
 
     # [Get project tasks](https://github.com/toggl/toggl_api_docs/blob/master/chapters/projects.md#get-project-tasks)
     def get_project_tasks(project_id)
-      get "projects/#{project_id}/project_users"
+      get "projects/#{project_id}/project_tasks"
     end
 
     # [Get workspace projects](https://github.com/toggl/toggl_api_docs/blob/master/chapters/projects.md#get-workspace-projects)
@@ -107,8 +107,5 @@ module Toggl
     def delete_projects(project_ids)
       delete "projects/#{project_ids.join(',')}"
     end
-
-
-    # :section:
   end
 end
