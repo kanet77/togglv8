@@ -1,5 +1,4 @@
 require 'faraday'
-require 'logger'
 require 'oj'
 
 require 'logger'
@@ -15,7 +14,7 @@ require_relative 'togglv8/users'
 require_relative 'togglv8/version'
 require_relative 'togglv8/workspaces'
 
-# :compat mode will convert symbols to strings
+# mode: :compat will convert symbols to strings
 Oj.default_options = { mode: :compat }
 
 module Toggl
@@ -44,7 +43,6 @@ module Toggl
 
       @conn = Toggl::V8.connection(username, password, opts)
     end
-
 
   #---------------#
   #--- Private ---#
@@ -121,11 +119,11 @@ module Toggl
     def delete(resource)
       @logger.debug(" -----------")
       @logger.debug("DELETE #{resource}")
+      full_resp = self.conn.delete(resource)
+      @logger.ap(full_resp.env, :debug)
 
-      full_res = self.conn.delete(resource)
-      @logger.ap(full_res.env, :debug)
-
-      (200 == full_res.env[:status]) ? "" : eval(full_res.env[:body])
+      raise Oj.dump(full_resp.env) unless full_resp.success?
+      full_resp.body
     end
 
   end
