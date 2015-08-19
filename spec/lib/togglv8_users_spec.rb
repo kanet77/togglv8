@@ -19,22 +19,22 @@ describe "Users" do
 
   it 'returns /my_clients' do
     my_clients = @toggl.my_clients(@user)
-    expect(my_clients).to be nil
+    expect(my_clients).to be_empty
   end
 
   it 'returns /my_projects' do
     my_projects = @toggl.my_projects(@user)
-    expect(my_projects).to be nil
+    expect(my_projects).to be_empty
   end
 
   it 'returns /my_tags' do
     my_tags = @toggl.my_tags(@user)
-    expect(my_tags).to be nil
+    expect(my_tags).to be_empty
   end
 
   it 'returns /my_time_entries' do
     my_time_entries = @toggl.my_time_entries(@user)
-    expect(my_time_entries).to be nil
+    expect(my_time_entries).to be_empty
   end
 
   it 'returns /my_workspaces' do

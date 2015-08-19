@@ -24,27 +24,27 @@ module Toggl
 
     def my_clients(user=nil)
       user = me(all=true) if user.nil?
-      user['clients']
+      user['clients'] || {}
     end
 
     def my_projects(user=nil)
       user = me(all=true) if user.nil?
-      user['projects']
+      user['projects'] || {}
     end
 
     def my_tags(user=nil)
       user = me(all=true) if user.nil?
-      user['tags']
+      user['tags'] || {}
     end
 
     def my_time_entries(user=nil)
       user = me(all=true) if user.nil?
-      user['time_entries']
+      user['time_entries'] || {}
     end
 
     def my_workspaces(user=nil)
       user = me(all=true) if user.nil?
-      user['workspaces']
+      user['workspaces'] || {}
     end
   end
 end
