@@ -10,26 +10,34 @@ module Toggl
       get "workspaces"
     end
 
-    def clients(workspace=nil)
-      if workspace.nil?
+    def clients(workspace_id=nil)
+      if workspace_id.nil?
         get "clients"
       else
-        get "workspaces/#{workspace}/clients"
+        get "workspaces/#{workspace_id}/clients"
       end
     end
 
-    def projects(workspace, params={})
+    def projects(workspace_id, params={})
       active = params.has_key?(:active) ? "?active=#{params[:active]}" : ""
-      get "workspaces/#{workspace}/projects#{active}"
+      get "workspaces/#{workspace_id}/projects#{active}"
     end
 
-    def users(workspace)
-      get "workspaces/#{workspace}/users"
+    def users(workspace_id)
+      get "workspaces/#{workspace_id}/users"
     end
 
-    def tasks(workspace, params={})
+    def tasks(workspace_id, params={})
       active = params.has_key?(:active) ? "?active=#{params[:active]}" : ""
-      get "workspaces/#{workspace}/tasks#{active}"
+      get "workspaces/#{workspace_id}/tasks#{active}"
+    end
+
+    def dashboard(workspace_id)
+      get "dashboard/#{workspace_id}"
+    end
+
+    def leave_workspace(workspace_id)
+      delete "workspaces/#{workspace_id}/leave"
     end
   end
 end
