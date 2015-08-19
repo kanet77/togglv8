@@ -117,4 +117,6 @@ end
 
 class Testing
   API_TOKEN = '4880adbe1bee9a241fa08070d33bd49f'
+  USERNAME  = 'togglv8@mailinator.com'
+  PASSWORD  = 'togglv8'
 end

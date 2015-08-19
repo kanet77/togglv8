@@ -23,6 +23,7 @@ module Toggl
   class V8
     TOGGL_API_V8_URL = TOGGL_API_URL + 'v8/'
     API_TOKEN = 'api_token'
+    TOGGL_FILE = '.toggl'
 
     attr_reader :conn
 
@@ -31,13 +32,15 @@ module Toggl
       @logger.level = Logger::WARN
 
       if username.nil? && password == API_TOKEN
-        toggl_api_file = ENV['HOME']+'/.toggl'
+        toggl_api_file = File.join(Dir.home, TOGGL_FILE)
         if FileTest.exist?(toggl_api_file) then
           username = IO.read(toggl_api_file)
         else
-          raise SystemCallError,
-            "\tExpecting 1) api_token in file ~/.toggl, or 2) (api_token), or 3) (username, password).\n" +
-            "\tSee https://github.com/toggl/toggl_api_docs/blob/master/chapters/authentication.md"
+          raise "Expecting\n" +
+            " 1) api_token in file #{toggl_api_file}, or\n" +
+            " 2) parameter: (api_token), or\n" +
+            " 3) parameters: (username, password).\n" +
+            "\n\tSee https://github.com/toggl/toggl_api_docs/blob/master/chapters/authentication.md"
         end
       end
 
@@ -93,28 +96,29 @@ module Toggl
     def post(resource, data='')
       @logger.debug(" ----------- ")
       @logger.debug("POST #{resource} / #{data}")
-      full_res = self.conn.post(resource, Oj.dump(data))
+      full_resp = self.conn.post(resource, Oj.dump(data))
+      @logger.ap(full_resp.env, :debug)
 
-      @logger.ap(full_res.env, :debug)
-      if (200 == full_res.env[:status]) then
-        res = Oj.load(full_res.env[:body])
-        return res['data'].nil? ? res : res['data']
-      else
-        msg = "POST #{full_res.env[:url]} (status: #{full_res.env[:status]})"
-        msg += "\n\tERROR: #{full_res.env[:body]}"
-        raise msg
-      end
+      raise 'Too many requests in a given amount of time.' if full_resp.status == 429
+      raise Oj.dump(full_resp.env) unless full_resp.success?
+      return {} if full_resp.body.nil? || full_resp.body == 'null'
+
+      resp = Oj.load(full_resp.body)
+
+      return resp['data'] if resp.respond_to?(:has_key?) && resp.has_key?('data')
+      resp
     end
 
     def put(resource, data='')
       @logger.debug(" ----------- ")
       @logger.debug("PUT #{resource} / #{data}")
+      full_resp = self.conn.put(resource, Oj.dump(data))
+      @logger.ap(full_resp.env, :debug)
 
-      full_res = self.conn.put(resource, Oj.dump(data))
-      @logger.ap(full_res.env, :debug)
+      raise 'Too many requests in a given amount of time.' if full_resp.status == 429
 
-      res = Oj.load(full_res.env[:body])
-      res['data'].nil? ? res : res['data']
+      resp = Oj.load(full_resp.env[:body])
+      resp['data'].nil? ? resp : resp['data']
     end
 
     def delete(resource)
@@ -122,6 +126,8 @@ module Toggl
       @logger.debug("DELETE #{resource}")
       full_resp = self.conn.delete(resource)
       @logger.ap(full_resp.env, :debug)
+
+      raise 'Too many requests in a given amount of time.' if full_resp.status == 429
 
       raise Oj.dump(full_resp.env) unless full_resp.success?
       full_resp.body
