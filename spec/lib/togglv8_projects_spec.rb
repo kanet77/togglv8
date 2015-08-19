@@ -10,12 +10,12 @@ describe "Projects" do
 
   it 'receives {} if there are no workspace projects' do
     projects = @toggl.projects(@workspace_id)
-    expect(projects).to be {}
+    expect(projects).to be_empty
   end
 
   context 'new project' do
     before :all do
-      @project = @toggl.create_project({ name: 'project1', wid: @workspace_id })
+      @project = @toggl.create_project({ name: 'new project', wid: @workspace_id })
     end
 
     after :all do
@@ -24,7 +24,7 @@ describe "Projects" do
 
     it 'creates a project' do
       expect(@project).to_not be nil
-      expect(@project['name']).to eq 'project1'
+      expect(@project['name']).to eq 'new project'
       expect(@project['billable']).to eq false
       expect(@project['is_private']).to eq true
       expect(@project['active']).to eq true
@@ -44,6 +44,16 @@ describe "Projects" do
       expect(project['template']).to eq @project['template']
       expect(project['auto_estimates']).to eq @project['auto_estimates']
       expect(project['at']).to_not be nil
+    end
+  end
+
+  context 'updated project' do
+    before :each do
+      @project = @toggl.create_project({ name: 'project to update', wid: @workspace_id })
+    end
+
+    after :each do
+      @toggl.delete_project(@project['id'])
     end
 
     it 'updates project data' do
@@ -75,7 +85,7 @@ describe "Projects" do
 
     it 'deletes multiple projects' do
       # start with no projects
-      expect(@toggl.projects(@workspace_id)).to be {}
+      expect(@toggl.projects(@workspace_id)).to be_empty
 
       p1 = @toggl.create_project({ name: 'p1', wid: @workspace_id })
       p2 = @toggl.create_project({ name: 'p2', wid: @workspace_id })
@@ -88,7 +98,7 @@ describe "Projects" do
       @toggl.delete_projects(p_ids)
 
       # end with no projects
-      expect(@toggl.projects(@workspace_id)).to be {}
+      expect(@toggl.projects(@workspace_id)).to be_empty
     end
   end
 end

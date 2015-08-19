@@ -10,12 +10,12 @@ describe "Clients" do
 
   it 'receives {} if there are no workspace clients' do
     client = @toggl.clients(@workspace_id)
-    expect(client).to be {}
+    expect(client).to be_empty
   end
 
   context 'new client' do
     before :all do
-      @client = @toggl.create_client({ name: 'client1', wid: @workspace_id })
+      @client = @toggl.create_client({ name: 'new client', wid: @workspace_id })
     end
 
     after :all do
@@ -24,7 +24,7 @@ describe "Clients" do
 
     it 'creates a client' do
       expect(@client).to_not be nil
-      expect(@client['name']).to eq 'client1'
+      expect(@client['name']).to eq 'new client'
       expect(@client['notes']).to eq nil
       expect(@client['wid']).to eq @workspace_id
     end
@@ -36,6 +36,49 @@ describe "Clients" do
       expect(client['wid']).to eq @client['wid']
       expect(client['notes']).to eq @client['notes']
       expect(client['at']).to_not be nil
+    end
+
+    context 'client projects' do
+      it 'receives {} if there are no client projects' do
+        projects = @toggl.get_client_projects(@client['id'])
+        expect(projects).to be_empty
+      end
+
+      context 'new client projects' do
+        before :all do
+          @project = @toggl.create_project({ name: 'project', wid: @workspace_id, cid: @client['id'] })
+        end
+
+        after :all do
+          TogglV8SpecHelper.delete_all_projects(@toggl)
+        end
+
+        it 'gets a client project' do
+          projects = @toggl.get_client_projects(@client['id'])
+          project_ids = projects.map { |p| p['id'] }
+          expect(project_ids).to eq [ @project['id'] ]
+        end
+
+        it 'gets multiple client projects' do
+          project2 = @toggl.create_project({ name: 'project2', wid: @workspace_id, cid: @client['id'] })
+
+          projects = @toggl.get_client_projects(@client['id'])
+          project_ids = projects.map { |p| p['id'] }
+          expect(project_ids).to match_array [ @project['id'], project2['id'] ]
+
+          @toggl.delete_project(project2['id'])
+        end
+      end
+    end
+  end
+
+  context 'updated client' do
+    before :each do
+      @client = @toggl.create_client({ name: 'client to update', wid: @workspace_id })
+    end
+
+    after :each do
+      @toggl.delete_client(@client['id'])
     end
 
     it 'updates client data' do
@@ -56,26 +99,5 @@ describe "Clients" do
       client = @toggl.update_client(@client['id'], new_values)
       expect(client).to include(new_values)
     end
-
-    context 'client projects' do
-      before :all do
-        @project = @toggl.create_project({ name: 'project2', wid: @workspace_id, cid: @client['id'] })
-      end
-
-      after :all do
-        TogglV8SpecHelper.delete_all_projects(@toggl)
-      end
-
-      it 'receives {} if there are no client projects' do
-        projects = @toggl.get_client_projects(@client['id'])
-        expect(projects).to be {}
-      end
-
-      it 'gets client projects' do
-        projects = @toggl.get_client_projects(@client['id'])
-        expect(projects).to be {}
-      end
-    end
-
   end
 end
