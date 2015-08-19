@@ -1,6 +1,3 @@
-require_relative '../../lib/togglv8'
-require 'oj'
-
 describe "Tags" do
   before :all do
     @toggl = Toggl::V8.new(Testing::API_TOKEN)
