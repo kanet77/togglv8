@@ -1,9 +1,11 @@
-module Toggl
-  class V8
+module TogglV8
+  class API
 
     ##
     # ---------
     # :section: Tasks
+    #
+    # NOTE: Tasks are available only for pro workspaces.
     #
     # name              : The name of the task (string, required, unique in project)
     # pid               : project ID for the task (integer, required)

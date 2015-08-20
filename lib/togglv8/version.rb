@@ -1,7 +1,4 @@
-module Toggl
-  class V8
-
-    # :section:
-    VERSION = "0.2.0"
-  end
+module TogglV8
+  # :section:
+  VERSION = "0.2.0"
 end

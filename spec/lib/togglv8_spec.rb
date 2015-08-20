@@ -1,8 +1,8 @@
 require 'fileutils'
 
-describe 'Toggl::V8' do
+describe 'TogglV8::API' do
   it 'initializes with api_token' do
-    toggl = Toggl::V8.new(Testing::API_TOKEN)
+    toggl = TogglV8::API.new(Testing::API_TOKEN)
     me = toggl.me
     expect(me).to_not be nil
     expect(me['api_token']).to eq Testing::API_TOKEN
@@ -10,7 +10,7 @@ describe 'Toggl::V8' do
   end
 
   it 'initializes with username and password' do
-    toggl = Toggl::V8.new(Testing::USERNAME, Testing::PASSWORD)
+    toggl = TogglV8::API.new(Testing::USERNAME, Testing::PASSWORD)
     me = toggl.me
     expect(me).to_not be nil
     expect(me['api_token']).to eq Testing::API_TOKEN
@@ -18,7 +18,7 @@ describe 'Toggl::V8' do
   end
 
   it 'does not initialize with bogus api_token' do
-    toggl = Toggl::V8.new('4880nqor1orr9n241sn08070q33oq49s')
+    toggl = TogglV8::API.new('4880nqor1orr9n241sn08070q33oq49s')
     expect { toggl.me } .to raise_error(RuntimeError)
   end
 
@@ -40,7 +40,7 @@ describe 'Toggl::V8' do
       toggl_file = File.join(@home, '.toggl')
       File.open(toggl_file, 'w') { |file| file.write(Testing::API_TOKEN) }
 
-      toggl = Toggl::V8.new
+      toggl = TogglV8::API.new
       me = toggl.me
       expect(me).to_not be nil
       expect(me['api_token']).to eq Testing::API_TOKEN
@@ -48,7 +48,7 @@ describe 'Toggl::V8' do
     end
 
     it 'raises error if .toggl file is missing' do
-      expect{ toggl = Toggl::V8.new }.to raise_error(RuntimeError)
+      expect{ toggl = TogglV8::API.new }.to raise_error(RuntimeError)
     end
 
   end

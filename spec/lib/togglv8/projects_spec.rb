@@ -1,7 +1,7 @@
 describe 'Projects' do
   before :all do
     sleep(0.1)
-    @toggl = Toggl::V8.new(Testing::API_TOKEN)
+    @toggl = TogglV8::API.new(Testing::API_TOKEN)
     @workspaces = @toggl.workspaces
     @workspace_id = @workspaces.first['id']
   end

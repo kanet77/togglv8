@@ -1,7 +1,7 @@
 describe 'Users' do
   before :all do
     sleep(0.1)
-    @toggl = Toggl::V8.new(Testing::API_TOKEN)
+    @toggl = TogglV8::API.new(Testing::API_TOKEN)
     @user = @toggl.me(all=true)
   end
 

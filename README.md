@@ -29,11 +29,11 @@ This short example shows one way to create a time entry for the first workspace 
 ```ruby
 require 'togglv8'
 
-toggl = Toggl::V8.new(<API_TOKEN>)
-user = toggl.me(all=true)
-workspaces = toggl.my_workspaces(user)
+toggl_api    = TogglV8::API.new(<API_TOKEN>)
+user         = toggl_api.me(all=true)
+workspaces   = toggl_api.my_workspaces(user)
 workspace_id = workspaces.first['id']
-toggl.create_time_entry({description: "Workspace time entry",
+toggl_api.create_time_entry({description: "Workspace time entry",
         wid: workspace_id,
         duration: 1200,
         start: "2015-08-18T01:13:40.000Z",

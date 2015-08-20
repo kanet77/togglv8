@@ -5,7 +5,7 @@ require 'togglv8/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "togglv8"
-  spec.version       = Toggl::V8::VERSION
+  spec.version       = TogglV8::VERSION
   spec.authors       = ["Tom Kane"]
   spec.email         = ["kexf7pqsdu@snkmail.com"]
   spec.summary       = %q{Toggl v8 API wrapper (See https://github.com/toggl/toggl_api_docs)}

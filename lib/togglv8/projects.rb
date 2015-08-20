@@ -1,5 +1,5 @@
-module Toggl
-  class V8
+module TogglV8
+  class API
 
     ##
     # ---------

@@ -17,10 +17,10 @@ require_relative 'togglv8/workspaces'
 # mode: :compat will convert symbols to strings
 Oj.default_options = { mode: :compat }
 
-module Toggl
+module TogglV8
   TOGGL_API_URL = 'https://www.toggl.com/api/'
 
-  class V8
+  class API
     TOGGL_API_V8_URL = TOGGL_API_URL + 'v8/'
     API_TOKEN = 'api_token'
     TOGGL_FILE = '.toggl'
@@ -44,7 +44,7 @@ module Toggl
         end
       end
 
-      @conn = Toggl::V8.connection(username, password, opts)
+      @conn = TogglV8::API.connection(username, password, opts)
     end
 
   #---------#
