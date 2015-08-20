@@ -3,7 +3,8 @@ module Toggl
 
     # name              : The name of the task (string, required, unique in project)
     # pid               : project ID for the task (integer, required)
-    # wid               : workspace ID, where the task will be saved (integer, project's workspace id is used when not supplied)
+    # wid               : workspace ID, where the task will be saved
+    #                     (integer, project's workspace id is used when not supplied)
     # uid               : user ID, to whom the task is assigned to (integer, not required)
     # estimated_seconds : estimated duration of task in seconds (integer, not required)
     # active            : whether the task is done or not (boolean, by default true)
@@ -22,12 +23,24 @@ module Toggl
     end
 
     # ex: update_task(1894675, {active: true, estimated_seconds: 4500, fields: "done_seconds,uname"})
-    def update_task(*task_id, params)
+    def update_task(task_id, params)
       put "tasks/#{task_id.join(',')}", {task: params}
     end
 
-    def delete_task(*task_id)
+    def delete_task(task_id)
       delete "tasks/#{task_id.join(',')}"
+    end
+
+    # ------------ #
+    # Mass Actions #
+    # ------------ #
+
+    def update_tasks(task_ids, params)
+      put "tasks/#{task_ids.join(',')}", {task: params}
+    end
+
+    def delete_tasks(task_ids)
+      delete "tasks/#{task_ids.join(',')}"
     end
 
   end

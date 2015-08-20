@@ -47,9 +47,9 @@ module Toggl
       @conn = Toggl::V8.connection(username, password, opts)
     end
 
-  #---------------#
-  #--- Private ---#
-  #---------------#
+  #---------#
+  # Private #
+  #---------#
 
   private
 
@@ -78,10 +78,9 @@ module Toggl
 
 
     def get(resource)
-      @logger.debug(" -----------")
       @logger.debug("GET #{resource}")
       full_resp = self.conn.get(resource)
-      @logger.ap(full_resp.env, :debug)
+      # @logger.ap(full_resp.env, :debug)
 
       raise 'Too many requests in a given amount of time.' if full_resp.status == 429
       raise Oj.dump(full_resp.env) unless full_resp.success?
@@ -94,10 +93,9 @@ module Toggl
     end
 
     def post(resource, data='')
-      @logger.debug(" ----------- ")
       @logger.debug("POST #{resource} / #{data}")
       full_resp = self.conn.post(resource, Oj.dump(data))
-      @logger.ap(full_resp.env, :debug)
+      # @logger.ap(full_resp.env, :debug)
 
       raise 'Too many requests in a given amount of time.' if full_resp.status == 429
       raise Oj.dump(full_resp.env) unless full_resp.success?
@@ -110,10 +108,9 @@ module Toggl
     end
 
     def put(resource, data='')
-      @logger.debug(" ----------- ")
       @logger.debug("PUT #{resource} / #{data}")
       full_resp = self.conn.put(resource, Oj.dump(data))
-      @logger.ap(full_resp.env, :debug)
+      # @logger.ap(full_resp.env, :debug)
 
       raise 'Too many requests in a given amount of time.' if full_resp.status == 429
 
@@ -122,10 +119,9 @@ module Toggl
     end
 
     def delete(resource)
-      @logger.debug(" -----------")
       @logger.debug("DELETE #{resource}")
       full_resp = self.conn.delete(resource)
-      @logger.ap(full_resp.env, :debug)
+      # @logger.ap(full_resp.env, :debug)
 
       raise 'Too many requests in a given amount of time.' if full_resp.status == 429
 

@@ -1,5 +1,6 @@
 describe 'Clients' do
   before :all do
+    sleep(0.1)
     @toggl = Toggl::V8.new(Testing::API_TOKEN)
     @workspaces = @toggl.workspaces
     @workspace_id = @workspaces.first['id']
@@ -17,8 +18,9 @@ describe 'Clients' do
 
   context 'new client' do
     before :all do
+      sleep(0.1)
       @client = @toggl.create_client({ name: 'new client', wid: @workspace_id })
-      client_ids = @toggl.my_clients.map { |c| c['id']}
+      client_ids = @toggl.my_clients.map { |c| c['id'] }
       expect(client_ids).to eq [ @client['id'] ]
     end
 
@@ -29,17 +31,18 @@ describe 'Clients' do
     end
 
     it 'gets a client' do
-      client_ids = @toggl.clients.map { |c| c['id']}
+      client_ids = @toggl.clients.map { |c| c['id'] }
       expect(client_ids).to eq [ @client['id'] ]
     end
 
     it 'gets a workspace client' do
-      client_ids = @toggl.clients(@workspace_id).map { |c| c['id']}
+      client_ids = @toggl.clients(@workspace_id).map { |c| c['id'] }
       expect(client_ids).to eq [ @client['id'] ]
     end
 
     context 'multiple clients' do
       before :all do
+        sleep(0.1)
         @client2 = @toggl.create_client({ name: 'new client 2', wid: @workspace_id })
       end
 
@@ -48,12 +51,12 @@ describe 'Clients' do
       end
 
       it 'gets clients' do
-        client_ids = @toggl.clients.map { |c| c['id']}
+        client_ids = @toggl.clients.map { |c| c['id'] }
         expect(client_ids).to match_array [ @client['id'], @client2['id'] ]
       end
 
       it 'gets workspace clients' do
-        client_ids = @toggl.clients(@workspace_id).map { |c| c['id']}
+        client_ids = @toggl.clients(@workspace_id).map { |c| c['id'] }
         expect(client_ids).to match_array [ @client['id'], @client2['id'] ]
       end
     end
@@ -82,6 +85,7 @@ describe 'Clients' do
 
       context 'new client projects' do
         before :all do
+          sleep(0.1)
           @project = @toggl.create_project({ name: 'project', wid: @workspace_id, cid: @client['id'] })
         end
 
@@ -110,6 +114,7 @@ describe 'Clients' do
 
   context 'updated client' do
     before :each do
+      sleep(0.1)
       @client = @toggl.create_client({ name: 'client to update', wid: @workspace_id })
     end
 
