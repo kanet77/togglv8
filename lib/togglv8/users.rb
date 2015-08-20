@@ -1,6 +1,10 @@
 module Toggl
   class V8
 
+    ##
+    # ---------
+    # :section: Users
+    #
     # api_token                 : (string)
     # default_wid               : default workspace id (integer)
     # email                     : (string)

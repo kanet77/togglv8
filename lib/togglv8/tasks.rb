@@ -1,6 +1,10 @@
 module Toggl
   class V8
 
+    ##
+    # ---------
+    # :section: Tasks
+    #
     # name              : The name of the task (string, required, unique in project)
     # pid               : project ID for the task (integer, required)
     # wid               : workspace ID, where the task will be saved

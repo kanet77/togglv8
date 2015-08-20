@@ -1,6 +1,10 @@
 module Toggl
   class V8
 
+    ##
+    # ---------
+    # :section: Workspaces
+    #
     # name    : (string, required)
     # premium : If it's a pro workspace or not.
     #           Shows if someone is paying for the workspace or not (boolean, not required)

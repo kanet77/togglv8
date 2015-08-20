@@ -1,6 +1,10 @@
 module Toggl
   class V8
 
+    ##
+    # ---------
+    # :section: Clients
+    #
     # name  : The name of the client (string, required, unique in workspace)
     # wid   : workspace ID, where the client will be used (integer, required)
     # notes : Notes for the client (string, not required)
