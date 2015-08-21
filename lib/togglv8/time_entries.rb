@@ -25,18 +25,19 @@ module TogglV8
     # at           : timestamp that is sent in the response, indicates the time item was last updated
 
     def create_time_entry(params)
-      requireParams(params, [:start, :duration, :created_with])
-      if !params.has_key?(:wid) and !params.has_key?(:pid) and !params.has_key?(:tid) then
+      params['created_with'] = 'TogglV8' unless params.has_key?('created_with')
+      requireParams(params, ['start', 'duration', 'created_with'])
+      if !params.has_key?('wid') and !params.has_key?('pid') and !params.has_key?('tid') then
         raise ArgumentError, "one of params['wid'], params['pid'], params['tid'] is required"
       end
       post "time_entries", { 'time_entry' => params }
     end
 
     def start_time_entry(params)
-      if !params.has_key?(:wid) and !params.has_key?(:pid) and !params.has_key?(:tid) then
+      params['created_with'] = 'TogglV8' unless params.has_key?('created_with')
+      if !params.has_key?('wid') and !params.has_key?('pid') and !params.has_key?('tid') then
         raise ArgumentError, "one of params['wid'], params['pid'], params['tid'] is required"
       end
-      params[:created_with] = 'TogglV8' unless params.has_key?(:created_with)
       post "time_entries/start", {time_entry: params}
     end
 
@@ -48,6 +49,10 @@ module TogglV8
       get "time_entries/#{time_entry_id}"
     end
 
+    def get_current_time_entry
+      get "time_entries/current"
+    end
+
     def update_time_entry(time_entry_id, params)
       put "time_entries/#{time_entry_id}", { 'time_entry' => params }
     end
@@ -56,16 +61,16 @@ module TogglV8
       delete "time_entries/#{time_entry_id}"
     end
 
-    def iso8601(date)
-      return nil if date.nil?
-      if date.is_a?(Time) or date.is_a?(Date)
-        iso = date.iso8601
-      elsif date.is_a?(String)
-        iso =  DateTime.parse(date).iso8601
+    def iso8601(timestamp)
+      return nil if timestamp.nil?
+      if timestamp.is_a?(DateTime) or timestamp.is_a?(Date)
+        formatted_ts = timestamp.iso8601
+      elsif timestamp.is_a?(String)
+        formatted_ts = DateTime.parse(timestamp).iso8601
       else
-        raise ArgumentError, "Can't convert #{date.class} to ISO-8601 Date/Time"
+        raise ArgumentError, "Can't convert #{timestamp.class} to ISO-8601 Date/Time"
       end
-      return Faraday::Utils.escape(iso)
+      return formatted_ts
     end
 
     def get_time_entries(start_date=nil, end_date=nil)
