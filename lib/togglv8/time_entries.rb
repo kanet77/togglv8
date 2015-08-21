@@ -73,11 +73,17 @@ module TogglV8
       return formatted_ts
     end
 
-    def get_time_entries(start_date=nil, end_date=nil)
+    def get_time_entries(start_timestamp=nil, end_timestamp=nil)
       params = []
-      params.push("start_date=#{iso8601(start_date)}") if !start_date.nil?
-      params.push("end_date=#{iso8601(end_date)}") if !end_date.nil?
+      params.push("start_date=#{iso8601(start_timestamp)}") if !start_timestamp.nil?
+      params.push("end_date=#{iso8601(end_timestamp)}") if !end_timestamp.nil?
       get "time_entries%s" % [params.empty? ? "" : "?#{params.join('&')}"]
+    end
+
+    # Example params: {"tags":["billed","productive"], "tag_action": "add"}
+    # tag_action can be 'add' or 'remove'
+    def update_time_entries_tags(time_entry_ids, params)
+      put "time_entries/#{time_entry_ids.join(',')}", { 'time_entry' => params }
     end
   end
 end
