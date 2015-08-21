@@ -40,4 +40,17 @@ describe 'Users' do
     expect(my_workspaces.length).to eq 1
   end
 
+  context 'new user' do
+    it 'creates a new user' do
+      now = Time.now.to_i
+      user_info = {
+        'email' => "test-#{now}@mailinator.com",
+        'timezone' => 'Etc/UTC'
+      }
+      user_password = { 'password' => "password-#{now}" }
+
+      new_user = @toggl.create_user(user_info.merge(user_password))
+      expect(new_user).to include(user_info)
+    end
+  end
 end
