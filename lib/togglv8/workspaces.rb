@@ -36,10 +36,6 @@ module TogglV8
       get "workspaces/#{workspace_id}/tasks#{active}"
     end
 
-    def dashboard(workspace_id)
-      get "dashboard/#{workspace_id}"
-    end
-
     def leave_workspace(workspace_id)
       delete "workspaces/#{workspace_id}/leave"
     end

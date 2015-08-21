@@ -10,4 +10,5 @@ module TogglV8
     def dashboard(workspace_id)
       get "dashboard/#{workspace_id}"
     end
+  end
 end

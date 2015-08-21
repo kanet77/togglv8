@@ -5,6 +5,7 @@ require 'logger'
 require 'awesome_print' # for debug output
 
 require_relative 'togglv8/clients'
+require_relative 'togglv8/dashboard'
 require_relative 'togglv8/project_users'
 require_relative 'togglv8/projects'
 require_relative 'togglv8/tags'
