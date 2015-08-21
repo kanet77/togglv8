@@ -48,6 +48,8 @@ See specs for more examples.
 
 Run `rdoc` to generate documentation. Open `doc/index.html` in your browser.
 
+Also available on [DocumentUp](https://documentup.com/kanet77/togglv8)
+
 ## Test Coverage
 
 Open `coverage/index.html` to see test coverage.
