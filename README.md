@@ -1,6 +1,7 @@
+
 # Toggl API v8
 
-[![Build status](https://api.travis-ci.org/kanet77/togglv8.svg "Build Status")](https://travis-ci.org/kanet77/togglv8)
+[![Build Status](https://api.travis-ci.org/kanet77/togglv8.svg "Build Status")](https://travis-ci.org/kanet77/togglv8) [![Coverage Status](https://coveralls.io/repos/kanet77/togglv8/badge.svg?branch=v0.2&service=github)](https://coveralls.io/github/kanet77/togglv8?branch=v0.2)
 
 [Toggl](http://www.toggl.com) is a time tracking tool.
 
@@ -55,8 +56,6 @@ Also available on [DocumentUp](https://documentup.com/kanet77/togglv8)
 Open `coverage/index.html` to see test coverage.
 
 As of 2015-08-21, coverage is "90.39% covered at 6.16 hits/line" according to [SimpleCov](https://rubygems.org/gems/simplecov).
-
-[![Coverage Status](https://coveralls.io/repos/kanet77/togglv8/badge.svg?branch=v0.2&service=github)](https://coveralls.io/github/kanet77/togglv8?branch=v0.2)
 
 ## Acknowledgements
 
