@@ -72,7 +72,7 @@ module TogglV8
     #
     # See Toggl {Create Project}[https://github.com/toggl/toggl_api_docs/blob/master/chapters/projects.md#create-project]
     def create_project(params)
-      requireParams(params, [:name, :wid])
+      requireParams(params, ['name', 'wid'])
       post "projects", {project: params}
     end
 

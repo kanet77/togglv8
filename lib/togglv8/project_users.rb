@@ -15,7 +15,7 @@ module TogglV8
     # fullname : full name of the user, who is added to the project
 
     def create_project_user(params)
-      requireParams(params, [:pid, :uid])
+      requireParams(params, ['pid', 'uid'])
       params[:fields] = "fullname"  # for simplicity, always request fullname field
       post "project_users", { 'project_user' => params }
     end

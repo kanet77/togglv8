@@ -19,7 +19,7 @@ describe 'Clients' do
   context 'new client' do
     before :all do
       sleep(0.1)
-      @client = @toggl.create_client({ name: 'new client', wid: @workspace_id })
+      @client = @toggl.create_client({ 'name' => 'new client', 'wid' => @workspace_id })
       client_ids = @toggl.my_clients.map { |c| c['id'] }
       expect(client_ids).to eq [ @client['id'] ]
     end
@@ -43,7 +43,7 @@ describe 'Clients' do
     context 'multiple clients' do
       before :all do
         sleep(0.1)
-        @client2 = @toggl.create_client({ name: 'new client 2', wid: @workspace_id })
+        @client2 = @toggl.create_client({ 'name' => 'new client 2', 'wid' => @workspace_id })
       end
 
       after :all do
@@ -86,7 +86,7 @@ describe 'Clients' do
       context 'new client projects' do
         before :all do
           sleep(0.1)
-          @project = @toggl.create_project({ name: 'project', wid: @workspace_id, cid: @client['id'] })
+          @project = @toggl.create_project({ 'name' => 'project', 'wid' => @workspace_id, 'cid' => @client['id'] })
         end
 
         after :all do
@@ -100,7 +100,7 @@ describe 'Clients' do
         end
 
         it 'gets multiple client projects' do
-          project2 = @toggl.create_project({ name: 'project2', wid: @workspace_id, cid: @client['id'] })
+          project2 = @toggl.create_project({ 'name' => 'project2', 'wid' => @workspace_id, 'cid' => @client['id'] })
 
           projects = @toggl.get_client_projects(@client['id'])
           project_ids = projects.map { |p| p['id'] }
@@ -115,7 +115,7 @@ describe 'Clients' do
   context 'updated client' do
     before :each do
       sleep(0.1)
-      @client = @toggl.create_client({ name: 'client to update', wid: @workspace_id })
+      @client = @toggl.create_client({ 'name' => 'client to update', 'wid' => @workspace_id })
     end
 
     after :each do

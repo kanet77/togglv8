@@ -13,7 +13,7 @@ module TogglV8
     # at    : timestamp that is sent in the response, indicates the time client was last updated
 
     def create_client(params)
-      requireParams(params, [:name, :wid])
+      requireParams(params, ['name', 'wid'])
       post "clients", {client: params}
     end
 
@@ -30,7 +30,7 @@ module TogglV8
     end
 
     def get_client_projects(client_id, params={})
-      active = params.has_key?(:active) ? "?active=#{params[:active]}" : ""
+      active = params.has_key?('active') ? "?active=#{params['active']}" : ""
       get "clients/#{client_id}/projects#{active}"
     end
   end
