@@ -12,3 +12,9 @@ rvm:
   - ree
 script: bundle exec rspec
 cache: bundler
+branches:
+  except:
+    - master
+branches:
+  only:
+    - v0.2
