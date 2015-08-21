@@ -1,7 +1,7 @@
 
 # Toggl API v8
 
-[![Build Status](https://api.travis-ci.org/kanet77/togglv8.svg "Build Status")](https://travis-ci.org/kanet77/togglv8) [![Coverage Status](https://coveralls.io/repos/kanet77/togglv8/badge.svg?branch=v0.2&service=github)](https://coveralls.io/github/kanet77/togglv8?branch=v0.2)
+[![Build Status](https://api.travis-ci.org/kanet77/togglv8.svg "Build Status")](https://travis-ci.org/kanet77/togglv8) [![Coverage Status](https://coveralls.io/repos/kanet77/togglv8/badge.svg?branch=master&service=github)](https://coveralls.io/github/kanet77/togglv8?branch=master)
 
 [Toggl](http://www.toggl.com) is a time tracking tool.
 
