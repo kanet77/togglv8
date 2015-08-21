@@ -15,3 +15,6 @@ branches:
 branches:
   only:
     - v0.2
+addons:
+  code_climate:
+    repo_token: eb44970f9efc497fb68c6ec1ce051dea530776b6a5bbe75e57734625f761ac86
