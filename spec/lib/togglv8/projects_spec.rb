@@ -1,6 +1,6 @@
 describe 'Projects' do
   before :all do
-    sleep(0.5)
+    sleep(1)
     @toggl = TogglV8::API.new(Testing::API_TOKEN)
     @workspaces = @toggl.workspaces
     @workspace_id = @workspaces.first['id']
@@ -13,7 +13,7 @@ describe 'Projects' do
 
   context 'new project' do
     before :all do
-      sleep(0.5)
+      sleep(1)
       @project = @toggl.create_project({ 'name' => 'new project', 'wid' => @workspace_id })
       project_ids = @toggl.my_projects.map { |p| p['id'] }
       expect(project_ids).to eq [ @project['id'] ]
@@ -52,7 +52,7 @@ describe 'Projects' do
 
   context 'updated project' do
     before :each do
-      sleep(0.5)
+      sleep(1)
       @project = @toggl.create_project({ 'name' => 'project to update', 'wid' => @workspace_id })
     end
 

@@ -1,21 +1,23 @@
-require "codeclimate-test-reporter"
-CodeClimate::TestReporter.start
+# require "codeclimate-test-reporter"
+# CodeClimate::TestReporter.start
+
+require 'coveralls'
+Coveralls.wear!
 
 # require 'simplecov'
-
 # SimpleCov.start do
-  # require 'simplecov-badge'
-  # add_group 'lib', 'lib/'
-  # add_filter '/doc/'
-  # add_filter '/spec/'
-  # add_filter '/pkg/'
-    # configure any options you want for SimpleCov::Formatter::BadgeFormatter
-    # SimpleCov::Formatter::BadgeFormatter.generate_groups = true
-    # SimpleCov::Formatter::BadgeFormatter.timestamp = true
-    # SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
-    #     SimpleCov::Formatter::HTMLFormatter,
-    #     SimpleCov::Formatter::BadgeFormatter,
-    # ]
+#   require 'simplecov-badge'
+#   add_group 'lib', 'lib/'
+#   add_filter '/doc/'
+#   add_filter '/spec/'
+#   add_filter '/pkg/'
+#   # configure any options you want for SimpleCov::Formatter::BadgeFormatter
+#   SimpleCov::Formatter::BadgeFormatter.generate_groups = true
+#   SimpleCov::Formatter::BadgeFormatter.timestamp = true
+#   SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+#       SimpleCov::Formatter::HTMLFormatter,
+#       SimpleCov::Formatter::BadgeFormatter,
+#   ]
 # end
 # NOTE: SimpleCov.start must be issued before any application code is required!
 # -----------------------------------------------------------------------------
