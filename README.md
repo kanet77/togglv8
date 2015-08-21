@@ -1,6 +1,6 @@
 # Toggl API v8
 
-![Build status](https://api.travis-ci.org/kanet77/togglv8.svg "Build Status")
+[![Build status](https://api.travis-ci.org/kanet77/togglv8.svg "Build Status")](https://travis-ci.org/kanet77/togglv8)
 
 [Toggl](http://www.toggl.com) is a time tracking tool.
 
