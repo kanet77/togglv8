@@ -1,6 +1,6 @@
 describe 'Clients' do
   before :all do
-    sleep(0.1)
+    sleep(0.5)
     @toggl = TogglV8::API.new(Testing::API_TOKEN)
     @workspaces = @toggl.workspaces
     @workspace_id = @workspaces.first['id']
@@ -18,7 +18,7 @@ describe 'Clients' do
 
   context 'new client' do
     before :all do
-      sleep(0.1)
+      sleep(0.5)
       @client = @toggl.create_client({ 'name' => 'new client', 'wid' => @workspace_id })
       client_ids = @toggl.my_clients.map { |c| c['id'] }
       expect(client_ids).to eq [ @client['id'] ]
@@ -42,7 +42,7 @@ describe 'Clients' do
 
     context 'multiple clients' do
       before :all do
-        sleep(0.1)
+        sleep(0.5)
         @client2 = @toggl.create_client({ 'name' => 'new client 2', 'wid' => @workspace_id })
       end
 
@@ -85,7 +85,7 @@ describe 'Clients' do
 
       context 'new client projects' do
         before :all do
-          sleep(0.1)
+          sleep(0.5)
           @project = @toggl.create_project({ 'name' => 'project', 'wid' => @workspace_id, 'cid' => @client['id'] })
         end
 
@@ -114,7 +114,7 @@ describe 'Clients' do
 
   context 'updated client' do
     before :each do
-      sleep(0.1)
+      sleep(0.5)
       @client = @toggl.create_client({ 'name' => 'client to update', 'wid' => @workspace_id })
     end
 

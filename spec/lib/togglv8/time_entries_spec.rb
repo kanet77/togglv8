@@ -1,6 +1,6 @@
 describe 'Time Entries' do
   before :all do
-    sleep(0.1)
+    sleep(0.5)
     @toggl = TogglV8::API.new(Testing::API_TOKEN)
     @workspaces = @toggl.workspaces
     @workspace_id = @workspaces.first['id']

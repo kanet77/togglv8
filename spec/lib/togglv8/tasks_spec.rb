@@ -1,6 +1,6 @@
 describe 'Tasks', :pro_account do
   before :all do
-    sleep(0.1)
+    sleep(0.5)
     @toggl = TogglV8::API.new(Testing::API_TOKEN)
     @workspaces = @toggl.workspaces
     @workspace_id = @workspaces.first['id']
@@ -13,7 +13,7 @@ describe 'Tasks', :pro_account do
 
   context 'new task' do
     before :all do
-      sleep(0.1)
+      sleep(0.5)
       @task = @toggl.create_task({ name: 'new task', pid: @project['id'] })
       task_ids = @toggl.get_project_tasks(@project['id']).map { |t| t['id'] }
       expect(task_ids).to eq [ @task['id'] ]
@@ -60,7 +60,7 @@ describe 'Tasks', :pro_account do
 
   context 'multiple tasks' do
     before :each do
-      sleep(0.1)
+      sleep(0.5)
       @task1 = @toggl.create_task({ name: 'task1', pid: @project['id'] })
       @task2 = @toggl.create_task({ name: 'task2', pid: @project['id'] })
       @task3 = @toggl.create_task({ name: 'task3', pid: @project['id'] })
