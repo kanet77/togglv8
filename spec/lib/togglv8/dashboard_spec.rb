@@ -8,12 +8,12 @@ describe 'Dashboard' do
 
   it 'gets nil dashboard data' do
     dashboard = @toggl.dashboard(@workspace_id)
-    expect(dashboard).to eq Hash["most_active_user"=>nil, "activity"=>nil]
+    expect(dashboard).to eq Hash['most_active_user' => nil, 'activity' => nil]
   end
 
   context 'gets dashboard time entries' do
     before :all do
-      @new_time_entry = @toggl.start_time_entry({wid: @workspace_id, description: 'new time entry'})
+      @new_time_entry = @toggl.start_time_entry({ 'wid' => @workspace_id, 'description' => 'new time entry' })
     end
 
     after :all do

@@ -17,12 +17,12 @@ module TogglV8
     def create_project_user(params)
       requireParams(params, [:pid, :uid])
       params[:fields] = "fullname"  # for simplicity, always request fullname field
-      post "project_users", {project_user: params}
+      post "project_users", { 'project_user' => params }
     end
 
     def update_project_user(project_user_id, params)
       params[:fields] = "fullname"  # for simplicity, always request fullname field
-      put "project_users/#{project_user_id}", {project_user: params}
+      put "project_users/#{project_user_id}", { 'project_user' => params }
     end
 
     def delete_project_user(project_user_id)

@@ -21,7 +21,7 @@ module TogglV8
 
     def create_task(params)
       requireParams(params, [:name, :pid])
-      post "tasks", {task: params}
+      post "tasks", { 'task' => params }
     end
 
     def get_task(task_id)
@@ -30,7 +30,7 @@ module TogglV8
 
     # ex: update_task(1894675, {active: true, estimated_seconds: 4500, fields: "done_seconds,uname"})
     def update_task(task_id, params)
-      put "tasks/#{task_id.join(',')}", {task: params}
+      put "tasks/#{task_id.join(',')}", { 'task' => params }
     end
 
     def delete_task(task_id)
@@ -42,7 +42,7 @@ module TogglV8
     # ------------ #
 
     def update_tasks(task_ids, params)
-      put "tasks/#{task_ids.join(',')}", {task: params}
+      put "tasks/#{task_ids.join(',')}", { 'task' => params }
     end
 
     def delete_tasks(task_ids)

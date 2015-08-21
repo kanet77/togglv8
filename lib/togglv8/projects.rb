@@ -83,7 +83,7 @@ module TogglV8
 
     # [Update project data](https://github.com/toggl/toggl_api_docs/blob/master/chapters/projects.md#update-project-data)
     def update_project(project_id, params)
-      put "projects/#{project_id}", {project: params}
+      put "projects/#{project_id}", { 'project' => params }
     end
 
     # [Delete a project](https://github.com/toggl/toggl_api_docs/blob/master/chapters/projects.md#delete-a-project)

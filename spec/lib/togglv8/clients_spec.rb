@@ -134,8 +134,8 @@ describe 'Clients' do
 
     it 'updates Pro project data', :pro_account do
       new_values = {
-        hrate: '7.77',
-        cur: 'USD',
+        'hrate' => '7.77',
+        'cur' => 'USD',
       }
       client = @toggl.update_client(@client['id'], new_values)
       expect(client).to include(new_values)

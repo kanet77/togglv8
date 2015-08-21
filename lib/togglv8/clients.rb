@@ -22,7 +22,7 @@ module TogglV8
     end
 
     def update_client(client_id, params)
-      put "clients/#{client_id}", {client: params}
+      put "clients/#{client_id}", { 'client' => params }
     end
 
     def delete_client(client_id)

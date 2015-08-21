@@ -14,7 +14,7 @@ describe 'Projects' do
   context 'new project' do
     before :all do
       sleep(0.1)
-      @project = @toggl.create_project({ name: 'new project', wid: @workspace_id })
+      @project = @toggl.create_project({ 'name' => 'new project', 'wid' => @workspace_id })
       project_ids = @toggl.my_projects.map { |p| p['id'] }
       expect(project_ids).to eq [ @project['id'] ]
     end
@@ -53,7 +53,7 @@ describe 'Projects' do
   context 'updated project' do
     before :each do
       sleep(0.1)
-      @project = @toggl.create_project({ name: 'project to update', wid: @workspace_id })
+      @project = @toggl.create_project({ 'name' => 'project to update', 'wid' => @workspace_id })
     end
 
     after :each do
@@ -74,8 +74,8 @@ describe 'Projects' do
 
     it 'updates Pro project data', :pro_account do
       new_values = {
-        template: true,
-        billable: true,
+        'template' => 'true',
+        'billable' => 'true',
       }
       project = @toggl.update_project(@project['id'], new_values)
       expect(project).to include(new_values)
@@ -91,9 +91,9 @@ describe 'Projects' do
       # start with no projects
       expect(@toggl.projects(@workspace_id)).to be_empty
 
-      p1 = @toggl.create_project({ name: 'p1', wid: @workspace_id })
-      p2 = @toggl.create_project({ name: 'p2', wid: @workspace_id })
-      p3 = @toggl.create_project({ name: 'p3', wid: @workspace_id })
+      p1 = @toggl.create_project({ 'name' => 'p1', 'wid' => @workspace_id })
+      p2 = @toggl.create_project({ 'name' => 'p2', 'wid' => @workspace_id })
+      p3 = @toggl.create_project({ 'name' => 'p3', 'wid' => @workspace_id })
 
       # see 3 new projects
       expect(@toggl.projects(@workspace_id).length).to eq 3

@@ -50,5 +50,11 @@ module TogglV8
       user = me(all=true) if user.nil?
       user['workspaces'] || {}
     end
+
+    def create_user(params)
+      params['created_with'] = 'TogglV8' unless params.has_key?('created_with')
+      requireParams(params, ['email', 'password', 'timezone', 'created_with'])
+      post "signups", { 'user' => params }
+    end
   end
 end

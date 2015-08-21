@@ -15,7 +15,7 @@ module TogglV8
 
     # ex: update_tag(12345, {name: "same tame game"})
     def update_tag(tag_id, params)
-      put "tags/#{tag_id}", {tag: params}
+      put "tags/#{tag_id}", { 'tag' => params }
     end
 
     def delete_tag(tag_id)

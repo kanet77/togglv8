@@ -29,7 +29,7 @@ module TogglV8
       if !params.has_key?(:wid) and !params.has_key?(:pid) and !params.has_key?(:tid) then
         raise ArgumentError, "one of params['wid'], params['pid'], params['tid'] is required"
       end
-      post "time_entries", {time_entry: params}
+      post "time_entries", { 'time_entry' => params }
     end
 
     def start_time_entry(params)
@@ -49,7 +49,7 @@ module TogglV8
     end
 
     def update_time_entry(time_entry_id, params)
-      put "time_entries/#{time_entry_id}", {time_entry: params}
+      put "time_entries/#{time_entry_id}", { 'time_entry' => params }
     end
 
     def delete_time_entry(time_entry_id)
