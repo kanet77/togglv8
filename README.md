@@ -56,6 +56,8 @@ Open `coverage/index.html` to see test coverage.
 
 As of 2015-08-21, coverage is "90.39% covered at 6.16 hits/line" according to [SimpleCov](https://rubygems.org/gems/simplecov).
 
+[[![Coverage Status](https://coveralls.io/repos/kanet77/togglv8/badge.svg?branch=master&service=github)](https://coveralls.io/github/kanet77/togglv8?branch=master)](coveralls.io)
+
 ## Acknowledgements
 
 - Thanks to [Koen Van der Auwera](https://github.com/atog) for the [Ruby Wrapper for Toggl API v6](https://github.com/atog/toggl)
