@@ -114,9 +114,13 @@ module TogglV8
       # @logger.ap(full_resp.env, :debug)
 
       raise 'Too many requests in a given amount of time.' if full_resp.status == 429
+      raise Oj.dump(full_resp.env) unless full_resp.success?
+      return {} if full_resp.body.nil? || full_resp.body == 'null'
 
-      resp = Oj.load(full_resp.env[:body])
-      resp['data'].nil? ? resp : resp['data']
+      resp = Oj.load(full_resp.body)
+
+      return resp['data'] if resp.respond_to?(:has_key?) && resp.has_key?('data')
+      resp
     end
 
     def delete(resource)
@@ -127,6 +131,8 @@ module TogglV8
       raise 'Too many requests in a given amount of time.' if full_resp.status == 429
 
       raise Oj.dump(full_resp.env) unless full_resp.success?
+      return {} if full_resp.body.nil? || full_resp.body == 'null'
+
       full_resp.body
     end
 
