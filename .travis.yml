@@ -1,7 +1,6 @@
 language: ruby
 rvm:
   - ruby-head
-  - 1.9.3
 script: bundle exec rspec
 cache: bundler
 branches:
