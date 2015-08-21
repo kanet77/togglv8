@@ -56,7 +56,7 @@ Open `coverage/index.html` to see test coverage.
 
 As of 2015-08-21, coverage is "90.39% covered at 6.16 hits/line" according to [SimpleCov](https://rubygems.org/gems/simplecov).
 
-[[![Coverage Status](https://coveralls.io/repos/kanet77/togglv8/badge.svg?branch=master&service=github)](https://coveralls.io/github/kanet77/togglv8?branch=master)](coveralls.io)
+[![Coverage Status](https://coveralls.io/repos/kanet77/togglv8/badge.svg?branch=v0.2&service=github)](https://coveralls.io/github/kanet77/togglv8?branch=v0.2)
 
 ## Acknowledgements
 
