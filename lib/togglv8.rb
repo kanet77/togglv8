@@ -103,9 +103,7 @@ module TogglV8
       return {} if full_resp.body.nil? || full_resp.body == 'null'
 
       resp = Oj.load(full_resp.body)
-
-      return resp['data'] if resp.respond_to?(:has_key?) && resp.has_key?('data')
-      resp
+      resp['data']
     end
 
     def put(resource, data='')
@@ -118,9 +116,7 @@ module TogglV8
       return {} if full_resp.body.nil? || full_resp.body == 'null'
 
       resp = Oj.load(full_resp.body)
-
-      return resp['data'] if resp.respond_to?(:has_key?) && resp.has_key?('data')
-      resp
+      resp['data']
     end
 
     def delete(resource)
