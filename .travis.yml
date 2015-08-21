@@ -11,3 +11,4 @@ rvm:
   - jruby-head
   - ree
 script: bundle exec rspec
+cache: bundler

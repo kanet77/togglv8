@@ -1,5 +1,7 @@
 # Toggl API v8
 
+![Build status](https://api.travis-ci.org/kanet77/togglv8.svg "Build Status")
+
 [Toggl](http://www.toggl.com) is a time tracking tool.
 
 [togglv8](/) is a Ruby Wrapper for [Toggl API v8](https://github.com/toggl/toggl_api_docs). It is designed to mirror the Toggl API as closely as possible.
