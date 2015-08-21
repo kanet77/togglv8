@@ -70,7 +70,7 @@ module TogglV8
       else
         raise ArgumentError, "Can't convert #{timestamp.class} to ISO-8601 Date/Time"
       end
-      return formatted_ts
+      return formatted_ts.sub('+00:00', 'Z')
     end
 
     def get_time_entries(start_timestamp=nil, end_timestamp=nil)
