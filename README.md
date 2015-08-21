@@ -42,6 +42,16 @@ toggl_api.create_time_entry({description: "Workspace time entry",
 
 See specs for more examples.
 
+## Documentation
+
+Run `rdoc` to generate documentation. Open `doc/index.html` in your browser.
+
+## Test Coverage
+
+Open `coverage/index.html` to see test coverage.
+
+As of 2015-08-21, coverage is "90.39% covered at 6.16 hits/line" according to [SimpleCov](https://rubygems.org/gems/simplecov).
+
 ## Acknowledgements
 
 - Thanks to [Koen Van der Auwera](https://github.com/atog) for the [Ruby Wrapper for Toggl API v6](https://github.com/atog/toggl)
