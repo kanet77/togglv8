@@ -19,6 +19,10 @@ describe 'Time Entries' do
       @time_entry = @toggl.create_time_entry(time_entry_info)
     end
 
+    after :each do
+      @toggl.delete_time_entry(@time_entry['id'])
+    end
+
     it 'creates a time entry' do
       expect(@time_entry).to include(@expected)
     end
@@ -97,8 +101,10 @@ describe 'Time Entries' do
       expect(time_entry_by_id.has_key?('stop')).to eq false
 
       # stop time entry
-      time_entry_4 = @toggl.stop_time_entry(running_time_entry['id'])
-      expect(time_entry_4.has_key?('stop')).to eq true
+      stopped_time_entry = @toggl.stop_time_entry(running_time_entry['id'])
+      expect(stopped_time_entry.has_key?('stop')).to eq true
+
+      @toggl.delete_time_entry(stopped_time_entry['id'])
     end
 
     it 'returns nil if there is no current time entry' do
