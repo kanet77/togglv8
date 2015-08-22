@@ -2,7 +2,6 @@ require 'date'
 
 describe 'Time Entries' do
   before :all do
-    sleep(1)
     @toggl = TogglV8::API.new(Testing::API_TOKEN)
     @workspaces = @toggl.workspaces
     @workspace_id = @workspaces.first['id']

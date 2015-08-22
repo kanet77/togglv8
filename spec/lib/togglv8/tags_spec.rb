@@ -1,6 +1,5 @@
 describe 'Tags' do
   before :all do
-    sleep(1)
     @toggl = TogglV8::API.new(Testing::API_TOKEN)
     @workspaces = @toggl.workspaces
     @workspace_id = @workspaces.first['id']
@@ -8,7 +7,6 @@ describe 'Tags' do
 
   context 'new tag' do
     before :all do
-      sleep(1)
       @tag = @toggl.create_tag({ 'name' => 'new tag', 'wid' => @workspace_id })
       tag_ids = @toggl.my_tags.map { |t| t['id'] }
       expect(tag_ids).to eq [ @tag['id'] ]
@@ -30,7 +28,6 @@ describe 'Tags' do
 
   context 'updated tag' do
     before :each do
-      sleep(1)
       @tag = @toggl.create_tag({ 'name' => 'tag to update', 'wid' => @workspace_id })
     end
 

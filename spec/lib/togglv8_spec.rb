@@ -1,6 +1,10 @@
 require 'fileutils'
 
 describe 'TogglV8::API' do
+  before :each do
+    sleep(Testing::DELAY_SEC)
+  end
+
   it 'initializes with api_token' do
     toggl = TogglV8::API.new(Testing::API_TOKEN)
     me = toggl.me
