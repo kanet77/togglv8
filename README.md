@@ -45,6 +45,10 @@ toggl_api.create_time_entry({description: "Workspace time entry",
 
 See specs for more examples.
 
+**Note:** Requests are rate-limited. See [Toggl API docs](https://github.com/toggl/toggl_api_docs#the-api-format):
+
+> For rate limiting we have implemented a Leaky bucket. When a limit has been hit the request will get a HTTP 429 response and it's the task of the client to sleep/wait until bucket is empty. Limits will and can change during time, but a safe window will be 1 request per second. Limiting is applied per api token per IP, meaning two users from the same IP will get their rate allocated separately.
+
 ## Documentation
 
 Run `rdoc` to generate documentation. Open `doc/index.html` in your browser.
