@@ -23,7 +23,7 @@ describe 'TogglV8::API' do
 
   it 'does not initialize with bogus api_token' do
     toggl = TogglV8::API.new('4880nqor1orr9n241sn08070q33oq49s')
-    expect { toggl.me } .to raise_error(RuntimeError)
+    expect { toggl.me }.to raise_error(RuntimeError, "HTTP Status: 403")
   end
 
   context '.toggl file' do

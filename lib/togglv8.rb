@@ -83,7 +83,7 @@ module TogglV8
       full_resp = self.conn.get(resource)
       # @logger.ap(full_resp.env, :debug)
 
-      raise 'Too many requests in a given amount of time.' if full_resp.status == 429
+      raise "HTTP Status: #{full_resp.status}" unless full_resp.status.between?(200,299)
       raise Oj.dump(full_resp.env) unless full_resp.success?
       return {} if full_resp.body.nil? || full_resp.body == 'null'
 
@@ -98,7 +98,7 @@ module TogglV8
       full_resp = self.conn.post(resource, Oj.dump(data))
       # @logger.ap(full_resp.env, :debug)
 
-      raise 'Too many requests in a given amount of time.' if full_resp.status == 429
+      raise "HTTP Status: #{full_resp.status}" unless full_resp.status.between?(200,299)
       raise Oj.dump(full_resp.env) unless full_resp.success?
       return {} if full_resp.body.nil? || full_resp.body == 'null'
 
@@ -111,7 +111,7 @@ module TogglV8
       full_resp = self.conn.put(resource, Oj.dump(data))
       # @logger.ap(full_resp.env, :debug)
 
-      raise 'Too many requests in a given amount of time.' if full_resp.status == 429
+      raise "HTTP Status: #{full_resp.status}" unless full_resp.status.between?(200,299)
       raise Oj.dump(full_resp.env) unless full_resp.success?
       return {} if full_resp.body.nil? || full_resp.body == 'null'
 
@@ -124,7 +124,7 @@ module TogglV8
       full_resp = self.conn.delete(resource)
       # @logger.ap(full_resp.env, :debug)
 
-      raise 'Too many requests in a given amount of time.' if full_resp.status == 429
+      raise "HTTP Status: #{full_resp.status}" unless full_resp.status.between?(200,299)
 
       raise Oj.dump(full_resp.env) unless full_resp.success?
       return {} if full_resp.body.nil? || full_resp.body == 'null'
