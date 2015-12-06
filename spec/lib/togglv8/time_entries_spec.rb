@@ -83,6 +83,10 @@ describe 'Time Entries' do
       }
       @now = DateTime.now
 
+      start = { 'start' => @toggl.iso8601(@now - 9) }
+      @time_entry_nine_days_ago = @toggl.create_time_entry(time_entry_info.merge(start))
+      @nine_days_ago_id = @time_entry_nine_days_ago['id']
+
       start = { 'start' => @toggl.iso8601(@now - 7) }
       @time_entry_last_week = @toggl.create_time_entry(time_entry_info.merge(start))
       @last_week_id = @time_entry_last_week['id']
@@ -107,23 +111,23 @@ describe 'Time Entries' do
       expect(ids).to eq [ @last_week_id, @now_id ]
     end
 
-    it 'gets time entries after start timestamp (up till now)' do
-      ids = @toggl.get_time_entries(start_timestamp = @now - 1).map { |t| t['id']}
+    it 'gets time entries after start_date (up till now)' do
+      ids = @toggl.get_time_entries({start_date: @now - 1}).map { |t| t['id']}
       expect(ids).to eq [ @now_id ]
     end
 
-    it 'gets time entries before end timestamp' do
-      ids = @toggl.get_time_entries(end_timestamp = @now + 1).map { |t| t['id']}
-      expect(ids).to be_empty
+    it 'gets time entries between 9 days ago and end_date' do
+      ids = @toggl.get_time_entries({end_date: @now + 1}).map { |t| t['id']}
+      expect(ids).to eq [ @last_week_id, @now_id ]
     end
 
-    it 'gets time entries between start and end timestamps' do
-      ids = @toggl.get_time_entries(start_timestamp = @now - 1, end_timestamp = @now + 1).map { |t| t['id']}
+    it 'gets time entries between start_date and end_date' do
+      ids = @toggl.get_time_entries({start_date: @now - 1, end_date: @now + 1}).map { |t| t['id']}
       expect(ids).to eq [ @now_id ]
     end
 
     it 'gets time entries in the future' do
-      ids = @toggl.get_time_entries(start_timestamp = @now - 1, end_timestamp = @now + 8).map { |t| t['id']}
+      ids = @toggl.get_time_entries({start_date: @now - 1, end_date: @now + 8}).map { |t| t['id']}
       expect(ids).to eq [ @now_id, @next_week_id ]
     end
   end

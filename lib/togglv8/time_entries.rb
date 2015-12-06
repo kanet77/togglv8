@@ -73,10 +73,12 @@ module TogglV8
       return formatted_ts.sub('+00:00', 'Z')
     end
 
-    def get_time_entries(start_timestamp=nil, end_timestamp=nil)
+    def get_time_entries(dates = {})
+      start_date = dates[:start_date]
+      end_date = dates[:end_date]
       params = []
-      params.push("start_date=#{iso8601(start_timestamp)}") if !start_timestamp.nil?
-      params.push("end_date=#{iso8601(end_timestamp)}") if !end_timestamp.nil?
+      params.push("start_date=#{iso8601(start_date)}") unless start_date.nil?
+      params.push("end_date=#{iso8601(end_date)}") unless end_date.nil?
       get "time_entries%s" % [params.empty? ? "" : "?#{params.join('&')}"]
     end
 
