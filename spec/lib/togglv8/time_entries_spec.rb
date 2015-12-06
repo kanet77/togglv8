@@ -210,13 +210,6 @@ describe 'Time Entries' do
     end
 
     context 'String' do
-      xit 'converts Zulu to +00:00' do
-        ts = '2015-08-21T09:21:02Z'
-        expected = '2015-08-21T09:21:02+00:00'
-
-        expect(@toggl.iso8601(ts)).to eq expected
-      end
-
       it 'converts +00:00 to Zulu' do
         ts = '2015-08-21T09:21:02+00:00'
         expected = '2015-08-21T09:21:02Z'
