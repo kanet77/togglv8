@@ -68,7 +68,6 @@ module TogglV8
       end
     end
 
-
     def requireParams(params, fields=[])
       raise ArgumentError, 'params is not a Hash' unless params.is_a? Hash
       return if fields.empty?
@@ -79,88 +78,56 @@ module TogglV8
       raise ArgumentError, errors.join(', ') if !errors.empty?
     end
 
-
-    def get(resource)
-      @logger.debug("GET #{resource}")
+    def _call_api(procs)
+      @logger.debug(procs[:debug_output].call)
       full_resp = nil
       i = 0
       loop do
-        full_resp = self.conn.get(resource)
-        # @logger.ap(full_resp.env, :debug)
-        break if full_resp.status != 429 || i > MAX_RETRIES
-        sleep(DELAY_SEC)
         i += 1
+        full_resp = procs[:api_call].call
+        @logger.ap(full_resp.env, :debug)
+        break if full_resp.status != 429 || i >= MAX_RETRIES
+        sleep(DELAY_SEC)
       end
 
       raise "HTTP Status: #{full_resp.status}" unless full_resp.status.between?(200,299)
       raise Oj.dump(full_resp.env) unless full_resp.success?
       return {} if full_resp.body.nil? || full_resp.body == 'null'
 
-      resp = Oj.load(full_resp.body)
+      full_resp
+    end
 
+    def get(resource)
+      full_resp = _call_api(debug_output: lambda { "GET #{resource}" },
+                           api_call: lambda { self.conn.get(resource) } )
+      return {} if full_resp == {}
+      resp = Oj.load(full_resp.body)
       return resp['data'] if resp.respond_to?(:has_key?) && resp.has_key?('data')
       resp
     end
 
     def post(resource, data='')
-      @logger.debug("POST #{resource} / #{data}")
-      full_resp = nil
-      i = 0
-      loop do
-        full_resp = self.conn.post(resource, Oj.dump(data))
-        # @logger.ap(full_resp.env, :debug)
-        break if full_resp.status != 429 || i > MAX_RETRIES
-        sleep(DELAY_SEC)
-        i += 1
-      end
-
-      raise "HTTP Status: #{full_resp.status}" unless full_resp.status.between?(200,299)
-      raise Oj.dump(full_resp.env) unless full_resp.success?
-      return {} if full_resp.body.nil? || full_resp.body == 'null'
-
+      full_resp = _call_api(debug_output: lambda { "POST #{resource} / #{data}" },
+                           api_call: lambda { self.conn.post(resource, Oj.dump(data)) } )
+      return {} if full_resp == {}
       resp = Oj.load(full_resp.body)
       resp['data']
     end
 
     def put(resource, data='')
-      @logger.debug("PUT #{resource} / #{data}")
-      full_resp = nil
-      i = 0
-      loop do
-        full_resp = self.conn.put(resource, Oj.dump(data))
-        # @logger.ap(full_resp.env, :debug)
-        break if full_resp.status != 429 || i > MAX_RETRIES
-        sleep(DELAY_SEC)
-        i += 1
-      end
-
-      raise "HTTP Status: #{full_resp.status}" unless full_resp.status.between?(200,299)
-      raise Oj.dump(full_resp.env) unless full_resp.success?
-      return {} if full_resp.body.nil? || full_resp.body == 'null'
-
+      full_resp = _call_api(debug_output: lambda { "PUT #{resource} / #{data}" },
+                           api_call: lambda { self.conn.put(resource, Oj.dump(data)) } )
+      return {} if full_resp == {}
       resp = Oj.load(full_resp.body)
       resp['data']
     end
 
     def delete(resource)
-      @logger.debug("DELETE #{resource}")
-      full_resp = nil
-      i = 0
-      loop do
-        full_resp = self.conn.delete(resource)
-        # @logger.ap(full_resp.env, :debug)
-        break if full_resp.status != 429 || i > MAX_RETRIES
-        sleep(DELAY_SEC)
-        i += 1
-      end
-
-      raise "HTTP Status: #{full_resp.status}" unless full_resp.status.between?(200,299)
-      raise Oj.dump(full_resp.env) unless full_resp.success?
-      return {} if full_resp.body.nil? || full_resp.body == 'null'
-
+      full_resp = _call_api(debug_output: lambda { "DELETE #{resource}" },
+                           api_call: lambda { self.conn.delete(resource) } )
+      return {} if full_resp == {}
       full_resp.body
     end
 
   end
-
 end
