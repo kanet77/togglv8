@@ -33,7 +33,17 @@ module TogglV8
 
     def my_projects(user=nil)
       user = me(all=true) if user.nil?
-      user['projects'] || {}
+      return {} unless user['projects']
+      projects = user['projects']
+      projects.delete_if { |p| p['server_deleted_at'] }
+    end
+
+    # TODO: Test my_deleted_projects
+    def my_deleted_projects(user=nil)
+      user = me(all=true) if user.nil?
+      return {} unless user['projects']
+      projects = user['projects']
+      projects.keep_if { |p| p['server_deleted_at'] }
     end
 
     def my_tags(user=nil)
