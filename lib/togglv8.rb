@@ -20,6 +20,8 @@ Oj.default_options = { mode: :compat }
 
 module TogglV8
   TOGGL_API_URL = 'https://www.toggl.com/api/'
+  DELAY_SEC = 1
+  MAX_RETRIES = 3
 
   class API
     TOGGL_API_V8_URL = TOGGL_API_URL + 'v8/'
@@ -80,8 +82,15 @@ module TogglV8
 
     def get(resource)
       @logger.debug("GET #{resource}")
-      full_resp = self.conn.get(resource)
-      # @logger.ap(full_resp.env, :debug)
+      full_resp = nil
+      i = 0
+      loop do
+        full_resp = self.conn.get(resource)
+        # @logger.ap(full_resp.env, :debug)
+        break if full_resp.status != 429 || i > MAX_RETRIES
+        sleep(DELAY_SEC)
+        i += 1
+      end
 
       raise "HTTP Status: #{full_resp.status}" unless full_resp.status.between?(200,299)
       raise Oj.dump(full_resp.env) unless full_resp.success?
@@ -95,8 +104,15 @@ module TogglV8
 
     def post(resource, data='')
       @logger.debug("POST #{resource} / #{data}")
-      full_resp = self.conn.post(resource, Oj.dump(data))
-      # @logger.ap(full_resp.env, :debug)
+      full_resp = nil
+      i = 0
+      loop do
+        full_resp = self.conn.post(resource, Oj.dump(data))
+        # @logger.ap(full_resp.env, :debug)
+        break if full_resp.status != 429 || i > MAX_RETRIES
+        sleep(DELAY_SEC)
+        i += 1
+      end
 
       raise "HTTP Status: #{full_resp.status}" unless full_resp.status.between?(200,299)
       raise Oj.dump(full_resp.env) unless full_resp.success?
@@ -108,8 +124,15 @@ module TogglV8
 
     def put(resource, data='')
       @logger.debug("PUT #{resource} / #{data}")
-      full_resp = self.conn.put(resource, Oj.dump(data))
-      # @logger.ap(full_resp.env, :debug)
+      full_resp = nil
+      i = 0
+      loop do
+        full_resp = self.conn.put(resource, Oj.dump(data))
+        # @logger.ap(full_resp.env, :debug)
+        break if full_resp.status != 429 || i > MAX_RETRIES
+        sleep(DELAY_SEC)
+        i += 1
+      end
 
       raise "HTTP Status: #{full_resp.status}" unless full_resp.status.between?(200,299)
       raise Oj.dump(full_resp.env) unless full_resp.success?
@@ -121,11 +144,17 @@ module TogglV8
 
     def delete(resource)
       @logger.debug("DELETE #{resource}")
-      full_resp = self.conn.delete(resource)
-      # @logger.ap(full_resp.env, :debug)
+      full_resp = nil
+      i = 0
+      loop do
+        full_resp = self.conn.delete(resource)
+        # @logger.ap(full_resp.env, :debug)
+        break if full_resp.status != 429 || i > MAX_RETRIES
+        sleep(DELAY_SEC)
+        i += 1
+      end
 
       raise "HTTP Status: #{full_resp.status}" unless full_resp.status.between?(200,299)
-
       raise Oj.dump(full_resp.env) unless full_resp.success?
       return {} if full_resp.body.nil? || full_resp.body == 'null'
 

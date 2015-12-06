@@ -24,7 +24,6 @@ class TogglV8SpecHelper
       @logger.debug("Deleting #{client_ids.length} clients")
       client_ids.each do |c_id|
         toggl.delete_client(c_id)
-        sleep(Testing::DELAY_SEC)
       end
     end
   end
@@ -46,7 +45,6 @@ class TogglV8SpecHelper
       @logger.debug("Deleting #{tag_ids.length} tags")
       tag_ids.each do |t_id|
         toggl.delete_tag(t_id)
-        sleep(Testing::DELAY_SEC)
       end
     end
   end
@@ -58,7 +56,6 @@ class TogglV8SpecHelper
       @logger.debug("Deleting #{time_entry_ids.length} time_entries")
       time_entry_ids.each do |t_id|
         toggl.delete_time_entry(t_id)
-        sleep(Testing::DELAY_SEC)
       end
     end
   end
@@ -72,7 +69,6 @@ class TogglV8SpecHelper
       @logger.debug("Leaving #{workspace_ids.length} workspaces")
       workspace_ids.each do |w_id|
         toggl.leave_workspace(w_id)
-        sleep(Testing::DELAY_SEC)
       end
     end
   end

@@ -75,11 +75,6 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     TogglV8SpecHelper.setUp()
-    puts "NOTE: Delaying #{Testing::DELAY_SEC} second(s) between specs to avoid failure due to '429 Too Many Requests'"
-  end
-
-  config.before(:each) do
-    sleep(Testing::DELAY_SEC)
   end
 
 # The settings below are suggested to provide a good initial experience
@@ -136,5 +131,4 @@ class Testing
   API_TOKEN = '4880adbe1bee9a241fa08070d33bd49f'
   USERNAME  = 'togglv8@mailinator.com'
   PASSWORD  = 'togglv8'
-  DELAY_SEC = 1
 end
