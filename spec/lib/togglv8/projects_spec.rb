@@ -64,15 +64,14 @@ describe 'Projects' do
         'active' => false,
         'auto_estimates' => true,
       }
-
       project = @toggl.update_project(@project['id'], new_values)
       expect(project).to include(new_values)
     end
 
     it 'updates Pro project data', :pro_account do
       new_values = {
-        'template' => 'true',
-        'billable' => 'true',
+        'template' => true,
+        'billable' => true,
       }
       project = @toggl.update_project(@project['id'], new_values)
       expect(project).to include(new_values)
