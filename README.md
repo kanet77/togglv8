@@ -45,7 +45,7 @@ toggl_api.create_time_entry({description: "Workspace time entry",
 
 See specs for more examples.
 
-**Note:** Requests are rate-limited. See [Toggl API docs](https://github.com/toggl/toggl_api_docs#the-api-format):
+**Note:** Requests are rate-limited. The togglv8 gem will handle a 429 response by pausing for 1 second and trying again, for up to 3 attempts. See [Toggl API docs](https://github.com/toggl/toggl_api_docs#the-api-format):
 
 > For rate limiting we have implemented a Leaky bucket. When a limit has been hit the request will get a HTTP 429 response and it's the task of the client to sleep/wait until bucket is empty. Limits will and can change during time, but a safe window will be 1 request per second. Limiting is applied per api token per IP, meaning two users from the same IP will get their rate allocated separately.
 
@@ -59,7 +59,9 @@ Also available on [DocumentUp](https://documentup.com/kanet77/togglv8)
 
 Open `coverage/index.html` to see test coverage.
 
-As of 2015-08-21, coverage is "90.39% covered at 6.16 hits/line" according to [SimpleCov](https://rubygems.org/gems/simplecov).
+As of 2015-12-10, coverage is "98.04% covered at 9.5 hits/line" according to [SimpleCov](https://rubygems.org/gems/simplecov).
+
+**Note:** Coverage is 91.2% when Pro account features are not tested.
 
 ## Acknowledgements
 
@@ -68,11 +70,13 @@ As of 2015-08-21, coverage is "90.39% covered at 6.16 hits/line" according to [S
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/togglv8/fork )
+1. Fork it ( https://github.com/kanet77/togglv8/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
+
+Pull Requests that include tests are **much** more likely to be accepted and merged quickly.
 
 ## License
 
