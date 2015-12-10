@@ -1,5 +1,5 @@
 module TogglV8
-  class API
+  class API < TogglBaseApi
 
     ##
     # ---------
