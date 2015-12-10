@@ -90,8 +90,7 @@ module TogglV8
         sleep(DELAY_SEC)
       end
 
-      raise "HTTP Status: #{full_resp.status}" unless full_resp.status.between?(200,299)
-      raise Oj.dump(full_resp.env) unless full_resp.success?
+      raise "HTTP Status: #{full_resp.status}" unless full_resp.success?
       return {} if full_resp.body.nil? || full_resp.body == 'null'
 
       full_resp
@@ -99,7 +98,7 @@ module TogglV8
 
     def get(resource)
       full_resp = _call_api(debug_output: lambda { "GET #{resource}" },
-                           api_call: lambda { self.conn.get(resource) } )
+                            api_call: lambda { self.conn.get(resource) } )
       return {} if full_resp == {}
       resp = Oj.load(full_resp.body)
       return resp['data'] if resp.respond_to?(:has_key?) && resp.has_key?('data')
@@ -108,7 +107,7 @@ module TogglV8
 
     def post(resource, data='')
       full_resp = _call_api(debug_output: lambda { "POST #{resource} / #{data}" },
-                           api_call: lambda { self.conn.post(resource, Oj.dump(data)) } )
+                            api_call: lambda { self.conn.post(resource, Oj.dump(data)) } )
       return {} if full_resp == {}
       resp = Oj.load(full_resp.body)
       resp['data']
@@ -116,7 +115,7 @@ module TogglV8
 
     def put(resource, data='')
       full_resp = _call_api(debug_output: lambda { "PUT #{resource} / #{data}" },
-                           api_call: lambda { self.conn.put(resource, Oj.dump(data)) } )
+                            api_call: lambda { self.conn.put(resource, Oj.dump(data)) } )
       return {} if full_resp == {}
       resp = Oj.load(full_resp.body)
       resp['data']
@@ -124,7 +123,7 @@ module TogglV8
 
     def delete(resource)
       full_resp = _call_api(debug_output: lambda { "DELETE #{resource}" },
-                           api_call: lambda { self.conn.delete(resource) } )
+                            api_call: lambda { self.conn.delete(resource) } )
       return {} if full_resp == {}
       full_resp.body
     end
