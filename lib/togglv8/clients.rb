@@ -14,7 +14,7 @@ module TogglV8
 
     def create_client(params)
       requireParams(params, ['name', 'wid'])
-      post "clients", {client: params}
+      post "clients", { 'client' => params }
     end
 
     def get_client(client_id)
