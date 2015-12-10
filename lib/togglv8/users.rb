@@ -51,6 +51,11 @@ module TogglV8
       user['tags'] || {}
     end
 
+    def my_tasks(user=nil)
+      user = me(all=true) if user.nil?
+      user['tasks'] || {}
+    end
+
     def my_time_entries(user=nil)
       user = me(all=true) if user.nil?
       user['time_entries'] || {}
