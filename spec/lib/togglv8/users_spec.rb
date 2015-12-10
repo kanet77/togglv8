@@ -6,12 +6,12 @@ describe 'Users' do
 
   it 'returns /me' do
     expect(@user).to_not be_nil
-    expect(@user['id']).to eq 1820939
-    expect(@user['fullname']).to eq 'togglv8'
-    expect(@user['image_url']).to eq 'https://assets.toggl.com/avatars/a5d106126b6bed8df283e708af0828ee.png'
-    expect(@user['timezone']).to eq 'Etc/UTC'
-    expect(@user['workspaces'].length).to eq 1
-    expect(@user['workspaces'].first['name']).to eq "togglv8's workspace"
+    expect(@user['id']).to eq Testing::USER_ID
+    # expect(@user['fullname']).to eq 'togglv8'
+    # expect(@user['image_url']).to eq 'https://assets.toggl.com/avatars/a5d106126b6bed8df283e708af0828ee.png'
+    # expect(@user['timezone']).to eq 'Etc/UTC'
+    # expect(@user['workspaces'].length).to eq 1
+    # expect(@user['workspaces'].first['name']).to eq "togglv8's workspace"
   end
 
   it 'returns /my_clients' do
@@ -27,6 +27,11 @@ describe 'Users' do
   it 'returns /my_tags' do
     my_tags = @toggl.my_tags(@user)
     expect(my_tags).to be_empty
+  end
+
+  it 'returns /my_tasks' do
+    my_tasks = @toggl.my_tasks(@user)
+    expect(my_tasks).to be_empty
   end
 
   it 'returns /my_time_entries' do
