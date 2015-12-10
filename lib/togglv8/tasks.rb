@@ -20,7 +20,7 @@ module TogglV8
     # uname             : full name of the person to whom the task is assigned to
 
     def create_task(params)
-      requireParams(params, [:name, :pid])
+      requireParams(params, ['name', 'pid'])
       post "tasks", { 'task' => params }
     end
 
@@ -30,11 +30,11 @@ module TogglV8
 
     # ex: update_task(1894675, {active: true, estimated_seconds: 4500, fields: "done_seconds,uname"})
     def update_task(task_id, params)
-      put "tasks/#{task_id.join(',')}", { 'task' => params }
+      put "tasks/#{task_id}", { 'task' => params }
     end
 
     def delete_task(task_id)
-      delete "tasks/#{task_id.join(',')}"
+      delete "tasks/#{task_id}"
     end
 
     # ------------ #
@@ -42,10 +42,12 @@ module TogglV8
     # ------------ #
 
     def update_tasks(task_ids, params)
+      return if task_ids.nil?
       put "tasks/#{task_ids.join(',')}", { 'task' => params }
     end
 
     def delete_tasks(task_ids)
+      return if task_ids.nil?
       delete "tasks/#{task_ids.join(',')}"
     end
 
