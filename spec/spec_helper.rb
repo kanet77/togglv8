@@ -35,5 +35,4 @@ class Testing
   USERNAME  = ENV['USERNAME']  || 'togglv8@mailinator.com'
   PASSWORD  = ENV['PASSWORD']  || 'togglv8'
   USER_ID   = (ENV['USER_ID']  || 1820939).to_i
-
 end

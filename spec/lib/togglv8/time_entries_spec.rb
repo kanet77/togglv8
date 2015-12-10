@@ -101,9 +101,7 @@ describe 'Time Entries' do
     end
 
     after :all do
-      @toggl.delete_time_entry(@last_week_id)
-      @toggl.delete_time_entry(@now_id)
-      @toggl.delete_time_entry(@next_week_id)
+      TogglV8SpecHelper.delete_all_time_entries(@toggl)
     end
 
     it 'gets time entries (reaching back 9 days up till now)' do
@@ -114,11 +112,6 @@ describe 'Time Entries' do
     it 'gets time entries after start_date (up till now)' do
       ids = @toggl.get_time_entries({start_date: @now - 1}).map { |t| t['id']}
       expect(ids).to eq [ @now_id ]
-    end
-
-    it 'gets time entries between 9 days ago and end_date' do
-      ids = @toggl.get_time_entries({end_date: @now + 1}).map { |t| t['id']}
-      expect(ids).to eq [ @last_week_id, @now_id ]
     end
 
     it 'gets time entries between start_date and end_date' do
