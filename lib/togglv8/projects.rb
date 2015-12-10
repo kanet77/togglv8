@@ -105,6 +105,7 @@ module TogglV8
 
     # [Delete multiple projects](https://github.com/toggl/toggl_api_docs/blob/master/chapters/projects.md#delete-multiple-projects)
     def delete_projects(project_ids)
+      return if project_ids.nil?
       delete "projects/#{project_ids.join(',')}"
     end
   end
