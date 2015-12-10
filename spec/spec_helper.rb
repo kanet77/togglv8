@@ -1,6 +1,8 @@
 require 'coveralls'
 Coveralls.wear!
 
+require 'pry-byebug'
+
 require_relative 'togglv8_spec_helper'
 require_relative '../lib/togglv8'
 
@@ -29,7 +31,9 @@ RSpec.configure do |config|
 end
 
 class Testing
-  API_TOKEN = '4880adbe1bee9a241fa08070d33bd49f'
-  USERNAME  = 'togglv8@mailinator.com'
-  PASSWORD  = 'togglv8'
+  API_TOKEN = ENV['API_TOKEN'] || '4880adbe1bee9a241fa08070d33bd49f'
+  USERNAME  = ENV['USERNAME']  || 'togglv8@mailinator.com'
+  PASSWORD  = ENV['PASSWORD']  || 'togglv8'
+  USER_ID   = (ENV['USER_ID']  || 1820939).to_i
+
 end
