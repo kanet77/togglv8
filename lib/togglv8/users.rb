@@ -21,8 +21,8 @@ module TogglV8
     # new_blog_post             : an object with toggl blog post title and link
 
     def me(all=nil)
-      # TODO: Reconcile this with get_client_projects
-      # NOTE: response['since'] is discarded
+      # NOTE: response['since'] is discarded because it is outside response['data']
+      #       (See TogglV8::API#get in lib/togglv8.rb)
       get "me%s" % [all.nil? ? "" : "?with_related_data=#{all}"]
     end
 
@@ -38,7 +38,6 @@ module TogglV8
       projects.delete_if { |p| p['server_deleted_at'] }
     end
 
-    # TODO: Test my_deleted_projects
     def my_deleted_projects(user=nil)
       user = me(all=true) if user.nil?
       return {} unless user['projects']
