@@ -174,6 +174,124 @@ describe 'Time Entries' do
     end
   end
 
+  context 'time entry tags' do
+    before :each do
+      time_entry_info = {
+        'wid' => @workspace_id,
+        'duration' => 7777
+      }
+      @now = DateTime.now
+
+      start = { 'start' => @toggl.iso8601(@now - 7) }
+      @time7 = @toggl.create_time_entry(time_entry_info.merge(start))
+
+      start = { 'start' => @toggl.iso8601(@now - 6) }
+      @time6 = @toggl.create_time_entry(time_entry_info.merge(start))
+
+      start = { 'start' => @toggl.iso8601(@now - 5) }
+      @time5 = @toggl.create_time_entry(time_entry_info.merge(start))
+
+      start = { 'start' => @toggl.iso8601(@now - 4) }
+      @time4 = @toggl.create_time_entry(time_entry_info.merge(start))
+
+      @time_entry_ids = [ @time7['id'], @time6['id'], @time5['id'], @time4['id']]
+    end
+
+    after :each do
+      TogglV8SpecHelper.delete_all_time_entries(@toggl)
+      TogglV8SpecHelper.delete_all_tags(@toggl)
+    end
+
+    it 'adds and removes one tag' do
+      # Add one tag
+      @toggl.update_time_entries_tags(@time_entry_ids,
+        {'tags' =>['money'], 'tag_action' => 'add'})
+
+      time_entries = @toggl.get_time_entries
+      tags = time_entries.map { |t| t['tags'] }
+      expect(tags).to eq [
+        ['money'],
+        ['money'],
+        ['money'],
+        ['money']
+      ]
+
+      # Remove one tag
+      @toggl.update_time_entries_tags(@time_entry_ids,
+        {'tags' =>['money'], 'tag_action' => 'remove'})
+
+      time_entries = @toggl.get_time_entries
+      tags = time_entries.map { |t| t['tags'] }.compact
+      expect(tags).to eq []
+    end
+
+    it '"removes" a non-existent tag' do
+      # Not tags to start
+      time_entries = @toggl.get_time_entries
+      tags = time_entries.map { |t| t['tags'] }.compact
+      expect(tags).to eq []
+
+      # "Remove" a tag
+      @toggl.update_time_entries_tags(@time_entry_ids,
+        {'tags' =>['void'], 'tag_action' => 'remove'})
+
+      # No tags to finish
+      time_entries = @toggl.get_time_entries
+      tags = time_entries.map { |t| t['tags'] }.compact
+      expect(tags).to eq []
+    end
+
+    it 'adds and removes multiple tags' do
+      # Add multiple tags
+      @toggl.update_time_entries_tags(@time_entry_ids,
+        {'tags' =>['billed', 'productive'], 'tag_action' => 'add'})
+
+      time_entries = @toggl.get_time_entries
+      tags = time_entries.map { |t| t['tags'] }
+      expect(tags).to eq [
+        ['billed', 'productive'],
+        ['billed', 'productive'],
+        ['billed', 'productive'],
+        ['billed', 'productive']
+      ]
+
+      # Remove multiple tags
+      @toggl.update_time_entries_tags(@time_entry_ids,
+        {'tags' =>['billed','productive'], 'tag_action' => 'remove'})
+
+      time_entries = @toggl.get_time_entries
+      tags = time_entries.map { |t| t['tags'] }.compact
+      expect(tags).to eq []
+    end
+
+    it 'manages multiple tags' do
+      # Add some tags
+      @toggl.update_time_entries_tags(@time_entry_ids,
+        {'tags' =>['billed', 'productive'], 'tag_action' => 'add'})
+
+      # Remove some tags
+      @toggl.update_time_entries_tags([ @time6['id'], @time4['id'] ],
+        {'tags' =>['billed'], 'tag_action' => 'remove'})
+
+      # Add some tags
+      @toggl.update_time_entries_tags([ @time7['id'] ],
+        {'tags' =>['best'], 'tag_action' => 'add'})
+
+      time7 = @toggl.get_time_entry(@time7['id'])
+      time6 = @toggl.get_time_entry(@time6['id'])
+      time5 = @toggl.get_time_entry(@time5['id'])
+      time4 = @toggl.get_time_entry(@time4['id'])
+
+      tags = [ time7['tags'], time6['tags'], time5['tags'], time4['tags'] ]
+      expect(tags).to eq [
+        ['best', 'billed', 'productive'],
+        [                  'productive'],
+        [        'billed', 'productive'],
+        [                  'productive']
+      ]
+    end
+  end
+
   context 'iso8601' do
     before :all do
       @ts = DateTime.new(2008,6,21, 13,30,2, "+09:00")
