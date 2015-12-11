@@ -36,11 +36,13 @@ toggl_api    = TogglV8::API.new(<API_TOKEN>)
 user         = toggl_api.me(all=true)
 workspaces   = toggl_api.my_workspaces(user)
 workspace_id = workspaces.first['id']
-toggl_api.create_time_entry({description: "Workspace time entry",
-        wid: workspace_id,
-        duration: 1200,
-        start: "2015-08-18T01:13:40.000Z",
-        created_with: "My awesome Ruby application"})
+toggl_api.create_time_entry({
+  'description' => "Workspace time entry",
+  'wid' => workspace_id,
+  'duration' => 1200,
+  'start' => "2015-08-18T01:13:40.000Z",
+  'created_with' => "My awesome Ruby application"
+})
 ```
 
 See specs for more examples.
