@@ -50,6 +50,14 @@ module TogglV8
       @conn = TogglV8::API.connection(username, password, opts)
     end
 
+    def debug(debug=true)
+      if debug
+        @logger.level = Logger::DEBUG
+      else
+        @logger.level = Logger::WARN
+      end
+    end
+
   #---------#
   # Private #
   #---------#
@@ -85,7 +93,7 @@ module TogglV8
       loop do
         i += 1
         full_resp = procs[:api_call].call
-        # @logger.ap(full_resp.env, :debug)
+        @logger.ap(full_resp.env, :debug)
         break if full_resp.status != 429 || i >= MAX_RETRIES
         sleep(DELAY_SEC)
       end
