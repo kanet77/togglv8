@@ -38,7 +38,7 @@ module TogglV8
       if !params.has_key?('wid') and !params.has_key?('pid') and !params.has_key?('tid') then
         raise ArgumentError, "one of params['wid'], params['pid'], params['tid'] is required"
       end
-      post "time_entries/start", {time_entry: params}
+      post "time_entries/start", { 'time_entry' => params }
     end
 
     def stop_time_entry(time_entry_id)
