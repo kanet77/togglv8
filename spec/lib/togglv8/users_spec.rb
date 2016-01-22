@@ -70,10 +70,10 @@ describe 'Users' do
     it 'creates a new user' do
       now = Time.now.to_i
       user_info = {
-        'email' => "test-#{now}@mailinator.com",
+        'email' => "test-#{now}+1@mailinator.com",
         'timezone' => 'Etc/UTC'
       }
-      user_password = { 'password' => "password-#{now}" }
+      user_password = { 'password' => "password-#{now}+1" }
 
       new_user = @toggl.create_user(user_info.merge(user_password))
       expect(new_user).to include(user_info)

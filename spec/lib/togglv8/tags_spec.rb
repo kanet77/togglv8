@@ -7,7 +7,7 @@ describe 'Tags' do
 
   context 'new tag' do
     before :all do
-      @tag = @toggl.create_tag({ 'name' => 'new tag', 'wid' => @workspace_id })
+      @tag = @toggl.create_tag({ 'name' => 'new tag +1', 'wid' => @workspace_id })
       tag_ids = @toggl.my_tags.map { |t| t['id'] }
       expect(tag_ids).to eq [ @tag['id'] ]
     end
@@ -20,7 +20,7 @@ describe 'Tags' do
 
     it 'creates a tag' do
       expect(@tag).to_not be nil
-      expect(@tag['name']).to eq 'new tag'
+      expect(@tag['name']).to eq 'new tag +1'
       expect(@tag['notes']).to eq nil
       expect(@tag['wid']).to eq @workspace_id
     end

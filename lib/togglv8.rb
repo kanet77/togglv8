@@ -105,6 +105,7 @@ module TogglV8
     end
 
     def get(resource)
+      resource.gsub!('+', '%2B')
       full_resp = _call_api(debug_output: lambda { "GET #{resource}" },
                             api_call: lambda { self.conn.get(resource) } )
       return {} if full_resp == {}
@@ -114,6 +115,7 @@ module TogglV8
     end
 
     def post(resource, data='')
+      resource.gsub!('+', '%2B')
       full_resp = _call_api(debug_output: lambda { "POST #{resource} / #{data}" },
                             api_call: lambda { self.conn.post(resource, Oj.dump(data)) } )
       return {} if full_resp == {}
@@ -122,6 +124,7 @@ module TogglV8
     end
 
     def put(resource, data='')
+      resource.gsub!('+', '%2B')
       full_resp = _call_api(debug_output: lambda { "PUT #{resource} / #{data}" },
                             api_call: lambda { self.conn.put(resource, Oj.dump(data)) } )
       return {} if full_resp == {}
@@ -130,6 +133,7 @@ module TogglV8
     end
 
     def delete(resource)
+      resource.gsub!('+', '%2B')
       full_resp = _call_api(debug_output: lambda { "DELETE #{resource}" },
                             api_call: lambda { self.conn.delete(resource) } )
       return {} if full_resp == {}

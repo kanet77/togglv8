@@ -12,7 +12,7 @@ describe 'Tasks', :pro_account do
 
   context 'new task' do
     before :all do
-      @task = @toggl.create_task({ 'name' => 'new task', 'pid' => @project['id'] })
+      @task = @toggl.create_task({ 'name' => 'new task +1', 'pid' => @project['id'] })
       @task_ids = @toggl.get_project_tasks(@project['id']).map { |t| t['id'] }
       expect(@task_ids).to eq [ @task['id'] ]
     end
@@ -25,7 +25,7 @@ describe 'Tasks', :pro_account do
 
     it 'creates a task' do
       expect(@task).to_not be nil
-      expect(@task['name']).to eq 'new task'
+      expect(@task['name']).to eq 'new task +1'
       expect(@task['pid']).to eq @project['id']
       expect(@task['wid']).to eq @workspace_id
       expect(@task['active']).to eq true

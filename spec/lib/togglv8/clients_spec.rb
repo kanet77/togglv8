@@ -17,7 +17,7 @@ describe 'Clients' do
 
   context 'new client' do
     before :all do
-      @client = @toggl.create_client({ 'name' => 'new client', 'wid' => @workspace_id })
+      @client = @toggl.create_client({ 'name' => 'new client +1', 'wid' => @workspace_id })
       client_ids = @toggl.my_clients.map { |c| c['id'] }
       expect(client_ids).to eq [ @client['id'] ]
     end
@@ -60,7 +60,7 @@ describe 'Clients' do
 
     it 'creates a client' do
       expect(@client).to_not be nil
-      expect(@client['name']).to eq 'new client'
+      expect(@client['name']).to eq 'new client +1'
       expect(@client['notes']).to eq nil
       expect(@client['wid']).to eq @workspace_id
     end

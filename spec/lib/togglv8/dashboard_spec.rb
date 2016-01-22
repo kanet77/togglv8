@@ -12,7 +12,7 @@ describe 'Dashboard' do
 
   context 'gets dashboard time entries' do
     before :all do
-      @new_time_entry = @toggl.start_time_entry({ 'wid' => @workspace_id, 'description' => 'new time entry' })
+      @new_time_entry = @toggl.start_time_entry({ 'wid' => @workspace_id, 'description' => 'new time entry +1' })
     end
 
     after :all do
@@ -25,7 +25,7 @@ describe 'Dashboard' do
       expect(dashboard['activity']).to_not be nil
       expect(dashboard['activity'].first['user_id']).to eq @toggl.me['id']
       expect(dashboard['activity'].first['project_id']).to be nil
-      expect(dashboard['activity'].first['description']).to eq 'new time entry'
+      expect(dashboard['activity'].first['description']).to eq 'new time entry +1'
     end
   end
 end

@@ -12,7 +12,7 @@ describe 'Projects' do
 
   context 'new project' do
     before :all do
-      @project = @toggl.create_project({ 'name' => 'new project', 'wid' => @workspace_id })
+      @project = @toggl.create_project({ 'name' => 'new project +1', 'wid' => @workspace_id })
       project_ids = @toggl.my_projects.map { |p| p['id'] }
       expect(project_ids).to eq [ @project['id'] ]
     end
@@ -25,7 +25,7 @@ describe 'Projects' do
 
     it 'creates a project' do
       expect(@project).to_not be nil
-      expect(@project['name']).to eq 'new project'
+      expect(@project['name']).to eq 'new project +1'
       expect(@project['billable']).to eq false
       expect(@project['is_private']).to eq true
       expect(@project['active']).to eq true
