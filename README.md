@@ -51,6 +51,26 @@ See specs for more examples.
 
 > For rate limiting we have implemented a Leaky bucket. When a limit has been hit the request will get a HTTP 429 response and it's the task of the client to sleep/wait until bucket is empty. Limits will and can change during time, but a safe window will be 1 request per second. Limiting is applied per api token per IP, meaning two users from the same IP will get their rate allocated separately.
 
+## Debugging
+
+The `TogglV8::API#debug` method determines if debug output is printed to STDOUT. (The default is `true`.) This code snippet demonstrates the debug output.
+
+```ruby
+require 'togglv8'
+
+toggl = TogglV8::API.new
+
+toggl.debug(true)  # or simply toggl.debug
+user1 = toggl.me
+puts "user: #{user1['fullname']}, debug: true"
+
+puts '-'*80
+
+toggl.debug(false)
+user2 = toggl.me
+puts "user: #{user2['fullname']}, debug: false"
+```
+
 ## Documentation
 
 Run `rdoc` to generate documentation. Open `doc/index.html` in your browser.
