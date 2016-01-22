@@ -77,14 +77,6 @@ Run `rdoc` to generate documentation. Open `doc/index.html` in your browser.
 
 Also available on [DocumentUp](https://documentup.com/kanet77/togglv8)
 
-## Test Coverage
-
-Open `coverage/index.html` to see test coverage.
-
-As of 2015-12-10, coverage is "98.04% covered at 9.5 hits/line" according to [SimpleCov](https://rubygems.org/gems/simplecov).
-
-**Note:** Coverage is 91.2% when Pro account features are not tested.
-
 ## Acknowledgements
 
 - Thanks to [Koen Van der Auwera](https://github.com/atog) for the [Ruby Wrapper for Toggl API v6](https://github.com/atog/toggl)
@@ -102,4 +94,4 @@ Pull Requests that include tests are **much** more likely to be accepted and mer
 
 ## License
 
-Copyright (c) 2013-2015 Tom Kane. Released under the [MIT License](http://opensource.org/licenses/mit-license.php). See [LICENSE.txt](LICENSE.txt) for details.
+Copyright (c) 2013-2016 Tom Kane. Released under the [MIT License](http://opensource.org/licenses/mit-license.php). See [LICENSE.txt](LICENSE.txt) for details.
