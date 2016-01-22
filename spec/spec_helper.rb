@@ -31,7 +31,7 @@ RSpec.configure do |config|
   end
 
   config.before(:suite) do
-    toggl = TogglV8::API.new(Testing::API_TOKEN)
+    toggl = TogglV8::API.new({api_token: Testing::API_TOKEN})
     TogglV8SpecHelper.setUp(toggl)
   end
 end

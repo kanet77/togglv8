@@ -1,6 +1,6 @@
 describe 'Users' do
   before :all do
-    @toggl = TogglV8::API.new(Testing::API_TOKEN)
+    @toggl = TogglV8::API.new({ api_token: Testing::API_TOKEN })
     @user = @toggl.me(all=true)
     @workspaces = @toggl.workspaces
     @workspace_id = @workspaces.first['id']
@@ -9,11 +9,6 @@ describe 'Users' do
   it 'returns /me' do
     expect(@user).to_not be_nil
     expect(@user['id']).to eq Testing::USER_ID
-    # expect(@user['fullname']).to eq 'togglv8'
-    # expect(@user['image_url']).to eq 'https://assets.toggl.com/avatars/a5d106126b6bed8df283e708af0828ee.png'
-    # expect(@user['timezone']).to eq 'Etc/UTC'
-    # expect(@user['workspaces'].length).to eq 1
-    # expect(@user['workspaces'].first['name']).to eq "togglv8's workspace"
   end
 
   it 'returns my_clients' do

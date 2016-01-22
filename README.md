@@ -32,7 +32,7 @@ This short example shows one way to create a time entry for the first workspace 
 ```ruby
 require 'togglv8'
 
-toggl_api    = TogglV8::API.new(<API_TOKEN>)
+toggl_api    = TogglV8::API.new({ api_token: <API_TOKEN> })
 user         = toggl_api.me(all=true)
 workspaces   = toggl_api.my_workspaces(user)
 workspace_id = workspaces.first['id']
@@ -69,6 +69,12 @@ puts '-'*80
 toggl.debug(false)
 user2 = toggl.me
 puts "user: #{user2['fullname']}, debug: false"
+```
+
+To save [Faraday](https://github.com/lostisland/faraday) debug output, use the `faraday_logfile` option when creating a new Toggl::API. 
+
+```ruby
+toggl = TogglV8::API.new( { api_token: <API_TOKEN> },  { faraday_logfile: 'faraday.log' } )
 ```
 
 ## Documentation

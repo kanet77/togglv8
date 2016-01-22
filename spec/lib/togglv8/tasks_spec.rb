@@ -1,6 +1,6 @@
 describe 'Tasks', :pro_account do
   before :all do
-    @toggl = TogglV8::API.new(Testing::API_TOKEN)
+    @toggl = TogglV8::API.new({ api_token: Testing::API_TOKEN })
     @workspaces = @toggl.workspaces
     @workspace_id = @workspaces.first['id']
     @project = @toggl.create_project({ 'name' => 'project with a task', 'wid' => @workspace_id })

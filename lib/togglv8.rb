@@ -30,14 +30,27 @@ module TogglV8
 
     attr_reader :conn
 
-    def initialize(username=nil, password=API_TOKEN, opts={})
+    # There are four different ways of authenticating
+    # 1. Toggl::API.new                        # API token from file ~/.toggl
+    # 2. Toggl::API.new({ toggl_api_file: F }) # API token from file F
+    # 3. Toggl::API.new({ api_token: A })
+    # 4. Toggl::API.new({ username: U, password: P })
+    def initialize(auth={}, opts={})
       @logger = Logger.new(STDOUT)
       @logger.level = Logger::WARN
 
-      if username.nil? && password == API_TOKEN
-        toggl_api_file = File.join(Dir.home, TOGGL_FILE)
+      if auth[:api_token]
+        username = auth[:api_token]
+        password = API_TOKEN
+      elsif auth[:username] and auth[:password]
+        username = auth[:username]
+        password = auth[:password]
+      else
+        toggl_api_file = auth[:toggl_api_file]
+        toggl_api_file ||= File.join(Dir.home, TOGGL_FILE)
         if FileTest.exist?(toggl_api_file) then
           username = IO.read(toggl_api_file)
+          password = API_TOKEN
         else
           raise "Expecting\n" +
             " 1) api_token in file #{toggl_api_file}, or\n" +
@@ -67,12 +80,12 @@ module TogglV8
     attr_writer :conn
 
     def self.connection(username, password, opts={})
-      Faraday.new(url: TOGGL_API_V8_URL, ssl: {verify: true}) do |faraday|
-        faraday.request :url_encoded
-        faraday.response :logger, Logger.new('faraday.log') if opts[:log]
-        faraday.adapter Faraday.default_adapter
-        faraday.headers = { "Content-Type" => "application/json" }
-        faraday.basic_auth username, password
+      Faraday.new(url: TOGGL_API_V8_URL, ssl: {verify: true}) do |conn|
+        conn.request :url_encoded
+        conn.response :logger, Logger.new(opts[:faraday_logfile]) if opts[:faraday_logfile]
+        conn.adapter Faraday.default_adapter
+        conn.headers = { "Content-Type" => "application/json" }
+        conn.basic_auth username, password
       end
     end
 

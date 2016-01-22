@@ -1,6 +1,6 @@
 describe 'Dashboard' do
   before :all do
-    @toggl = TogglV8::API.new(Testing::API_TOKEN)
+    @toggl = TogglV8::API.new({ api_token: Testing::API_TOKEN })
     @workspaces = @toggl.workspaces
     @workspace_id = @workspaces.first['id']
   end
