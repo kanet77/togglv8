@@ -75,6 +75,76 @@ describe 'Time Entries' do
     end
   end
 
+  context '+ UTC offset' do
+    # ISO8601 times with positive '+' UTC offsets must be properly encoded
+
+    before :each do
+      time_entry_info = {
+        'wid' => @workspace_id,
+        'start' => '2016-01-22T12:08:14+02:00',
+        'duration' => 77
+      }
+
+      @expected = time_entry_info.clone
+
+      @time_entry = @toggl.create_time_entry(time_entry_info)
+    end
+
+    after :each do
+      @toggl.delete_time_entry(@time_entry['id'])
+    end
+
+    it 'creates a time entry' do
+      expect(@time_entry).to include(@expected)
+    end
+
+    it 'requires a workspace, project, or task to create' do
+      time_entry_info = {
+        'start' => '2016-01-22T12:08:14+02:00',
+        'duration' => 77
+      }
+
+      expect {
+        @toggl.create_time_entry(time_entry_info)
+      }.to raise_error(ArgumentError)
+    end
+
+    it 'gets a time entry' do
+      retrieved_time_entry = @toggl.get_time_entry(@time_entry['id'])
+
+      ['start', 'stop'].each do |key|
+        expect(retrieved_time_entry[key]).to eq_ts @time_entry[key]
+        retrieved_time_entry.delete(key)
+        @time_entry.delete(key)
+      end
+
+      expect(retrieved_time_entry).to eq @time_entry
+    end
+
+    it 'updates a time entry' do
+      time_entry_info = {
+        'start' => '2010-02-13T23:31:30+07:00',
+        'duration' => 42
+      }
+
+      expected = time_entry_info.clone
+
+      time_entry_updated = @toggl.update_time_entry(@time_entry['id'], time_entry_info)
+      expect(time_entry_updated).to include(expected)
+    end
+
+    it 'deletes a time entry' do
+      existing_time_entry = @toggl.get_time_entry(@time_entry['id'])
+      expect(existing_time_entry.has_key?('server_deleted_at')).to eq false
+
+      deleted_time_entry = @toggl.delete_time_entry(@time_entry['id'])
+      expect(deleted_time_entry).to eq "[#{ @time_entry['id'] }]"
+
+      zombie_time_entry = @toggl.get_time_entry(@time_entry['id'])
+      expect(zombie_time_entry.has_key?('server_deleted_at')).to eq true
+    end
+  end
+
   context 'multiple time entries' do
     before :all do
       time_entry_info = {
