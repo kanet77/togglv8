@@ -24,6 +24,13 @@ describe 'Tags' do
       expect(@tag['notes']).to eq nil
       expect(@tag['wid']).to eq @workspace_id
     end
+
+    it 'returns tag associated with workspace_id' do
+      tags = @toggl.tags(@workspace_id)
+      expect(tags).not_to be_empty
+      expect(tags.first['name']).to eq 'new tag +1'
+      expect(tags.first['wid']).to eq @workspace_id
+    end
   end
 
   context 'updated tag' do
