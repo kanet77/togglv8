@@ -50,7 +50,7 @@ class TogglV8SpecHelper
 
   def self.delete_all_time_entries(toggl)
     time_entries = toggl.get_time_entries(
-      { start_date: DateTime.now - 30, end_date: DateTime.now + 30 } )
+      { :start_date => DateTime.now - 30, :end_date => DateTime.now + 30 } )
     unless time_entries.nil?
       time_entry_ids ||= time_entries.map { |t| t['id'] }
       @logger.debug("Deleting #{time_entry_ids.length} time_entries")

@@ -28,7 +28,7 @@ module TogglV8
       get "tasks/#{task_id}"
     end
 
-    # ex: update_task(1894675, {active: true, estimated_seconds: 4500, fields: "done_seconds,uname"})
+    # ex: update_task(1894675, { :active => true, :estimated_seconds => 4500, :fields => "done_seconds,uname"})
     def update_task(task_id, params)
       put "tasks/#{task_id}", { 'task' => params }
     end

@@ -15,8 +15,8 @@ require_relative 'togglv8/users'
 require_relative 'togglv8/version'
 require_relative 'togglv8/workspaces'
 
-# mode: :compat will convert symbols to strings
-Oj.default_options = { mode: :compat }
+# :mode => :compat will convert symbols to strings
+Oj.default_options = { :mode => :compat }
 
 module TogglV8
   TOGGL_API_URL = 'https://www.toggl.com/api/'
@@ -67,7 +67,7 @@ module TogglV8
     attr_writer :conn
 
     def self.connection(username, password, opts={})
-      Faraday.new(url: TOGGL_API_V8_URL, ssl: {verify: true}) do |faraday|
+      Faraday.new(:url => TOGGL_API_V8_URL, :ssl => {:verify => true}) do |faraday|
         faraday.request :url_encoded
         faraday.response :logger, Logger.new('faraday.log') if opts[:log]
         faraday.adapter Faraday.default_adapter

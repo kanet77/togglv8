@@ -10,10 +10,10 @@ module TogglV8
 
     def create_tag(params)
       requireParams(params, ['name', 'wid'])
-      post "tags", {tag: params}
+      post "tags", { 'tag' => params }
     end
 
-    # ex: update_tag(12345, {name: "same tame game"})
+    # ex: update_tag(12345, { :name => "same tame game" })
     def update_tag(tag_id, params)
       put "tags/#{tag_id}", { 'tag' => params }
     end

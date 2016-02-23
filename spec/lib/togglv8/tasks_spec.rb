@@ -78,7 +78,7 @@ describe 'Tasks', :pro_account do
       expect(active_flags).to match_array([true, true, true])
 
       t_ids = [@task1, @task2, @task3].map { |t| t['id'] }
-      params = { 'active': false }
+      params = { 'active' => false }
       @toggl.update_tasks(t_ids, params)
 
       # end with no active tasks

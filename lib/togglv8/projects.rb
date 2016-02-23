@@ -56,7 +56,7 @@ module TogglV8
     #
     # Examples
     #
-    #     toggl.create_project({ name: 'My project', wid: 1060392 })
+    #     toggl.create_project({ :name => 'My project', :wid => 1060392 })
     #     => {"id"=>10918774,
     #      "wid"=>1060392,
     #      "name"=>"project5",
@@ -73,7 +73,7 @@ module TogglV8
     # See Toggl {Create Project}[https://github.com/toggl/toggl_api_docs/blob/master/chapters/projects.md#create-project]
     def create_project(params)
       requireParams(params, ['name', 'wid'])
-      post "projects", {project: params}
+      post "projects", { 'project' => params }
     end
 
     # [Get project data](https://github.com/toggl/toggl_api_docs/blob/master/chapters/projects.md#get-project-data)
