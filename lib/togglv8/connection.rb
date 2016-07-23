@@ -1,12 +1,11 @@
 require 'faraday'
 require 'oj'
 
-require_relative 'debugging'
+require_relative '../logging'
 
 module TogglV8
   module Connection
-    include TogglV8::Debugging
-    include TogglV8::Logging
+    include Logging
 
     DELAY_SEC = 1
     MAX_RETRIES = 3
@@ -14,15 +13,11 @@ module TogglV8
     API_TOKEN = 'api_token'
     TOGGL_FILE = '.toggl'
 
-    class <<self
-      attr_accessor :logger
-    end
-
     def self.qualify(username, password)
       if username.nil? && password == API_TOKEN
         toggl_api_file = File.join(Dir.home, TOGGL_FILE)
-        # TODO: Fix logger.debug
-        # self.logger.debug("toggl_api_file = #{toggl_api_file}")
+
+        # logger.debug("toggl_api_file = #{toggl_api_file}")
         if FileTest.exist?(toggl_api_file) then
           username = IO.read(toggl_api_file)
         else
@@ -60,14 +55,13 @@ module TogglV8
     end
 
     def _call_api(procs)
-      # self.logger.debug(procs[:debug_output].call)
+      # logger.debug(procs[:debug_output].call)
       full_resp = nil
       i = 0
       loop do
         i += 1
         full_resp = procs[:api_call].call
-        # TODO: Fix usage of logger.ap
-        # @logger.ap(full_resp.env, :debug)
+        # logger.ap(full_resp.env, :debug)
         break if full_resp.status != 429 || i >= MAX_RETRIES
         sleep(DELAY_SEC)
       end
