@@ -36,6 +36,19 @@ RSpec.configure do |config|
   end
 end
 
+class MockResponse
+  attr_accessor :status, :headers, :body
+  def initialize(status, headers, body)
+    @status = status
+    @headers = headers
+    @body = body
+  end
+
+  def success?
+    @status == 200
+  end
+end
+
 class Testing
   API_TOKEN = ENV['API_TOKEN'] || '4880adbe1bee9a241fa08070d33bd49f'
   USERNAME  = ENV['USERNAME']  || 'togglv8@mailinator.com'
