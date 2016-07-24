@@ -53,7 +53,7 @@ See specs for more examples.
 
 ## Debugging
 
-The `TogglV8::API#debug` method determines if debug output is printed to STDOUT. (The default is `true`.) This code snippet demonstrates the debug output.
+The `TogglV8::API#debug` method determines if debug output is printed to STDOUT. This code snippet demonstrates the debug output.
 
 ```ruby
 require 'togglv8'

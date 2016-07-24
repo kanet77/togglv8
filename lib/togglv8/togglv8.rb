@@ -20,9 +20,9 @@ module TogglV8
     attr_reader :conn
 
     def initialize(username=nil, password=API_TOKEN, opts={})
+      debug(false)
       @conn = TogglV8::Connection.open(username, password,
                 TOGGL_API_V8_URL, opts)
-
     end
   end
 end
