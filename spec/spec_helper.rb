@@ -32,12 +32,15 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     toggl = TogglV8::API.new(Testing::API_TOKEN)
-    TogglV8SpecHelper.setUp(toggl)
+    TogglV8SpecHelper.setUp(toggl)  # start tests from known state
   end
 end
 
 class MockResponse
-  attr_accessor :status, :headers, :body
+  # https://github.com/lostisland/faraday/blob/master/lib/faraday/response.rb
+
+  attr_accessor :status, :headers, :body, :env
+
   def initialize(status, headers, body)
     @status = status
     @headers = headers
