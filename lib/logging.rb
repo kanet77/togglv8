@@ -1,3 +1,4 @@
+# :nocov:
 require 'logger'
 require 'awesome_print' # for debug output
 
@@ -34,3 +35,4 @@ module Logging
     end
   end
 end
+# :nocov:

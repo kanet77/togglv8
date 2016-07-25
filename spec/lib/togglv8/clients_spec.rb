@@ -127,6 +127,7 @@ describe 'Clients' do
       expect(client).to include(new_values)
     end
 
+    # :nocov:
     # It appears hourly rate is no longer tied to a client despite the docs:
     # https://github.com/toggl/toggl_api_docs/blob/master/chapters/clients.md#clients
     xit 'updates Pro client data', :pro_account do
@@ -139,5 +140,6 @@ describe 'Clients' do
       client = @toggl.get_client(@client['id'])
       expect(client).to include(new_values)
     end
+    # :nocov:
   end
 end

@@ -1,3 +1,4 @@
+# :nocov:
 require_relative '../lib/togglv8'
 
 class TogglV8SpecHelper
@@ -71,3 +72,4 @@ class TogglV8SpecHelper
     end
   end
 end
+# :nocov:
