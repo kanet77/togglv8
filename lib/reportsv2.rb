@@ -70,24 +70,24 @@ module TogglV8
     # NB! Maximum date span (until - since) is one year.
 
     # extension can be one of ['.pdf', '.csv', '.xls']. Possibly others?
-    def report(type, extension, opts)
+    def report(type, extension, params)
       raise "workspace_id is required" if @workspace_id.nil?
       get "#{type}#{extension}", {
         'user_agent': @user_agent,
         'workspace_id': @workspace_id,
-      }.merge(opts)
+      }.merge(params)
     end
 
-    def weekly(extension='', opts={})
-      report('weekly', extension, opts)
+    def weekly(extension='', params={})
+      report('weekly', extension, params)
     end
 
-    def details(extension='', opts={})
-      report('details', extension, opts)
+    def details(extension='', params={})
+      report('details', extension, params)
     end
 
-    def summary(extension='', opts={})
-      report('summary', extension, opts)
+    def summary(extension='', params={})
+      report('summary', extension, params)
     end
 
     def write_report(filename)
@@ -98,21 +98,21 @@ module TogglV8
       end
     end
 
-    def write_weekly(filename, opts={})
+    def write_weekly(filename, params={})
       write_report(filename) do |extension|
-        weekly(extension, opts)
+        weekly(extension, params)
       end
     end
 
-    def write_details(filename, opts={})
+    def write_details(filename, params={})
       write_report(filename) do |extension|
-        details(extension, opts)
+        details(extension, params)
       end
     end
 
-    def write_summary(filename, opts={})
+    def write_summary(filename, params={})
       write_report(filename) do |extension|
-        summary(extension, opts)
+        summary(extension, params)
       end
     end
 
@@ -124,12 +124,12 @@ module TogglV8
       get "index"
     end
 
-    def project(opts={})
+    def project(params={})
       raise "workspace_id is required" if @workspace_id.nil?
       get "project", {
         'user_agent': @user_agent,
         'workspace_id': @workspace_id,
-      }.merge(opts)
+      }.merge(params)
     end
 
     def env
