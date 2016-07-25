@@ -62,12 +62,6 @@ describe 'ReportsV2' do
                                       "This URL is intended only for testing")
     end
 
-    it 'surfaces a Warning HTTP header in case of 500 error' do
-      # https://github.com/toggl/toggl_api_docs/blob/master/reports.md#failed-requests
-      expect { @reports.error500 }.to raise_error(RuntimeError,
-                                      "This URL is intended only for testing")
-    end
-
     it 'retries a request up to 3 times if a 429 is received' do
       expect(@reports.conn).to receive(:get).exactly(3).times.and_return(
         MockResponse.new(429, {}, 'body'))
@@ -82,11 +76,27 @@ describe 'ReportsV2' do
     end
   end
 
-  context 'revision' do
-    it 'has not changed' do
+  context 'miscellaneous' do
+    it 'env returns environment' do
       reports = TogglV8::ReportsV2.new(api_token: Testing::API_TOKEN)
       reports.workspace_id = @workspace_id
-      expect(reports.revision).to eq("0.0.38\n-8a007ca")
+      env = reports.env
+      expect(env['workspace']).to_not be nil
+      expect(env['user']).to_not be nil
+      expect(env['user']['id']).to eq Testing::USER_ID
+    end
+
+    it 'index returns endpoints' do
+      reports = TogglV8::ReportsV2.new(api_token: Testing::API_TOKEN)
+      reports.workspace_id = @workspace_id
+      index = reports.index
+      expect(index['Welcome to reports api V2. VALID requests are:']).to_not be nil
+    end
+
+    it 'revision has not changed' do
+      reports = TogglV8::ReportsV2.new(api_token: Testing::API_TOKEN)
+      reports.workspace_id = @workspace_id
+      expect(reports.revision).to eq "0.0.38\n-8a007ca"
     end
   end
 

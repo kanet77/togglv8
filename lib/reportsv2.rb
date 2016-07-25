@@ -35,7 +35,7 @@ module TogglV8
 
     ##
     # ---------
-    # :section: Reports
+    # :section: Report
     #
     # The following parameters and filters can be used in all of the reports
     #
@@ -92,6 +92,10 @@ module TogglV8
       report('summary', extension, params)
     end
 
+    ##
+    # ---------
+    # :section: Write report to file
+    #
     def write_report(filename)
       extension = File.extname(filename)
       report = yield(extension)
@@ -118,6 +122,11 @@ module TogglV8
       end
     end
 
+
+    ##
+    # ---------
+    # :section: Miscellaneous information
+    #
     def revision
       get "revision"
     end
@@ -126,6 +135,9 @@ module TogglV8
       get "index"
     end
 
+    def env
+      get "env"
+    end
 
     ##
     # ---------
@@ -153,17 +165,13 @@ module TogglV8
       }.merge(params)
     end
 
-    def env
-      get "env"
-    end
-
+    ##
+    # ---------
+    # :section: Error (for testing)
+    #
+    # excludes endpoints 'error500' and 'division_by_zero_error'
     def error400
       get "error400"
     end
-
-    def error500
-      get "error500"
-    end
-
   end
 end

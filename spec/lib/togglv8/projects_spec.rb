@@ -46,6 +46,13 @@ describe 'Projects' do
       expect(project['auto_estimates']).to eq @project['auto_estimates']
       expect(project['at']).to_not be nil
     end
+
+    it 'gets project users' do
+      users = @toggl.get_project_users(@project['id'])
+      expect(users.length).to eq 1
+      expect(users.first['uid']).to eq Testing::USER_ID
+      expect(users.first['manager']).to eq true
+    end
   end
 
   context 'updated project' do
