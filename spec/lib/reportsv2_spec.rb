@@ -21,7 +21,7 @@ describe 'ReportsV2' do
     end
 
     after :each do
-      # FileUtils.rm_rf(@tmp_home)
+      FileUtils.rm_rf(@tmp_home)
       ENV['HOME'] = @original_home
     end
 
@@ -150,76 +150,95 @@ describe 'ReportsV2' do
 
       @reports = TogglV8::ReportsV2.new(api_token: Testing::API_TOKEN)
       @reports.workspace_id = @workspace_id
+
+      @tmp_home = mktemp_dir
+      @original_home = Dir.home
+      ENV['HOME'] = @tmp_home
     end
 
     after :all do
       @toggl.delete_time_entry(@time_entry['id'])
+
+      FileUtils.rm_rf(@tmp_home)
+      ENV['HOME'] = @original_home
     end
 
-    it 'summary' do
-      summary = @reports.summary
-      expect(summary.length).to eq 1
-      expect(summary.first['time']).to eq 77000
-      expect(summary.first['items'].length).to eq 1
-      expect(summary.first['items'].first['time']).to eq 77000
+    context 'JSON reports' do
+      it 'summary' do
+        summary = @reports.summary
+        expect(summary.length).to eq 1
+        expect(summary.first['time']).to eq 77000
+        expect(summary.first['items'].length).to eq 1
+        expect(summary.first['items'].first['time']).to eq 77000
+      end
+
+      it 'weekly' do
+        weekly = @reports.weekly
+        expect(weekly.length).to eq 1
+        expect(weekly.first['details'].first['title']['user']).to eq Testing::USERNAME
+        expect(weekly.first['totals'][7]).to eq 77000
+      end
+
+      it 'details' do
+        details = @reports.details
+        expect(details.length).to eq 1
+        expect(details.first['user']).to eq Testing::USERNAME
+        expect(details.first['dur']).to eq 77000
+      end
     end
 
-    it 'weekly' do
-      weekly = @reports.weekly
-      expect(weekly.length).to eq 1
-      expect(weekly.first['details'].first['title']['user']).to eq Testing::USERNAME
-      expect(weekly.first['totals'][7]).to eq 77000
+    context 'CSV reports' do
+      it 'summary' do
+        filename = File.join(@tmp_home, 'summary.csv')
+        summary = @reports.write_summary(filename)
+        expect(file_contains(filename, /00:01:17/))
+      end
+
+      it 'weekly' do
+        filename = File.join(@tmp_home, 'weekly.csv')
+        weekly = @reports.write_weekly(filename)
+        expect(file_contains(filename, /00:01:17/))
+      end
+
+      it 'details' do
+        filename = File.join(@tmp_home, 'details.csv')
+        details = @reports.write_details(filename)
+        expect(file_contains(filename, /00:01:17/))
+      end
     end
 
-    it 'details' do
-      details = @reports.details
-      expect(details.length).to eq 1
-      expect(details.first['user']).to eq Testing::USERNAME
-      expect(details.first['dur']).to eq 77000
-    end
-  end
+    context 'PDF reports' do
+      it 'summary' do
+        filename = File.join(@tmp_home, 'summary.pdf')
+        summary = @reports.write_summary(filename)
+        expect(file_is_pdf(filename))
+      end
 
-  context 'CSV reports' do
-    before :all do
-      @toggl = TogglV8::API.new(Testing::API_TOKEN)
-      @workspaces = @toggl.workspaces
-      @workspace_id = @workspaces.first['id']
-      time_entry_info = {
-        'wid' => @workspace_id,
-        'start' => @toggl.iso8601(DateTime.now),
-        'duration' => 77
-      }
+      it 'weekly' do
+        filename = File.join(@tmp_home, 'weekly.pdf')
+        weekly = @reports.write_weekly(filename)
+        expect(file_is_pdf(filename))
+      end
 
-      @time_entry = @toggl.create_time_entry(time_entry_info)
-
-      @reports = TogglV8::ReportsV2.new(api_token: Testing::API_TOKEN)
-      @reports.workspace_id = @workspace_id
+      it 'details' do
+        filename = File.join(@tmp_home, 'details.pdf')
+        details = @reports.write_details(filename)
+        expect(file_is_pdf(filename))
+      end
     end
 
-    after :all do
-      @toggl.delete_time_entry(@time_entry['id'])
-    end
+    context 'XLS reports' do
+      it 'summary' do
+        filename = File.join(@tmp_home, 'summary.xls')
+        summary = @reports.write_summary(filename)
+        expect(file_is_xls(filename))
+      end
 
-    it 'summary' do
-      summary = @reports.summary
-      expect(summary.length).to eq 1
-      expect(summary.first['time']).to eq 77000
-      expect(summary.first['items'].length).to eq 1
-      expect(summary.first['items'].first['time']).to eq 77000
-    end
-
-    it 'weekly' do
-      weekly = @reports.weekly
-      expect(weekly.length).to eq 1
-      expect(weekly.first['details'].first['title']['user']).to eq Testing::USERNAME
-      expect(weekly.first['totals'][7]).to eq 77000
-    end
-
-    it 'details' do
-      details = @reports.details
-      expect(details.length).to eq 1
-      expect(details.first['user']).to eq Testing::USERNAME
-      expect(details.first['dur']).to eq 77000
+      it 'details' do
+        filename = File.join(@tmp_home, 'details.xls')
+        details = @reports.write_details(filename)
+        expect(file_is_xls(filename))
+      end
     end
   end
 end

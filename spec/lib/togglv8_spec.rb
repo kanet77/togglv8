@@ -30,7 +30,7 @@ describe 'TogglV8' do
     end
 
     after :each do
-      # FileUtils.rm_rf(@tmp_home)
+      FileUtils.rm_rf(@tmp_home)
       ENV['HOME'] = @original_home
     end
 
