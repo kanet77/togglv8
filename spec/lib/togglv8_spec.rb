@@ -6,15 +6,15 @@ describe 'TogglV8' do
     me = toggl.me
     expect(me).to_not be nil
     expect(me['api_token']).to eq Testing::API_TOKEN
-    expect(me['email']).to eq Testing::USERNAME
+    expect(me['email']).to eq Testing::EMAIL
   end
 
   it 'initializes with username and password' do
-    toggl = TogglV8::API.new(Testing::USERNAME, Testing::PASSWORD)
+    toggl = TogglV8::API.new(Testing::EMAIL, Testing::PASSWORD)
     me = toggl.me
     expect(me).to_not be nil
     expect(me['api_token']).to eq Testing::API_TOKEN
-    expect(me['email']).to eq Testing::USERNAME
+    expect(me['email']).to eq Testing::EMAIL
   end
 
   it 'does not initialize with bogus api_token' do
@@ -44,7 +44,7 @@ describe 'TogglV8' do
       me = toggl.me
       expect(me).to_not be nil
       expect(me['api_token']).to eq Testing::API_TOKEN
-      expect(me['email']).to eq Testing::USERNAME
+      expect(me['email']).to eq Testing::EMAIL
     end
 
     it 'raises error if .toggl file is missing' do
