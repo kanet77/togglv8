@@ -18,13 +18,15 @@ module TogglV8
       username = opts[:api_token]
       if username.nil?
         toggl_api_file = opts[:toggl_api_file] || File.join(Dir.home, TOGGL_FILE)
-        if FileTest.exist?(toggl_api_file) then
+        if File.exist?(toggl_api_file) then
           username = IO.read(toggl_api_file)
         else
-          raise "Expecting\n" +
+          raise "Expecting one of:\n" +
             " 1) api_token in file #{toggl_api_file}, or\n" +
-            " 2) parameter: (api_token), or\n" +
-            "\n\tSee https://github.com/toggl/toggl_api_docs/blob/master/reports.md#authentication"
+            " 2) parameter: (toggl_api_file), or\n" +
+            " 3) parameter: (api_token), or\n" +
+            "\n\tSee https://github.com/kanet77/togglv8#togglv8reportsv2" +
+            "\n\tand https://github.com/toggl/toggl_api_docs/blob/master/reports.md#authentication"
         end
       end
 

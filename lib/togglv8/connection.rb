@@ -13,26 +13,7 @@ module TogglV8
     API_TOKEN = 'api_token'
     TOGGL_FILE = '.toggl'
 
-    def self.qualify(username, password)
-      if username.nil? && password == API_TOKEN
-        toggl_api_file = File.join(Dir.home, TOGGL_FILE)
-
-        # logger.debug("toggl_api_file = #{toggl_api_file}")
-        if FileTest.exist?(toggl_api_file) then
-          username = IO.read(toggl_api_file)
-        else
-          raise "Expecting\n" +
-            " 1) api_token in file #{toggl_api_file}, or\n" +
-            " 2) parameter: (api_token), or\n" +
-            " 3) parameters: (username, password).\n" +
-            "\n\tSee https://github.com/toggl/toggl_api_docs/blob/master/chapters/authentication.md"
-        end
-      end
-      return username, password
-    end
-
     def self.open(username=nil, password=API_TOKEN, url=nil, opts={})
-      username, password = qualify(username, password)
       raise 'Missing URL' if url.nil?
 
       Faraday.new(:url => url, :ssl => {:verify => true}) do |faraday|
