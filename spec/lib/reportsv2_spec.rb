@@ -58,9 +58,15 @@ describe 'ReportsV2' do
       @reports.workspace_id = @workspace_id
     end
 
-    it 'surfaces a Warning HTTP header in case of error' do
+    it 'surfaces a Warning HTTP header in case of 400 error' do
       # https://github.com/toggl/toggl_api_docs/blob/master/reports.md#failed-requests
       expect { @reports.error400 }.to raise_error(RuntimeError,
+                                      "This URL is intended only for testing")
+    end
+
+    it 'surfaces a Warning HTTP header in case of 500 error' do
+      # https://github.com/toggl/toggl_api_docs/blob/master/reports.md#failed-requests
+      expect { @reports.error500 }.to raise_error(RuntimeError,
                                       "This URL is intended only for testing")
     end
 
