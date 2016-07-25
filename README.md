@@ -38,7 +38,7 @@ TogglV8::API communicates with [Toggl API v8](https://github.com/toggl/toggl_api
 ```ruby
 TogglV8::API.new                      # reads API token from file ~/.toggl
 TogglV8::API.new(api_token)           # explicit API token
-TogglV8::API.new(username, password)  # username & password
+TogglV8::API.new(email, password)     # email & password
 ```
 
 ### TogglV8::ReportsV2
