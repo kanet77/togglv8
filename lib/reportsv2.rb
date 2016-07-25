@@ -124,11 +124,30 @@ module TogglV8
       get "index"
     end
 
-    def project(params={})
+
+    ##
+    # ---------
+    # :section: Project Dashboard
+    #
+    # Project dashboard returns at-a-glance information for a single project.
+    # This feature is only available with Toggl pro.
+    #
+    # user_agent          : email, or other way to contact client application developer
+    #                       (string, *required*)
+    # workspace_id        : The workspace whose data you want to access
+    #                       (integer, *required*)
+    # project_id          : The project whose data you want to access
+    #                       (integer, *required*)
+    # page                : number of 'tasks_page' you want to fetch
+    #                       (integer, optional)
+    # order_field string  : name/assignee/duration/billable_amount/estimated_seconds
+    # order_desc string   : on/off, on for descending and off for ascending order
+    def project(project_id, params={})
       raise "workspace_id is required" if @workspace_id.nil?
       get "project", {
         'user_agent': @user_agent,
         'workspace_id': @workspace_id,
+        'project_id': project_id,
       }.merge(params)
     end
 

@@ -92,6 +92,29 @@ describe 'ReportsV2' do
     end
   end
 
+  context 'project', :pro_account do
+    before :all do
+      @toggl = TogglV8::API.new(Testing::API_TOKEN)
+      @project_name = "Project #{Time.now.iso8601}"
+      @project = @toggl.create_project({
+        'name' => @project_name,
+        'wid' => @workspace_id
+      })
+    end
+
+    after :all do
+      @toggl.delete_project(@project['id'])
+    end
+
+    it 'dashboard' do
+      reports = TogglV8::ReportsV2.new(api_token: Testing::API_TOKEN)
+      reports.workspace_id = @toggl.workspaces.first['id']
+      project_dashboard = reports.project(@project['id'])
+
+      expect(project_dashboard['name']).to eq @project_name
+    end
+  end
+
   context 'blank reports' do
     before :all do
       @toggl = TogglV8::API.new(Testing::API_TOKEN)
