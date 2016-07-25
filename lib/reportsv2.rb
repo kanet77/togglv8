@@ -13,7 +13,7 @@ module TogglV8
     def initialize(opts={})
       debug(false)
 
-      @user_agent = 'togglv8'
+      @user_agent = TogglV8::NAME
 
       username = opts[:api_token]
       if username.nil?
