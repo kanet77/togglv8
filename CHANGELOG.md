@@ -10,6 +10,14 @@ Version numbers are meant to adhere to [Semantic Versioning](http://semver.org/)
 ## [Unreleased]
 
 
+## [1.2.1] - 2016-07-25
+### Changed
+
+* Fix ReportsV2#project by requiring project_id.
+* Improve spec code coverage.
+* Include version in `user_agent` and `created_with` (e.g. TogglV8 v1.2.1)
+
+
 ## [1.2.0] - 2016-07-24
 ### Added
 
@@ -80,7 +88,8 @@ Version numbers are meant to adhere to [Semantic Versioning](http://semver.org/)
 * Add Ruby interface to most functions of [Toggl V8 API](https://github.com/toggl/toggl_api_docs/blob/master/toggl_api.md) (as of 2015-08-21).
 
 
-[Unreleased]: https://github.com/kanet77/togglv8/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/kanet77/togglv8/compare/v1.2.1...HEAD
+[1.2.1]: https://github.com/kanet77/togglv8/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/kanet77/togglv8/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/kanet77/togglv8/compare/v1.0.5...v1.1.0
 [1.0.5]: https://github.com/kanet77/togglv8/compare/v1.0.4...v1.0.5
