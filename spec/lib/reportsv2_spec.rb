@@ -15,20 +15,18 @@ describe 'ReportsV2' do
 
   context '.toggl file' do
     before :each do
-      @home = File.join(Dir.pwd, "tmp")
-      Dir.mkdir(@home)
-
+      @tmp_home = mktemp_dir
       @original_home = Dir.home
-      ENV['HOME'] = @home
+      ENV['HOME'] = @tmp_home
     end
 
     after :each do
-      FileUtils.rm_rf(@home)
+      # FileUtils.rm_rf(@tmp_home)
       ENV['HOME'] = @original_home
     end
 
     it 'initializes with .toggl file' do
-      toggl_file = File.join(@home, '.toggl')
+      toggl_file = File.join(@tmp_home, '.toggl')
       File.open(toggl_file, 'w') { |file| file.write(Testing::API_TOKEN) }
 
       reports = TogglV8::ReportsV2.new
@@ -38,10 +36,10 @@ describe 'ReportsV2' do
     end
 
     it 'initializes with custom toggl file' do
-      toggl_file = File.join(@home, 'my_toggl')
+      toggl_file = File.join(@tmp_home, 'my_toggl')
       File.open(toggl_file, 'w') { |file| file.write(Testing::API_TOKEN) }
 
-      reports = TogglV8::ReportsV2.new({toggl_api_file: toggl_file})
+      reports = TogglV8::ReportsV2.new(toggl_api_file: toggl_file)
       env = reports.env
       expect(env).to_not be nil
       expect(env['user']['api_token']).to eq Testing::API_TOKEN

@@ -52,6 +52,12 @@ class MockResponse
   end
 end
 
+def mktemp_dir
+  dir = File.join(Dir.pwd, "tmp-#{Time.now.to_f}")
+  Dir.mkdir(dir)
+  dir
+end
+
 class Testing
   API_TOKEN = ENV['API_TOKEN'] || '4880adbe1bee9a241fa08070d33bd49f'
   EMAIL     = ENV['EMAIL']     || 'togglv8@mailinator.com'

@@ -24,20 +24,18 @@ describe 'TogglV8' do
 
   context '.toggl file' do
     before :each do
-      @home = File.join(Dir.pwd, "tmp")
-      Dir.mkdir(@home)
-
+      @tmp_home = mktemp_dir
       @original_home = Dir.home
-      ENV['HOME'] = @home
+      ENV['HOME'] = @tmp_home
     end
 
     after :each do
-      FileUtils.rm_rf(@home)
+      # FileUtils.rm_rf(@tmp_home)
       ENV['HOME'] = @original_home
     end
 
     it 'initializes with .toggl file' do
-      toggl_file = File.join(@home, '.toggl')
+      toggl_file = File.join(@tmp_home, '.toggl')
       File.open(toggl_file, 'w') { |file| file.write(Testing::API_TOKEN) }
 
       toggl = TogglV8::API.new

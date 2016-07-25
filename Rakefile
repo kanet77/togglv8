@@ -1,8 +1,6 @@
 require "bundler/gem_tasks"
-require 'fileutils'
+require 'rake/clean'
 
-task :clean do
-  FileUtils.remove_dir('coverage', force=true)
-  FileUtils.remove_dir('doc', force=true)
-  FileUtils.remove_dir('pkg', force=true)
-end
+CLEAN.add 'coverage'
+CLEAN.add 'doc'
+CLEAN.include 'tmp-*'
