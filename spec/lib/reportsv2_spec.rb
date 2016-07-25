@@ -140,14 +140,14 @@ describe 'ReportsV2' do
     it 'weekly' do
       weekly = @reports.weekly
       expect(weekly.length).to eq 1
-      expect(weekly.first['details'].first['title']['user']).to eq 'togglv8'
+      expect(weekly.first['details'].first['title']['user']).to eq Testing::USERNAME
       expect(weekly.first['totals'][7]).to eq 77000
     end
 
     it 'details' do
       details = @reports.details
       expect(details.length).to eq 1
-      expect(details.first['user']).to eq 'togglv8'
+      expect(details.first['user']).to eq Testing::USERNAME
       expect(details.first['dur']).to eq 77000
     end
   end
@@ -184,14 +184,14 @@ describe 'ReportsV2' do
     it 'weekly' do
       weekly = @reports.weekly
       expect(weekly.length).to eq 1
-      expect(weekly.first['details'].first['title']['user']).to eq 'togglv8'
+      expect(weekly.first['details'].first['title']['user']).to eq Testing::USERNAME
       expect(weekly.first['totals'][7]).to eq 77000
     end
 
     it 'details' do
       details = @reports.details
       expect(details.length).to eq 1
-      expect(details.first['user']).to eq 'togglv8'
+      expect(details.first['user']).to eq Testing::USERNAME
       expect(details.first['dur']).to eq 77000
     end
   end
