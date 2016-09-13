@@ -8,8 +8,6 @@ module TogglV8
     # name  : The name of the client (string, required, unique in workspace)
     # wid   : workspace ID, where the client will be used (integer, required)
     # notes : Notes for the client (string, not required)
-    # hrate : The hourly rate for this client (float, not required, available only for pro workspaces)
-    # cur   : The name of the client's currency (string, not required, available only for pro workspaces)
     # at    : timestamp that is sent in the response, indicates the time client was last updated
 
     def create_client(params)
