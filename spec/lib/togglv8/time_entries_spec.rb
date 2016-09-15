@@ -272,38 +272,68 @@ describe 'Time Entries' do
       TogglV8SpecHelper.delete_all_tags(@toggl)
     end
 
-    it 'adds and removes one tag' do
-      # Add one tag
-      @toggl.update_time_entries_tags(@time_entry_ids,
-        {'tags' =>['money'], 'tag_action' => 'add'})
+    context 'one tag' do
+      before :each do
+        @toggl.add_time_entry_tags(@time_entry_ids, ['money'])
+      end
 
-      time_entries = @toggl.get_time_entries
-      tags = time_entries.map { |t| t['tags'] }
-      expect(tags).to eq [
-        ['money'],
-        ['money'],
-        ['money'],
-        ['money']
-      ]
+      it 'adds one tag' do
+        time_entries = @toggl.get_time_entries
+        tags = time_entries.map { |t| t['tags'] }
+        expect(tags).to eq [
+          ['money'],
+          ['money'],
+          ['money'],
+          ['money']
+        ]
+      end
 
-      # Remove one tag
-      @toggl.update_time_entries_tags(@time_entry_ids,
-        {'tags' =>['money'], 'tag_action' => 'remove'})
+      it 'removes one tag' do
+        pending('https://github.com/toggl/toggl_api_docs/issues/200')
 
-      time_entries = @toggl.get_time_entries
-      tags = time_entries.map { |t| t['tags'] }.compact
-      expect(tags).to eq []
+        @toggl.remove_time_entry_tags(@time_entry_ids, ['money'])
+
+        time_entries = @toggl.get_time_entries
+        tags = time_entries.map { |t| t['tags'] }.compact
+        expect(tags).to eq []
+      end
     end
 
-    it '"removes" a non-existent tag' do
-      # Not tags to start
+    context 'multiple tags' do
+      before :each do
+        @toggl.add_time_entry_tags(@time_entry_ids, ['billed', 'productive'])
+      end
+
+      it 'adds multiple tags' do
+        time_entries = @toggl.get_time_entries
+        tags = time_entries.map { |t| t['tags'] }
+        expect(tags).to eq [
+          ['billed', 'productive'],
+          ['billed', 'productive'],
+          ['billed', 'productive'],
+          ['billed', 'productive']
+        ]
+      end
+
+      it 'removes multiple tags' do
+        pending('https://github.com/toggl/toggl_api_docs/issues/200')
+
+        @toggl.remove_time_entry_tags(@time_entry_ids, ['billed','productive'])
+
+        time_entries = @toggl.get_time_entries
+        tags = time_entries.map { |t| t['tags'] }.compact
+        expect(tags).to eq []
+      end
+    end
+
+    it '"removes" a non-existent tag without error' do
+      # No tags to start
       time_entries = @toggl.get_time_entries
       tags = time_entries.map { |t| t['tags'] }.compact
       expect(tags).to eq []
 
       # "Remove" a tag
-      @toggl.update_time_entries_tags(@time_entry_ids,
-        {'tags' =>['void'], 'tag_action' => 'remove'})
+      @toggl.remove_time_entry_tags(@time_entry_ids, ['void'])
 
       # No tags to finish
       time_entries = @toggl.get_time_entries
@@ -311,41 +341,15 @@ describe 'Time Entries' do
       expect(tags).to eq []
     end
 
-    it 'adds and removes multiple tags' do
-      # Add multiple tags
-      @toggl.update_time_entries_tags(@time_entry_ids,
-        {'tags' =>['billed', 'productive'], 'tag_action' => 'add'})
-
-      time_entries = @toggl.get_time_entries
-      tags = time_entries.map { |t| t['tags'] }
-      expect(tags).to eq [
-        ['billed', 'productive'],
-        ['billed', 'productive'],
-        ['billed', 'productive'],
-        ['billed', 'productive']
-      ]
-
-      # Remove multiple tags
-      @toggl.update_time_entries_tags(@time_entry_ids,
-        {'tags' =>['billed','productive'], 'tag_action' => 'remove'})
-
-      time_entries = @toggl.get_time_entries
-      tags = time_entries.map { |t| t['tags'] }.compact
-      expect(tags).to eq []
-    end
-
     it 'manages multiple tags' do
       # Add some tags
-      @toggl.update_time_entries_tags(@time_entry_ids,
-        {'tags' =>['billed', 'productive'], 'tag_action' => 'add'})
+      @toggl.add_time_entry_tags(@time_entry_ids, ['billed', 'productive'])
 
       # Remove some tags
-      @toggl.update_time_entries_tags([ @time6['id'], @time4['id'] ],
-        {'tags' =>['billed'], 'tag_action' => 'remove'})
+      @toggl.remove_time_entry_tags([ @time6['id'], @time4['id'] ], ['billed'])
 
       # Add some tags
-      @toggl.update_time_entries_tags([ @time7['id'] ],
-        {'tags' =>['best'], 'tag_action' => 'add'})
+      @toggl.add_time_entry_tags([ @time7['id'] ], ['best']  )
 
       time7 = @toggl.get_time_entry(@time7['id'])
       time6 = @toggl.get_time_entry(@time6['id'])

@@ -83,11 +83,17 @@ module TogglV8
       get "time_entries", params
     end
 
-    # Example params: {'tags' =>['billed','productive'], 'tag_action' => 'add'}
-    # tag_action can be 'add' or 'remove'
-    def update_time_entries_tags(time_entry_ids, params)
-      return if time_entry_ids.nil?
-      requireParams(params, ['tags', 'tag_action'])
+    def add_time_entry_tags(time_entry_ids, tags)
+      update_time_entry_tags(time_entry_ids, tags, 'add')
+    end
+
+    def remove_time_entry_tags(time_entry_ids, tags)
+      update_time_entry_tags(time_entry_ids, tags, 'remove')
+    end
+
+    def update_time_entry_tags(time_entry_ids, tags, tag_action)
+      return if time_entry_ids.nil? or time_entry_ids.empty?
+      params = {'tags' => tags, 'tag_action' => tag_action}
       put "time_entries/#{time_entry_ids.join(',')}", { 'time_entry' => params }
     end
   end
