@@ -23,8 +23,10 @@ module TogglV8
     end
 
     def projects(workspace_id, params={})
-      active = params.has_key?(:active) ? "?active=#{params[:active]}" : ""
-      get "workspaces/#{workspace_id}/projects#{active}"
+      allowed      = ['active', 'actual_hours', 'only_templates']
+      query_params = params.select { |k,v| allowed.include? k }
+
+      get "workspaces/#{workspace_id}/projects", query_params
     end
 
     def users(workspace_id)
@@ -32,8 +34,10 @@ module TogglV8
     end
 
     def tasks(workspace_id, params={})
-      active = params.has_key?(:active) ? "?active=#{params[:active]}" : ""
-      get "workspaces/#{workspace_id}/tasks#{active}"
+      allowed      = ['active']
+      query_params = params.select { |k,v| allowed.include? k }
+
+      get "workspaces/#{workspace_id}/tasks", query_params
     end
 
     def tags(workspace_id)

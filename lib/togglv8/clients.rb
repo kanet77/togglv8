@@ -28,8 +28,10 @@ module TogglV8
     end
 
     def get_client_projects(client_id, params={})
-      active = params.has_key?('active') ? "?active=#{params['active']}" : ""
-      get "clients/#{client_id}/projects#{active}"
+      allowed      = ['active']
+      query_params = params.select { |k,v| allowed.include? k }
+
+      get "clients/#{client_id}/projects", query_params
     end
   end
 end

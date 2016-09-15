@@ -76,10 +76,11 @@ module TogglV8
     def get_time_entries(dates = {})
       start_date = dates[:start_date]
       end_date = dates[:end_date]
-      params = []
-      params.push("start_date=#{iso8601(start_date)}") unless start_date.nil?
-      params.push("end_date=#{iso8601(end_date)}") unless end_date.nil?
-      get "time_entries%s" % [params.empty? ? "" : "?#{params.join('&')}"]
+      params = {}
+      params['start_date'] = iso8601(start_date) unless start_date.nil?
+      params['end_date'] = iso8601(end_date) unless end_date.nil?
+
+      get "time_entries", params
     end
 
     # Example params: {'tags' =>['billed','productive'], 'tag_action' => 'add'}
