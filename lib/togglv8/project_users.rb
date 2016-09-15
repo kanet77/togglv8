@@ -28,5 +28,10 @@ module TogglV8
     def delete_project_user(project_user_id)
       delete "project_users/#{project_user_id}"
     end
+
+    def get_workspace_project_users(workspace_id)
+      # does not support fields parameter
+      get "workspaces/#{workspace_id}/project_users"
+    end
   end
 end

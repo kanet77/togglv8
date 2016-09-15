@@ -53,6 +53,13 @@ describe 'Projects' do
       expect(users.first['uid']).to eq Testing::USER_ID
       expect(users.first['manager']).to eq true
     end
+
+    it 'gets workspace project users' do
+      users = @toggl.get_workspace_project_users(@workspace_id)
+      expect(users.length).to eq 1
+      expect(users.first['uid']).to eq Testing::USER_ID
+      expect(users.first['manager']).to eq true
+    end
   end
 
   context 'updated project' do
