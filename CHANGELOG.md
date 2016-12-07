@@ -4,10 +4,33 @@ Notable changes are documented here following conventions outlined at [Keep a CH
 
 Changes that are not intended to affect usage (e.g. documentation, specs, removal of dead code, etc.) are generally not documented here.
 
-Version numbers are meant to adhere to [Semantic Versioning](http://semver.org/).
+Version numbers are meant to adhere to [Semantic Versioning 2.0.0](http://semver.org/spec/v2.0.0.html).
 
 
 ## [Unreleased]
+
+N/A
+
+## [1.3.0] - 2016-12-06
+### Fixed
+
+* Support params `actual_hours` and `only_templates` when getting workspace projects. (Fix #14.)
+
+
+### Added
+
+* Add `get_workspace_project_users`. See Toggl API docs [#198](https://github.com/toggl/toggl_api_docs/issues/198)
+* Add `add_time_entry_tags` and `remove_time_entry_tags` helper methods.
+* Add `create_project_users`, `update_project_users`, and `delete_project_users` to match `project_users` API endpoint and reflect that the methods can act on multiple users at once.
+
+
+### Deprecated
+
+The following methods are deprecated but retained for backward compatibility.
+
+* Deprecate `create_project_user` in favor of `create_project_users`.
+* Deprecate `update_project_user` in favor of `update_project_users`.
+* Deprecate `delete_project_user` in favor of `delete_project_users`.
 
 
 ## [1.2.1] - 2016-07-25

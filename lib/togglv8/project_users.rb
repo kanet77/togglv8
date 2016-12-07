@@ -14,24 +14,46 @@ module TogglV8
     # -- Additional fields --
     # fullname : full name of the user, who is added to the project
 
-    def create_project_user(params)
+    # uid can be a comma-separated list of user ids
+    def create_project_users(params)
       requireParams(params, ['pid', 'uid'])
       params[:fields] = "fullname"  # for simplicity, always request fullname field
       post "project_users", { 'project_user' => params }
     end
 
-    def update_project_user(project_user_id, params)
+    # uid can be a comma-separated list of user ids
+    def update_project_users(params)
       params[:fields] = "fullname"  # for simplicity, always request fullname field
       put "project_users/#{project_user_id}", { 'project_user' => params }
     end
 
-    def delete_project_user(project_user_id)
-      delete "project_users/#{project_user_id}"
+    # project_user_ids can be a comma-separated list of user ids
+    def delete_project_users(project_user_ids)
+      delete "project_users/#{project_user_ids}"
     end
 
+    # does not support fields parameter
     def get_workspace_project_users(workspace_id)
-      # does not support fields parameter
       get "workspaces/#{workspace_id}/project_users"
+    end
+
+    # -- Deprecated -- (retained for backward compatibilty)
+
+    # Deprecated in favor of create_project_users
+    def create_project_user(params)
+      create_project_users(params)
+    end
+
+
+    # Deprecated in favor of update_project_users
+    def update_project_user(project_user_id, params)
+      update_project_users(params)
+    end
+
+
+    # Deprecated in favor of delete_project_users
+    def delete_project_user(project_user_id)
+      delete_project_users(project_user_id)
     end
   end
 end
