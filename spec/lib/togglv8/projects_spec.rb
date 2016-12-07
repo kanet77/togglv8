@@ -90,6 +90,9 @@ describe 'Projects' do
       project = @toggl.update_project(@project['id'], new_values)
       expect(project).to include(new_values)
     end
+
+    xit 'distinguishes active/inactive projects' do
+    end
   end
 
   context 'multiple projects' do

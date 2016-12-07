@@ -173,6 +173,47 @@ describe 'ReportsV2' do
       ENV['HOME'] = @original_home
     end
 
+    xit 'detail report pagination' do
+      before :all do
+        time_entry_info = {
+          'wid' => @workspace_id
+        }
+        @time_entry_ids = []
+        @per_page = @reports.details['per_page']
+
+        for i in 1..(@per_page) do
+          start_time = DateTime.now - (i/24.0) # one time entry/hour prior to now
+          time_entry_info['start'] = @toggl.iso8601(start_time)
+          time_entry_info['duration'] = i
+          time_entry = @toggl.create_time_entry(time_entry_info)
+          @time_entry_ids << time_entry['id']
+        end
+
+        @expected_total_count = @per_page + 1
+      end
+
+      after :all do
+        @time_entry_ids.each do |id|
+          @toggl.delete_time_entry(id)
+        end
+      end
+
+      it 'gets the first page by default' do
+        details = @reports.details
+        expect(details['per_page']).to eq @per_page
+        expect(details['total_count']).to eq @expected_total_count
+        expect(details['data'].length).to eq @per_page
+      end
+
+      it 'gets a specifically requested page', :focus do
+        # details = @reports.details(page: 2)
+        details = @reports.details(extension='', params={page: 2})
+        expect(details['per_page']).to eq @per_page
+        expect(details['total_count']).to eq @expected_total_count
+        expect(details['data'].length).to eq 1
+      end
+    end
+
     context 'JSON reports' do
       it 'summary' do
         summary = @reports.summary
@@ -191,9 +232,11 @@ describe 'ReportsV2' do
 
       it 'details' do
         details = @reports.details
-        expect(details.length).to eq 1
-        expect(details.first['user']).to eq Testing::USERNAME
-        expect(details.first['dur']).to eq 77000
+        expect(details['total_count']).to eq 1
+        expect(details['total_grand']).to eq 77000
+        expect(details['data'].length).to eq 1
+        expect(details['data'].first['user']).to eq Testing::USERNAME
+        expect(details['data'].first['dur']).to eq 77000
       end
     end
 

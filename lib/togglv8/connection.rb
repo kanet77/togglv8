@@ -55,14 +55,22 @@ module TogglV8
     end
 
     def get(resource, params={})
+      # TODO: How best to pass in full_body?
+      # - in params?
+      # - in **opts? <-- should prob use this approach more
+
       query_params = params.map { |k,v| "#{k}=#{v}" }.join('&')
       resource += "?#{query_params}" unless query_params.empty?
+
+      # TODO: Why is '+' URL encoded by hand? Add comment.
       resource.gsub!('+', '%2B')
+      puts "resource = #{resource}"
       full_resp = _call_api(debug_output: lambda { "GET #{resource}" },
                   api_call: lambda { self.conn.get(resource) } )
       return {} if full_resp == {}
       begin
         resp = Oj.load(full_resp.body)
+        puts "resp=#{resp}"
         return resp['data'] if resp.respond_to?(:has_key?) && resp.has_key?('data')
         return resp
       rescue Oj::ParseError
@@ -71,6 +79,8 @@ module TogglV8
     end
 
     def post(resource, data='')
+      # TODO: full_body?
+      # TODO: Why is '+' URL encoded by hand?
       resource.gsub!('+', '%2B')
       full_resp = _call_api(debug_output: lambda { "POST #{resource} / #{data}" },
                   api_call: lambda { self.conn.post(resource, Oj.dump(data)) } )
@@ -80,6 +90,8 @@ module TogglV8
     end
 
     def put(resource, data='')
+      # TODO: full_body?
+      # TODO: Why is '+' URL encoded by hand?
       resource.gsub!('+', '%2B')
       full_resp = _call_api(debug_output: lambda { "PUT #{resource} / #{data}" },
                   api_call: lambda { self.conn.put(resource, Oj.dump(data)) } )
@@ -89,6 +101,7 @@ module TogglV8
     end
 
     def delete(resource)
+      # TODO: Why is '+' URL encoded by hand?
       resource.gsub!('+', '%2B')
       full_resp = _call_api(debug_output: lambda { "DELETE #{resource}" },
                   api_call: lambda { self.conn.delete(resource) } )

@@ -85,6 +85,8 @@ module TogglV8
     end
 
     def details(extension='', params={})
+      params['full_body'] = true
+      # puts "params = #{params}"
       report('details', extension, params)
     end
 

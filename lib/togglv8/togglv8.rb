@@ -39,6 +39,10 @@ module TogglV8
       @conn = TogglV8::Connection.open(username, password,
                 TOGGL_API_V8_URL, opts)
     end
+
+    def destroy
+      delete 'sessions'
+    end
   end
 end
 
