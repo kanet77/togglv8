@@ -82,4 +82,8 @@ class Testing
   USERNAME  = ENV['USERNAME']  || 'togglv8'
   PASSWORD  = ENV['PASSWORD']  || '7PAW&]%$PXyA4XKN92t#H6rK8Jn.E%uf.MUP7;@cW62jYnF9BM'
   USER_ID   = (ENV['USER_ID']  || 1820939).to_i
+
+  OTHER_EMAIL    = ENV['OTHER_EMAIL']    || 'pr5zwux59w@snkmail.com'
+  OTHER_USERNAME = ENV['OTHER_USERNAME'] || 'Pr5zwux59w'
+  OTHER_USER_ID  = (ENV['OTHER_USER_ID'] || 2450739).to_i
 end
