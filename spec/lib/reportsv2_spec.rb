@@ -96,7 +96,7 @@ describe 'ReportsV2' do
     it 'revision has not changed' do
       reports = TogglV8::ReportsV2.new(api_token: Testing::API_TOKEN)
       reports.workspace_id = @workspace_id
-      expect(reports.revision).to eq "0.0.38\n-8a007ca"
+      expect(reports.revision.split("\n").first).to eq "0.0.38"
     end
   end
 
@@ -237,7 +237,7 @@ describe 'ReportsV2' do
       end
     end
 
-    context 'XLS reports' do
+    context 'XLS reports', :pro_account do
       it 'summary' do
         filename = File.join(@tmp_home, 'summary.xls')
         summary = @reports.write_summary(filename)
