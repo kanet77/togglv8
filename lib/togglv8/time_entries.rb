@@ -87,24 +87,27 @@ module TogglV8
     def update_time_entries_tags(time_entry_ids, params)
       return if time_entry_ids.nil?
       requireParams(params, ['tags', 'tag_action'])
-      time_entries = put "time_entries/#{time_entry_ids.join(',')}", { 'time_entry' => params }
+      put "time_entries/#{time_entry_ids.join(',')}", { 'time_entry' => params }
+    end
+
+    # TEMPORARY FIXED version of API issue
+    # see https://github.com/toggl/toggl_api_docs/issues/20 for more info
+    def update_time_entries_tags_fixed(time_entry_ids, params)
+      time_entries = update_time_entries_tags(time_entry_ids, params)
       return time_entries if params['tag_action'] == 'add'
 
-      #see https://github.com/toggl/toggl_api_docs/issues/200
-      time_entries = [time_entries] unless time_entries.is_a? Array
       time_entries_for_removing_all_tags_ids = []
-      time_entries.map! do |time_entry|
+      [].push(time_entries).flatten.map! do |time_entry|
         unless time_entry['tags'].nil?
           time_entry['tags'] = time_entry['tags'] - params['tags']
           time_entries_for_removing_all_tags_ids << time_entry['id'] if time_entry['tags'].empty?
         end
         time_entry
       end
+
       remove_params = {'tags' => []}
       put "time_entries/#{time_entries_for_removing_all_tags_ids.join(',')}", { 'time_entry' => remove_params } unless time_entries_for_removing_all_tags_ids.empty?
 
-      #return Hash if there is only one time entry
-      return time_entries.first if time_entries.size == 1
       time_entries
     end
   end

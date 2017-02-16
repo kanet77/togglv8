@@ -96,7 +96,7 @@ describe 'ReportsV2' do
     it 'revision has not changed' do
       reports = TogglV8::ReportsV2.new(api_token: Testing::API_TOKEN)
       reports.workspace_id = @workspace_id
-      expect(reports.revision.split("\n").first).to eq "0.0.38"
+      expect(reports.revision).to start_with "0.0.38\n"
     end
   end
 
