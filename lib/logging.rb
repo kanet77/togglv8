@@ -1,6 +1,6 @@
 # :nocov:
 require 'logger'
-require 'awesome_print' # for debug output
+# require 'awesome_print' # for debug output
 
 # From http://stackoverflow.com/questions/917566/ruby-share-logger-instance-among-module-classes
 module Logging
