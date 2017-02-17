@@ -7,8 +7,6 @@ SimpleCov.formatters = [
 ]
 SimpleCov.start
 
-require 'pry-byebug'
-
 require_relative 'togglv8_spec_helper'
 require_relative '../lib/togglv8'
 
