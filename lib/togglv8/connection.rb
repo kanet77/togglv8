@@ -42,7 +42,7 @@ module TogglV8
       loop do
         i += 1
         full_resp = procs[:api_call].call
-        logger.ap(full_resp.env, :debug)
+        # logger.ap(full_resp.env, :debug)
         break if full_resp.status != 429 || i >= MAX_RETRIES
         sleep(DELAY_SEC)
       end
