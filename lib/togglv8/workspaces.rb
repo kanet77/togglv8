@@ -43,5 +43,9 @@ module TogglV8
     def leave_workspace(workspace_id)
       delete "workspaces/#{workspace_id}/leave"
     end
+    
+    def update_workspace(workspace_id, params)
+      put "workspaces/#{workspace_id}", { 'workspace' => params }
+    end
   end
 end
