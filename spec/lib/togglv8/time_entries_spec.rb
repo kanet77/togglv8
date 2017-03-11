@@ -274,7 +274,7 @@ describe 'Time Entries' do
 
     it 'adds and removes one tag' do
       # Add one tag
-      @toggl.update_time_entries_tags(@time_entry_ids,
+      @toggl.update_time_entries_tags_fixed(@time_entry_ids,
         {'tags' =>['money'], 'tag_action' => 'add'})
 
       time_entries = @toggl.get_time_entries
@@ -287,7 +287,7 @@ describe 'Time Entries' do
       ]
 
       # Remove one tag
-      @toggl.update_time_entries_tags(@time_entry_ids,
+      @toggl.update_time_entries_tags_fixed(@time_entry_ids,
         {'tags' =>['money'], 'tag_action' => 'remove'})
 
       time_entries = @toggl.get_time_entries
@@ -302,7 +302,7 @@ describe 'Time Entries' do
       expect(tags).to eq []
 
       # "Remove" a tag
-      @toggl.update_time_entries_tags(@time_entry_ids,
+      @toggl.update_time_entries_tags_fixed(@time_entry_ids,
         {'tags' =>['void'], 'tag_action' => 'remove'})
 
       # No tags to finish
@@ -313,7 +313,7 @@ describe 'Time Entries' do
 
     it 'adds and removes multiple tags' do
       # Add multiple tags
-      @toggl.update_time_entries_tags(@time_entry_ids,
+      @toggl.update_time_entries_tags_fixed(@time_entry_ids,
         {'tags' =>['billed', 'productive'], 'tag_action' => 'add'})
 
       time_entries = @toggl.get_time_entries
@@ -326,7 +326,7 @@ describe 'Time Entries' do
       ]
 
       # Remove multiple tags
-      @toggl.update_time_entries_tags(@time_entry_ids,
+      @toggl.update_time_entries_tags_fixed(@time_entry_ids,
         {'tags' =>['billed','productive'], 'tag_action' => 'remove'})
 
       time_entries = @toggl.get_time_entries
@@ -336,15 +336,15 @@ describe 'Time Entries' do
 
     it 'manages multiple tags' do
       # Add some tags
-      @toggl.update_time_entries_tags(@time_entry_ids,
+      @toggl.update_time_entries_tags_fixed(@time_entry_ids,
         {'tags' =>['billed', 'productive'], 'tag_action' => 'add'})
 
       # Remove some tags
-      @toggl.update_time_entries_tags([ @time6['id'], @time4['id'] ],
+      @toggl.update_time_entries_tags_fixed([ @time6['id'], @time4['id'] ],
         {'tags' =>['billed'], 'tag_action' => 'remove'})
 
       # Add some tags
-      @toggl.update_time_entries_tags([ @time7['id'] ],
+      @toggl.update_time_entries_tags_fixed([ @time7['id'] ],
         {'tags' =>['best'], 'tag_action' => 'add'})
 
       time7 = @toggl.get_time_entry(@time7['id'])
