@@ -13,8 +13,8 @@ describe 'Workspaces' do
 
   it 'updates workspace data' do
     new_values = {
-      'name': 'Seantown', 
-      'only_admins_see_team_dashboard': false
+      'name' => 'Seantown', 
+      'only_admins_see_team_dashboard' => false
     }
   
     expected = new_values.clone
