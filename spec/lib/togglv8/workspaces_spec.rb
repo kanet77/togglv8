@@ -11,6 +11,23 @@ describe 'Workspaces' do
     @toggl.delete_project(@project['id'])
   end
 
+  it 'updates workspace data' do
+    new_values = {
+      'default_currency': 'EUR', 
+      'default_hourly_rate': 50, 
+      'name': "Sean's ws", 
+      'only_admins_may_create_projects': false, 
+      'only_admins_see_billable_rates': true, 
+      'rounding': 1, 
+      'rounding_minutes': 60
+    }
+  
+    expected = new_values.clone
+    
+    workspace_updated = @toggl.update_workspace(@workspace_id, new_values)
+    expect(workspace_updated).to include(expected) 
+  end
+  
   it 'shows users' do
     users = @toggl.users(@workspace_id)
     expect(users.length).to eq 1
