@@ -159,9 +159,9 @@ module TogglV8
     def project(project_id, params={})
       raise "workspace_id is required" if @workspace_id.nil?
       get "project", {
-        :'user_agent' => @user_agent,
-        :'workspace_id' => @workspace_id,
-        :'project_id' => project_id,
+        'user_agent' => @user_agent,
+        'workspace_id' => @workspace_id,
+        'project_id' => project_id,
       }.merge(params)
     end
 
