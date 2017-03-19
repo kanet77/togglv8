@@ -13,13 +13,8 @@ describe 'Workspaces' do
 
   it 'updates workspace data' do
     new_values = {
-      'default_currency': 'EUR', 
-      'default_hourly_rate': 50, 
-      'name': "Sean's ws", 
-      'only_admins_may_create_projects': false, 
-      'only_admins_see_billable_rates': true, 
-      'rounding': 1, 
-      'rounding_minutes': 60
+      'name': 'Seantown', 
+      'only_admins_see_team_dashboard': false
     }
   
     expected = new_values.clone
