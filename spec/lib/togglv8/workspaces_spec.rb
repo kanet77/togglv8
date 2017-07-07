@@ -11,6 +11,18 @@ describe 'Workspaces' do
     @toggl.delete_project(@project['id'])
   end
 
+  it 'updates workspace data' do
+    new_values = {
+      'name' => 'Seantown', 
+      'only_admins_see_team_dashboard' => false
+    }
+  
+    expected = new_values.clone
+    
+    workspace_updated = @toggl.update_workspace(@workspace_id, new_values)
+    expect(workspace_updated).to include(expected) 
+  end
+  
   it 'shows users' do
     users = @toggl.users(@workspace_id)
     expect(users.length).to eq 2
