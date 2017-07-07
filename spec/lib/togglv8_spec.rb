@@ -45,6 +45,17 @@ describe 'TogglV8' do
       expect(me['email']).to eq Testing::EMAIL
     end
 
+    it 'initializes with .toggl file ending with a newline' do
+      toggl_file = File.join(@tmp_home, '.toggl')
+      File.open(toggl_file, 'w') { |file| file.write(Testing::API_TOKEN + "\n") }
+
+      toggl = TogglV8::API.new
+      me = toggl.me
+      expect(me).to_not be nil
+      expect(me['api_token']).to eq Testing::API_TOKEN
+      expect(me['email']).to eq Testing::EMAIL
+    end
+
     it 'raises error if .toggl file is missing' do
       expect{ toggl = TogglV8::API.new }.to raise_error(RuntimeError)
     end
