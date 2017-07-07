@@ -1,5 +1,6 @@
 require_relative 'clients'
 require_relative 'dashboard'
+require_relative 'groups'
 require_relative 'project_users'
 require_relative 'projects'
 require_relative 'tags'
@@ -41,15 +42,3 @@ module TogglV8
     end
   end
 end
-
-
-
-
-
-
-
-
-
-
-
-

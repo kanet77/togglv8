@@ -26,6 +26,17 @@ class TogglV8SpecHelper
     end
   end
 
+  def self.delete_all_groups(toggl)
+    groups = toggl.groups(@default_workspace_id)
+    unless groups.nil?
+      group_ids ||= groups.map { |g| g['id'] }
+      # logger.debug("Deleting #{group_ids.length} groups")
+      group_ids.each do |g_id|
+        toggl.delete_group(g_id)
+      end
+    end
+  end
+
   def self.delete_all_projects(toggl)
     projects = toggl.projects(@default_workspace_id)
     unless projects.nil?
