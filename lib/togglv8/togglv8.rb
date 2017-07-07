@@ -25,7 +25,7 @@ module TogglV8
         toggl_api_file = File.join(Dir.home, TOGGL_FILE)
         # logger.debug("toggl_api_file = #{toggl_api_file}")
         if File.exist?(toggl_api_file) then
-          username = IO.read(toggl_api_file)
+          username = IO.read(toggl_api_file).strip
         else
           raise "Expecting one of:\n" +
             " 1) api_token in file #{toggl_api_file}, or\n" +
