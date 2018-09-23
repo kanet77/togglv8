@@ -25,6 +25,14 @@ describe 'Workspaces' do
     expect(users.last['default_wid']).to eq @workspace_id
   end
 
+  it 'invites users' do
+    now = Time.now.to_i
+    emails = ["test-#{now}+1@mailinator.com"]
+    invites = @toggl.invite_users(@workspace_id, emails)
+
+    expect(invites.first["email"]).to eq(emails.first)
+  end
+
   context 'tasks', :pro_account do
     before :each do
       @task = @toggl.create_task('name' => 'workspace task', 'pid' => @project['id'])
