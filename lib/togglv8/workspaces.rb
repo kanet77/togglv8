@@ -43,5 +43,9 @@ module TogglV8
     def leave_workspace(workspace_id)
       delete "workspaces/#{workspace_id}/leave"
     end
+
+    def invite_users(workspace_id, emails)
+      post "workspaces/#{workspace_id}/invite", { emails: emails }
+    end
   end
 end
