@@ -27,7 +27,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "coveralls"
   # spec.add_development_dependency "awesome_print"
 
-  spec.add_dependency "logger"
   spec.add_dependency "faraday"
   spec.add_dependency "oj"
 end
