@@ -9,6 +9,7 @@ Version numbers are meant to adhere to [Semantic Versioning](http://semver.org/)
 
 ## [Unreleased]
 
+* remove unneeded dependencies and references (logger awesome-print pry-byebug)
 
 ## [1.2.1] - 2016-07-25
 ### Changed
