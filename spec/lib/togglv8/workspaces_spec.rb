@@ -12,17 +12,17 @@ describe 'Workspaces' do
   end
 
   it 'shows users' do
-    users = @toggl.users(@workspace_id)
+    users = @toggl.users(@workspace_id).sort {|a,b| a['id'] <=> b['id']}
     expect(users.length).to eq 2
 
-    expect(users.first['id']).to       eq Testing::OTHER_USER_ID
-    expect(users.first['email']).to    eq Testing::OTHER_EMAIL
-    expect(users.first['fullname']).to eq Testing::OTHER_USERNAME
+    expect(users.first['id']).to       eq Testing::USER_ID
+    expect(users.first['email']).to    eq Testing::EMAIL
+    expect(users.first['fullname']).to eq Testing::USERNAME
+    expect(users.first['default_wid']).to eq @workspace_id
 
-    expect(users.last['id']).to          eq Testing::USER_ID
-    expect(users.last['email']).to       eq Testing::EMAIL
-    expect(users.last['fullname']).to    eq Testing::USERNAME
-    expect(users.last['default_wid']).to eq @workspace_id
+    expect(users.last['id']).to          eq Testing::OTHER_USER_ID
+    expect(users.last['email']).to       eq Testing::OTHER_EMAIL
+    expect(users.last['fullname']).to    eq Testing::OTHER_USERNAME
   end
 
   context 'tasks', :pro_account do

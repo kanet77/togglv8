@@ -48,6 +48,9 @@ describe 'Time Entries' do
         @time_entry.delete(key)
       end
 
+      # As of 2019-07-08T16:40:35.573Z, POST /api/v8/time_entries does not return 'guid' as GET does
+      retrieved_time_entry.delete('guid')
+
       expect(retrieved_time_entry).to eq @time_entry
     end
 
@@ -117,6 +120,9 @@ describe 'Time Entries' do
         retrieved_time_entry.delete(key)
         @time_entry.delete(key)
       end
+
+      # As of 2019-07-08T16:40:35.573Z, POST /api/v8/time_entries does not return 'guid' as GET does
+      retrieved_time_entry.delete('guid')
 
       expect(retrieved_time_entry).to eq @time_entry
     end
@@ -196,14 +202,17 @@ describe 'Time Entries' do
   end
 
   context 'start and stop time entry' do
+    let(:running_time_entry) { @toggl.start_time_entry(@time_entry_info).tap { @_running_time_entry_loaded = true } }
+    after :each do
+      @toggl.delete_time_entry(running_time_entry['id']) if @_running_time_entry_loaded
+    end
+
     it 'starts and stops a time entry' do
-      time_entry_info = {
+      @time_entry_info = {
         'wid' => @workspace_id,
         'description' => 'time entry description'
       }
-
-      # start time entry
-      running_time_entry = @toggl.start_time_entry(time_entry_info)
+      running_time_entry
 
       # get current time entry by '/current'
       time_entry_current = @toggl.get_current_time_entry
@@ -218,14 +227,15 @@ describe 'Time Entries' do
       time_entry_by_id.delete('start')
       running_time_entry.delete('start')
 
+      # As of 2019-07-08T16:40:35.573Z, POST /api/v8/time_entries does not return 'guid' as GET does
+      time_entry_by_id.delete('guid')
+
       expect(time_entry_by_id).to eq running_time_entry
       expect(time_entry_by_id.has_key?('stop')).to eq false
 
       # stop time entry
       stopped_time_entry = @toggl.stop_time_entry(running_time_entry['id'])
       expect(stopped_time_entry.has_key?('stop')).to eq true
-
-      @toggl.delete_time_entry(stopped_time_entry['id'])
     end
 
     it 'returns nil if there is no current time entry' do
@@ -234,13 +244,11 @@ describe 'Time Entries' do
     end
 
     it 'requires a workspace, project, or task to start' do
-      time_entry_info = {
+      @time_entry_info = {
         'description' => 'time entry description'
       }
 
-      expect {
-        @toggl.start_time_entry(time_entry_info)
-      }.to raise_error(ArgumentError)
+      expect { running_time_entry }.to raise_error(ArgumentError)
     end
   end
 

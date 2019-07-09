@@ -9,6 +9,8 @@ Version numbers are meant to adhere to [Semantic Versioning](http://semver.org/)
 
 ## [Unreleased]
 
+* fix GET for non-json responses (modern Oj.load)
+* fix ordering issues in tests
 * remove unneeded dependencies and references (logger awesome-print pry-byebug)
 
 ## [1.2.1] - 2016-07-25

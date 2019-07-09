@@ -54,17 +54,26 @@ module TogglV8
     end
 
     def get(resource, params={})
+      extension = File.extname(resource)
+
       query_params = params.map { |k,v| "#{k}=#{v}" }.join('&')
       resource += "?#{query_params}" unless query_params.empty?
       resource.gsub!('+', '%2B')
+
       full_resp = _call_api(debug_output: lambda { "GET #{resource}" },
                   api_call: lambda { self.conn.get(resource) } )
       return {} if full_resp == {}
+
+      # if we know explicitly the response is not json, return it
+      return full_resp.body if %w[.pdf .csv .xls].include? extension
+
+      # expect that implicit route format responses are json
       begin
         resp = Oj.load(full_resp.body)
         return resp['data'] if resp.respond_to?(:has_key?) && resp.has_key?('data')
         return resp
-      rescue Oj::ParseError
+      rescue Oj::ParseError, EncodingError
+        # Oj.load now raises EncodingError for responses that are simple strings instead of json (like /revision)
         return full_resp.body
       end
     end
