@@ -1,11 +1,10 @@
 language: ruby
 rvm:
   - ruby-head
-  - 2.4.0
-  - 2.3.3
-  - 2.2.6
-  - 2.1.10
-  - 2.0.0-p648
+  - 2.6.3
+  - 2.5.5
+  - 2.4.6
+  - 2.3.8
 script: bundle exec rspec --format documentation
 cache: bundler
 branches:
