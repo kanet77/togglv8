@@ -1,5 +1,5 @@
 module TogglV8
-  TOGGL_REPORTS_URL = 'https://toggl.com/reports/api/'
+  TOGGL_REPORTS_URL = 'https://api.track.toggl.com/reports/api/'
 
   class ReportsV2
     include TogglV8::Connection
