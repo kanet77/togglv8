@@ -141,8 +141,9 @@ describe 'Time Entries' do
       deleted_time_entry = @toggl.delete_time_entry(@time_entry['id'])
       expect(deleted_time_entry).to eq "[#{ @time_entry['id'] }]"
 
-      zombie_time_entry = @toggl.get_time_entry(@time_entry['id'])
-      expect(zombie_time_entry.has_key?('server_deleted_at')).to eq true
+      expect do
+        @toggl.get_time_entry(@time_entry['id'])
+      end.to raise_error(RuntimeError, "HTTP Status: 404")
     end
   end
 
