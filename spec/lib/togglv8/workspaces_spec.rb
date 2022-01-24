@@ -12,7 +12,7 @@ describe 'Workspaces' do
   end
 
   it 'shows users' do
-    users = @toggl.users(@workspace_id)
+    users = @toggl.users(@workspace_id).sort_by { |user| user["email"] }
     expect(users.length).to eq 2
 
     expect(users.first['id']).to       eq Testing::OTHER_USER_ID
