@@ -204,12 +204,13 @@ describe 'Time Entries' do
       }
 
       # start time entry
-      running_time_entry = @toggl.start_time_entry(time_entry_info)
+      running_time_entry = normalize_entry(@toggl.start_time_entry(time_entry_info))
 
       # get current time entry by '/current'
-      time_entry_current = @toggl.get_current_time_entry
+      time_entry_current = normalize_entry(@toggl.get_current_time_entry)
+
       # get current time entry by id
-      time_entry_by_id = @toggl.get_time_entry(running_time_entry['id'])
+      time_entry_by_id = normalize_entry(@toggl.get_time_entry(running_time_entry['id']))
 
       # compare two methods of getting current time entry
       expect(time_entry_current).to eq time_entry_by_id
