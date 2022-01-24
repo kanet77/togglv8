@@ -111,7 +111,9 @@ describe 'Time Entries' do
     end
 
     it 'gets a time entry' do
-      retrieved_time_entry = @toggl.get_time_entry(@time_entry['id'])
+      retrieved_time_entry = normalize_entry(
+        @toggl.get_time_entry(@time_entry['id'])
+      )
 
       ['start', 'stop'].each do |key|
         expect(retrieved_time_entry[key]).to eq_ts @time_entry[key]
