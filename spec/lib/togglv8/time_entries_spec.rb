@@ -48,7 +48,7 @@ describe 'Time Entries' do
         @time_entry.delete(key)
       end
 
-      expect(retrieved_time_entry).to eq @time_entry
+      expect(retrieved_time_entry).to include @time_entry
     end
 
     it 'updates a time entry' do
