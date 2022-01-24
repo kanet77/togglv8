@@ -48,7 +48,7 @@ describe 'Time Entries' do
         @time_entry.delete(key)
       end
 
-      expect(retrieved_time_entry).to eq @time_entry
+      expect(retrieved_time_entry).to include @time_entry
     end
 
     it 'updates a time entry' do
@@ -70,8 +70,9 @@ describe 'Time Entries' do
       deleted_time_entry = @toggl.delete_time_entry(@time_entry['id'])
       expect(deleted_time_entry).to eq "[#{ @time_entry['id'] }]"
 
-      zombie_time_entry = @toggl.get_time_entry(@time_entry['id'])
-      expect(zombie_time_entry.has_key?('server_deleted_at')).to eq true
+      expect do
+        @toggl.get_time_entry(@time_entry['id'])
+      end.to raise_error(RuntimeError, "HTTP Status: 404")
     end
   end
 
@@ -110,7 +111,9 @@ describe 'Time Entries' do
     end
 
     it 'gets a time entry' do
-      retrieved_time_entry = @toggl.get_time_entry(@time_entry['id'])
+      retrieved_time_entry = normalize_entry(
+        @toggl.get_time_entry(@time_entry['id'])
+      )
 
       ['start', 'stop'].each do |key|
         expect(retrieved_time_entry[key]).to eq_ts @time_entry[key]
@@ -140,8 +143,9 @@ describe 'Time Entries' do
       deleted_time_entry = @toggl.delete_time_entry(@time_entry['id'])
       expect(deleted_time_entry).to eq "[#{ @time_entry['id'] }]"
 
-      zombie_time_entry = @toggl.get_time_entry(@time_entry['id'])
-      expect(zombie_time_entry.has_key?('server_deleted_at')).to eq true
+      expect do
+        @toggl.get_time_entry(@time_entry['id'])
+      end.to raise_error(RuntimeError, "HTTP Status: 404")
     end
   end
 
@@ -203,12 +207,13 @@ describe 'Time Entries' do
       }
 
       # start time entry
-      running_time_entry = @toggl.start_time_entry(time_entry_info)
+      running_time_entry = normalize_entry(@toggl.start_time_entry(time_entry_info))
 
       # get current time entry by '/current'
-      time_entry_current = @toggl.get_current_time_entry
+      time_entry_current = normalize_entry(@toggl.get_current_time_entry)
+
       # get current time entry by id
-      time_entry_by_id = @toggl.get_time_entry(running_time_entry['id'])
+      time_entry_by_id = normalize_entry(@toggl.get_time_entry(running_time_entry['id']))
 
       # compare two methods of getting current time entry
       expect(time_entry_current).to eq time_entry_by_id

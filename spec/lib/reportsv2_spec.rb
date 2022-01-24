@@ -86,11 +86,10 @@ describe 'ReportsV2' do
       expect(env['user']['id']).to eq Testing::USER_ID
     end
 
-    it 'index returns endpoints' do
+    it 'index returns empty string' do
       reports = TogglV8::ReportsV2.new(api_token: Testing::API_TOKEN)
       reports.workspace_id = @workspace_id
-      index = reports.index
-      expect(index['Welcome to reports api V2. VALID requests are:']).to_not be nil
+      expect(reports.index).to eq ""
     end
 
     it 'revision has not changed' do

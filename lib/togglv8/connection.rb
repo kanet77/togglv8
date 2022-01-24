@@ -21,7 +21,7 @@ module TogglV8
         faraday.response :logger, Logger.new('faraday.log') if opts[:log]
         faraday.adapter Faraday.default_adapter
         faraday.headers = { "Content-Type" => "application/json" }
-        faraday.basic_auth username, password
+        faraday.request :authorization, :basic, username, password
       end
     end
 
@@ -65,7 +65,7 @@ module TogglV8
         resp = Oj.load(full_resp.body)
         return resp['data'] if resp.respond_to?(:has_key?) && resp.has_key?('data')
         return resp
-      rescue Oj::ParseError
+      rescue Oj::ParseError, EncodingError
         return full_resp.body
       end
     end

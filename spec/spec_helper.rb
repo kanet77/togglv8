@@ -74,6 +74,12 @@ def file_is_xls(filename)
   expect(header).to eq ['D0CF11E0A1B11AE1'].pack("H*")
 end
 
+def normalize_entry(entry)
+  entry = entry.reject { |k, _| k == "guid" }
+  entry['start'] = Time.parse(entry['start']).utc.iso8601
+  entry
+end
+
 class Testing
   API_TOKEN = ENV['API_TOKEN'] || '4880adbe1bee9a241fa08070d33bd49f'
   EMAIL     = ENV['EMAIL']     || 'togglv8@mailinator.com'
